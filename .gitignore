@@ -73,3 +73,19 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# ========== ВАЖНО: Package Manager настройки ==========
+
+# Игнорируем кэш пакетов, но НЕ сам manifest.json
+/[Pp]ackages/packages-lock.json
+
+# Игнорируем локально собранные пакеты (если есть)
+**/[Pp]ackages/*.tgz
+
+# Игнорируем временные файлы npm (если используете npm пакеты)
+**/[Pp]ackages/npm-*.tgz
+
+# ========== Следующие файлы ДОЛЖНЫ отслеживаться Git ==========
+# НЕ игнорируйте:
+# Packages/manifest.json - основной файл со списком пакетов
+# Packages/packages-lock.json - можно игнорировать для командной работы
