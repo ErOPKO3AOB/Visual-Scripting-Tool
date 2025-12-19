@@ -18,3 +18,5 @@ MonoBehaviour:
     _settingsSaveFolderName: SettingsData
     _settingsFileName: Data
     _sessionsSaveFolderName: SessionsData
+  _blockConfigs:
+    _startBlock: {fileID: 6773180056389733881, guid: 08e1eb50e3dbc2143baf058fc439233a, type: 3}
