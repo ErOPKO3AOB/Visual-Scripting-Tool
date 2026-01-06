@@ -1,12 +1,12 @@
-using GlobalServices.Input;
 using GlobalServices.ProjectLifetime;
 using Session.Execution;
 using Session.Scheme;
-using Session.User;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
 using VContainer.Unity;
+using User;
+using User.Input;
 
 namespace Session
 {

@@ -1,8 +1,6 @@
 using GlobalServices.DataSave;
-using GlobalServices.Input;
 using GlobalServices.SceneManagement;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using VContainer;
 using VContainer.Unity;
 

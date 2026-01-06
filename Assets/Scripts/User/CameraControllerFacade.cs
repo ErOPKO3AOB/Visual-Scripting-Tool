@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Session.User
+namespace User
 {
     public class CameraControllerFacade : MonoBehaviour
     {

@@ -1,11 +1,11 @@
-using GlobalServices.Input;
 using GlobalServices.ProjectLifetime;
 using System;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+using User.Input;
 
-namespace Session.User
+namespace User
 {
     public class CameraController : IInitializable, ITickable, IDisposable
     {
