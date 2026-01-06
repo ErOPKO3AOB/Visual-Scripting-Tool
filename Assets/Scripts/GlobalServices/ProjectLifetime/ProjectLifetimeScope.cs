@@ -1,7 +1,8 @@
 using GlobalServices.DataSave;
+using GlobalServices.Input;
 using GlobalServices.SceneManagement;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using VContainer;
 using VContainer.Unity;
 
@@ -11,13 +12,13 @@ namespace GlobalServices.ProjectLifetime
     {
         [Header("Configs")]
         [SerializeField] private ProjectConfig _projectConfig;
-        
+
         protected override void Configure(IContainerBuilder builder)
         {
             // Project parameters config
             ConfigureProjectConfigs(builder);
 
-            // Scne management service
+            // Scene management service
             ConfigureSceneManagement(builder);
 
             // Data Save service
@@ -27,7 +28,13 @@ namespace GlobalServices.ProjectLifetime
         #region Implementations
         private void ConfigureProjectConfigs(IContainerBuilder builder)
         {
-            builder.RegisterInstance(_projectConfig.MainScenes);
+            // Регистрируем весь конфиг проекта
+            builder.RegisterInstance(_projectConfig);
+
+            // Также регистрируем отдельно CameraSettings для удобства
+            builder.RegisterInstance(_projectConfig.CameraSettings);
+
+            builder.RegisterInstance(_projectConfig.InputSettings);
         }
 
         private void ConfigureSceneManagement(IContainerBuilder builder)

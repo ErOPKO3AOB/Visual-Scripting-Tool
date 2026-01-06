@@ -4,12 +4,16 @@ namespace Session.User
 {
     public class CameraControllerFacade : MonoBehaviour
     {
-        [SerializeField] private Camera _camera;
-        [SerializeField] private float _sensitivity;
+        [SerializeField] private Camera _ñamera;
 
-        private void Update()
+        public Camera Camera
         {
-            
+            get
+            {
+                if (_ñamera == null)
+                    _ñamera = GetComponent<Camera>();
+                return _ñamera;
+            }
         }
     }
 }

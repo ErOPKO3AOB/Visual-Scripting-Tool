@@ -19,13 +19,21 @@ namespace GlobalServices.ProjectLifetime
         [Header("Blocks")]
         [SerializeField] private BlockConfigs _blockConfigs;
         public BlockConfigs BlockConfigs { get { return _blockConfigs; } }
+
+        [Header("User")]
+        [SerializeField] private CameraSettings _cameraSettings;
+        public CameraSettings CameraSettings { get { return _cameraSettings; } }
+        [SerializeField] private InputSettings _inputSettings;
+        public InputSettings InputSettings { get { return _inputSettings; } }
     }
 
     [Serializable]
     public class MainScenesConfig
     {
+#if UNITY_EDITOR
         [SerializeField] private SceneAsset _menuScene;
         public string MenuScene { get { return _menuScene.name; } }
+#endif
     }
 
     [Serializable]
@@ -49,5 +57,28 @@ namespace GlobalServices.ProjectLifetime
         [SerializeField] private SchemeBlockFacade _startBlock;
         public SchemeBlockFacade StartBlock { get { return _startBlock; } }
         //[SerializeField] private SchemeBlockFacade _endBlock;
+    }
+
+    [Serializable]
+    public class CameraSettings
+    {
+        [Header("Prefab")]
+        [SerializeField] private GameObject _camPrefab;
+        public GameObject CamPrefab => _camPrefab;
+
+        [Header("Movement")]
+        [SerializeField] private float _moveSensitivity = 1f;
+        public float MoveSensitivity => _moveSensitivity;
+
+        [Header("Zoom")]
+        [SerializeField] private float _zoomSensitivity = 1f;
+        public float ZoomSensitivity => _zoomSensitivity;
+    }
+
+    [Serializable]
+    public class InputSettings
+    {
+        [SerializeField] private GameObject _playerInputPrefab;
+        public GameObject PlayerInputPrefab { get { return _playerInputPrefab; } }
     }
 }

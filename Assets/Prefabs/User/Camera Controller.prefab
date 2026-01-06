@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8469390134964787872}
   - component: {fileID: 1391497737957659499}
   - component: {fileID: 5117285415503347363}
-  - component: {fileID: 7080733691052778606}
+  - component: {fileID: 6280188739062231278}
   m_Layer: 0
   m_Name: Camera Controller
   m_TagString: MainCamera
@@ -138,7 +138,7 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!114 &7080733691052778606
+--- !u!114 &6280188739062231278
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -147,8 +147,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5530218843876562416}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1256e91ecc118ad40b829f455dffdf90, type: 3}
+  m_Script: {fileID: 11500000, guid: ee1e03ebf7cc5234f8c27f1db9c67e86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 8469390134964787872}
-  _sensitivity: 0
+  "_\u0441amera": {fileID: 8469390134964787872}
