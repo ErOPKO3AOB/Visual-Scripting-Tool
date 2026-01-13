@@ -51,7 +51,7 @@ namespace Session.Scheme.Variables
         {
             _nameInputField.onSubmit.AddListener((string text) => _variableName = text);
             _typeDropdown.onValueChanged.AddListener(InitializeValuePlaceHolder);
-            _valueInputField.onSubmit.AddListener((string value) => _variableName = value);
+            _valueInputField.onSubmit.AddListener((string value) => _variableValue = value);
 
             _closeButton.onClick.AddListener(OnCloseWindow);
 
