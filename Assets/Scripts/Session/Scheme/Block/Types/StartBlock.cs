@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Session.Scheme.Block.Types
 {
-    public class StartBlock : ISchemeBlock, IDisposable
+    public class StartBlock : IActionProvider, IDisposable
     {
         public StartBlock(SchemeBlockFacade facade, BlockConnector connector)
         {
@@ -15,15 +15,22 @@ namespace Session.Scheme.Block.Types
         private readonly SchemeBlockFacade _facade;
         private readonly BlockConnector _connector;
 
-        void ISchemeBlock.SendInput()
-        {
-            //_connector.BurpOutput();
-
-        }
+        bool IActionProvider.CanMoveHere { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        IActionProvider IActionProvider.Next { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         void IDisposable.Dispose()
         {
             GameObject.Destroy(_facade.gameObject);
+        }
+
+        public void ProvideAction()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IActionProvider.ProvideAction()
+        {
+            throw new NotImplementedException();
         }
     }
 }

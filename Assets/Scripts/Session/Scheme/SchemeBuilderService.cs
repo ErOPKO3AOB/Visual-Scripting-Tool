@@ -7,7 +7,7 @@ namespace Session.Scheme
 {
     public class SchemeBuilderService : IDisposable
     {
-        private List<ISchemeBlock> _blocks;
+        private List<IActionProvider> _blocks;
         private List<BlockConnector> _connectors;
 
         public void SpawnBlock()
@@ -15,7 +15,7 @@ namespace Session.Scheme
 
         }
 
-        public void ConnectBlocksWithConnector(ISchemeBlock outputPoint, ISchemeBlock inputPoint, BlockConnector connector)
+        public void ConnectBlocksWithConnector(IActionProvider outputPoint, IActionProvider inputPoint, BlockConnector connector)
         {
             connector.SetInputConnection(outputPoint);
             connector.SetOutputConnection(inputPoint);

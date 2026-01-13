@@ -5,15 +5,15 @@ namespace Session.Scheme.Connector
 {
     public class BlockConnector : IExecutionUnit
     {
-        private ISchemeBlock _inputConnection;
-        private ISchemeBlock _outputConnection;
+        private IActionProvider _inputConnection;
+        private IActionProvider _outputConnection;
 
-        public void SetInputConnection(ISchemeBlock connection)
+        public void SetInputConnection(IActionProvider connection)
         {
             _inputConnection = connection;
         }
 
-        public void SetOutputConnection(ISchemeBlock connection)
+        public void SetOutputConnection(IActionProvider connection)
         {
             _outputConnection = connection;
         }

@@ -33,6 +33,8 @@ namespace GlobalServices.ProjectLifetime
             builder.RegisterInstance(_projectConfig.CameraSettings);
 
             builder.RegisterInstance(_projectConfig.InputSettings);
+
+            builder.RegisterInstance(_projectConfig.BlockConfigs);
         }
 
         private void ConfigureSceneManagement(IContainerBuilder builder)

@@ -1,3 +1,4 @@
+using Session.Scheme;
 using Session.Scheme.Block;
 using System;
 using System.IO;
@@ -54,9 +55,19 @@ namespace GlobalServices.ProjectLifetime
     [Serializable]
     public class BlockConfigs
     {
+        [Header("Block Units")]
         [SerializeField] private SchemeBlockFacade _startBlock;
         public SchemeBlockFacade StartBlock { get { return _startBlock; } }
-        //[SerializeField] private SchemeBlockFacade _endBlock;
+
+        [SerializeField] private Color _draggingColorAffect;
+        public Color DraggingColorAffect { get { return _draggingColorAffect; } }
+
+        [SerializeField] private float _draggingSizeAffect;
+        public float DraggingSizeAffect { get { return _draggingSizeAffect; } }
+
+        [Header("UI Settings Windows")]
+        [SerializeField] private GameObject[] _blockScreensPrefabsUI;
+        public GameObject[] BlockScreensPrefabsUI { get { return _blockScreensPrefabsUI; } }
     }
 
     [Serializable]
