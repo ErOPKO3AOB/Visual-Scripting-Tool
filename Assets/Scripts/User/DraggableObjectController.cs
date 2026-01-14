@@ -74,7 +74,7 @@ namespace User
             Vector2 worldPoint = _camera.ScreenToWorldPoint(_lastPointerPosition);
             RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
 
-            if (hit.collider != null)
+            if (hit.collider != null && hit.collider.gameObject.CompareTag(_blockConfigs.DraggableObjectTag))
             {
                 _currentDraggedObject = hit.collider.gameObject;
                 _currentSpriteRenderer = _currentDraggedObject.GetComponent<SpriteRenderer>();

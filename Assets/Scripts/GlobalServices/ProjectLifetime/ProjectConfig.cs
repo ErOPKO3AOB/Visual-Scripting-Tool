@@ -65,6 +65,9 @@ namespace GlobalServices.ProjectLifetime
         [SerializeField] private float _draggingSizeAffect;
         public float DraggingSizeAffect { get { return _draggingSizeAffect; } }
 
+        [SerializeField] private string _draggableObjectTag;
+        public string DraggableObjectTag { get { return _draggableObjectTag; } }
+
         [Header("UI Settings Windows")]
         [SerializeField] private GameObject[] _blockScreensPrefabsUI;
         public GameObject[] BlockScreensPrefabsUI { get { return _blockScreensPrefabsUI; } }

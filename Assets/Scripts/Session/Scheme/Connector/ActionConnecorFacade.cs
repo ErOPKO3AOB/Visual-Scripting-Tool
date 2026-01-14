@@ -5,7 +5,6 @@ namespace Session.Scheme.Connector
 {
     public class ActionConnecorFacade : MonoBehaviour
     {
-        private GameObject[] _arrowObjects;
         private ActionConnector _connector;
 
         public void InitializeView(IActionProvider firstProvider)
