@@ -2146,7 +2146,7 @@ GameObject:
   - component: {fileID: 3122443616875729797}
   - component: {fileID: 3460755231520608189}
   m_Layer: 5
-  m_Name: SchemeVariableCanvas
+  m_Name: SchemeVariableWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

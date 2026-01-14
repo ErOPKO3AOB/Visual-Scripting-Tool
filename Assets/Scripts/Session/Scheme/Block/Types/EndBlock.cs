@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Session.Scheme.Block.Types
 {
-    public class StartBlock : IActionProvider, IDisposable
+    public class EndBlock : IActionProvider, IDisposable
     {
-        public StartBlock(SchemeBlockFacade facade)
+        public EndBlock(SchemeBlockFacade facade)
         {
             _facade = facade;
         }

@@ -8,17 +8,17 @@ namespace Session.Scheme
     public class SchemeBuilderService : IDisposable
     {
         private List<IActionProvider> _blocks;
-        private List<BlockConnector> _connectors;
+        private List<ActionConnector> _connectors;
 
         public void SpawnBlock()
         {
 
         }
 
-        public void ConnectBlocksWithConnector(IActionProvider outputPoint, IActionProvider inputPoint, BlockConnector connector)
+        public void ConnectBlocksWithConnector(IActionProvider outputPoint, IActionProvider inputPoint, ActionConnector connector)
         {
-            connector.SetInputConnection(outputPoint);
-            connector.SetOutputConnection(inputPoint);
+            //connector.SetInputConnection(outputPoint);
+            //connector.SetOutputConnection(inputPoint);
         }
 
         public void SpawnConnector()
