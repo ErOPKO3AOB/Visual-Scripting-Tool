@@ -1,4 +1,5 @@
 using GlobalServices.InputField;
+using Session.Scheme.Variables;
 using System;
 using TMPro;
 using UnityEngine;
@@ -6,17 +7,16 @@ using UnityEngine.UI;
 using VContainer;
 using VContainer.Unity;
 
-namespace Session.Scheme.Variables
+namespace Session.Scheme.Windows
 {
-    public class VariableSettingsUI : SettingsBaseUI, IInitializable, IDisposable
+    public class VariableSettingsUI : SettingsBaseWindowUI, IInitializable, IDisposable
     {
         [Header("UI")]
         [SerializeField] private TMP_InputField _nameInputField;
         [SerializeField] private TMP_Dropdown _typeDropdown;
         [SerializeField] private TMP_InputField _valueInputField;
         [SerializeField] private TMP_Text _valueInputFieldPlaceHolder;
-
-        [SerializeField] private Button _closeButton;
+        [SerializeField] private Button _deleteButton;
 
         [Header("Value input validation")]
         [Header("Int")]
@@ -49,11 +49,10 @@ namespace Session.Scheme.Variables
 
         public void Initialize()
         {
-            _nameInputField.onSubmit.AddListener((string text) => _variableName = text);
-            _typeDropdown.onValueChanged.AddListener(InitializeValuePlaceHolder);
-            _valueInputField.onSubmit.AddListener((string value) => _variableValue = value);
-
-            _closeButton.onClick.AddListener(OnCloseWindow);
+            _nameInputField.onSubmit.AddListener((string text) => { _variableName = text; OnEndEdit(); });
+            _typeDropdown.onValueChanged.AddListener((int value) => { InitializeValuePlaceHolder(value); OnEndEdit(); });
+            _valueInputField.onSubmit.AddListener((string value) => { _variableValue = value; OnEndEdit(); });
+            _deleteButton.onClick.AddListener(() => { _variableService.RemoveVariable(_variableName); Destroy(gameObject); });
 
             InitializeValuePlaceHolder(_typeDropdown.value);
         }
@@ -63,8 +62,7 @@ namespace Session.Scheme.Variables
             _nameInputField.onSubmit.RemoveAllListeners();
             _typeDropdown.onValueChanged.RemoveAllListeners();
             _valueInputField.onSubmit.RemoveAllListeners();
-
-            _closeButton.onClick.RemoveAllListeners();
+            _deleteButton.onClick.RemoveAllListeners();
         }
 
         private void InitializeValuePlaceHolder(int value)
@@ -99,7 +97,7 @@ namespace Session.Scheme.Variables
         }
         #endregion
 
-        public override void OnCloseWindow()
+        public override void OnEndEdit()
         {
             if (_variableName != null && _variableType != null)
             {
@@ -124,8 +122,6 @@ namespace Session.Scheme.Variables
             {
                 Debug.LogAssertion("Не указан один из важных параметров для создания переменной!");
             }
-
-            Destroy(gameObject);
         }
     }
 }

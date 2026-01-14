@@ -1,5 +1,7 @@
+using NUnit.Framework;
 using Session.Scheme;
 using Session.Scheme.Block;
+using Session.Scheme.Windows;
 using System;
 using System.IO;
 using UnityEditor;
@@ -69,8 +71,8 @@ namespace GlobalServices.ProjectLifetime
         public string DraggableObjectTag { get { return _draggableObjectTag; } }
 
         [Header("UI Settings Windows")]
-        [SerializeField] private GameObject[] _blockScreensPrefabsUI;
-        public GameObject[] BlockScreensPrefabsUI { get { return _blockScreensPrefabsUI; } }
+        [SerializeField] private SettingsBaseWindowUI[] _variableItemPrefabs;
+        public SettingsBaseWindowUI[] VariableItemPrefabs { get { return _variableItemPrefabs; } }
     }
 
     [Serializable]

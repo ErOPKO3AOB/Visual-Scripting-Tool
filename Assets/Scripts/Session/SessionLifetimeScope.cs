@@ -2,6 +2,7 @@ using GlobalServices.ProjectLifetime;
 using Session.Execution;
 using Session.Scheme;
 using Session.Scheme.Variables;
+using Session.Scheme.Windows;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using User;
@@ -69,10 +70,9 @@ namespace Session
             builder.Register<VariableService>(Lifetime.Scoped)
                 .AsSelf();
 
-            foreach (var item in _projectConfig.BlockConfigs.BlockScreensPrefabsUI)
-            {
-                //builder.RegisterEntryPoint<SettingsBaseUI>();
-            }
+            // Service for opening windows
+            builder.Register<WindowService>(Lifetime.Scoped)
+                .AsSelf();
         }
     }
 }
