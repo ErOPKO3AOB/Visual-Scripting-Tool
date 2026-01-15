@@ -1,38 +1,42 @@
 using GlobalServices.ProjectLifetime;
+using System;
 using UnityEngine;
+using VContainer.Unity;
 
 namespace Session.Scheme.Windows
 {
-    public class WindowService
+    public class WindowService : IInitializable
     {
-        public WindowService(BlockConfigs blockConfigs)
+        public WindowService(Func<SettingsBaseWindowUI> windowFactory, BlockConfigs blockConfigs)
         {
+            _windowFactory = windowFactory;
             _blockConfigs = blockConfigs;
+
         }
 
+        private readonly Func<SettingsBaseWindowUI> _windowFactory;
         private readonly BlockConfigs _blockConfigs;
 
         public void OpenWindow(string windowName)
         {
-            GameObject.Instantiate(SearchWindow(windowName));
+            Debug.Log("OPENED WINDOW");
+
+            _windowFactory.Invoke();
         }
 
         public void CloseWindow(string windowName)
         {
-            GameObject.Destroy(SearchWindow(windowName));
+            //GameObject.Destroy(SearchWindow(windowName));
         }
 
-        private GameObject SearchWindow(string windowName)
+        public void Initialize()
         {
-            for (int i = 0; i < _blockConfigs.VariableItemPrefabs.Length; i++)
-            {
-                if (_blockConfigs.VariableItemPrefabs[i].WindowName == windowName)
-                {
-                    return _blockConfigs.VariableItemPrefabs[i].gameObject;
-                }
-            }
-
-            return null;
+            OpenWindow(null);
         }
+
+        //private GameObject SearchWindow(string windowName)
+        //{
+
+        //}
     }
 }

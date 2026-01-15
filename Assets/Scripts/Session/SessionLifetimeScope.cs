@@ -71,8 +71,16 @@ namespace Session
                 .AsSelf();
 
             // Service for opening windows
-            builder.Register<WindowService>(Lifetime.Scoped)
+            builder.RegisterEntryPoint<WindowService>(Lifetime.Scoped)
                 .AsSelf();
+
+            // Register windows
+            //builder.RegisterComponent(_projectConfig.BlockConfigs.VariablesListWindowPrefab.GetComponent<VariableListUI>()).As<SettingsBaseWindowUI>();
+            builder.RegisterFactory<SettingsBaseWindowUI>((IObjectResolver resolver) =>
+            {
+               GameObject window = resolver.Instantiate(_projectConfig.BlockConfigs.VariablesListWindowPrefab);
+                return () => window.GetComponent<SettingsBaseWindowUI>();
+            }, Lifetime.Scoped);
         }
     }
 }

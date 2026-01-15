@@ -22,6 +22,9 @@ namespace Session.Scheme.Windows
 
         private void Start()
         {
+            if (_blockConfigs == null) { Debug.Log("_blockConfigs are null!"); }
+            else { Debug.Log("_blockConfigs ARE HERE!"); }
+
             _addNewVariableButton.onClick.AddListener(() =>
             {
                 //Instantiate(, _content.transform);

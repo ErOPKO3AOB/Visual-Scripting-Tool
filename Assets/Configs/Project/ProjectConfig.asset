@@ -23,9 +23,7 @@ MonoBehaviour:
     _draggingColorAffect: {r: 1, g: 0.8616548, b: 0, a: 1}
     _draggingSizeAffect: 1.1
     _draggableObjectTag: Draggable
-    _variableItemPrefabs:
-    - {fileID: 921730477965453695, guid: 59d9a92bab69eab4c9ec67941b3fd9a5, type: 3}
-    - {fileID: 6888468730971742389, guid: 330475c9cd810504fa959badd474dce2, type: 3}
+    _variablesListWindowPrefab: {fileID: 4028292324759505125, guid: 330475c9cd810504fa959badd474dce2, type: 3}
   _cameraSettings:
     _camPrefab: {fileID: 5530218843876562416, guid: 1d3c82136d7828346976c8f7c37f89fa, type: 3}
     _moveSensitivity: 6

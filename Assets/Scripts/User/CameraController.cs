@@ -115,8 +115,6 @@ namespace User
         {
             if (_isInterrupted) return;
 
-            Debug.Log("Interrupted");
-
             _isInterrupted = true;
             _wasDraggingBeforeInterrupt = _canDragCamera;
             _canDragCamera = false;
