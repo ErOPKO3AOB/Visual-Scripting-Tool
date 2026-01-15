@@ -1,13 +1,15 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Session.Scheme.Variables
 {
     public class VariableService
     {
-        public List<SchemeVariableBase> Variables { get; private set; }
+        public List<SchemeVariableBase> Variables { get; private set; } = new List<SchemeVariableBase>();
 
         public void BuildVariable<T>(string varName, object startValue = null)
         {
+            Debug.Log("BUILD VARIABLE");
             int index = CheckExistance(varName);
 
             if (index < 0)
@@ -15,6 +17,7 @@ namespace Session.Scheme.Variables
                 SchemeVariableBase schemeVariable = new SchemeVariable<T>(varName);
                 schemeVariable.SetValue(startValue);
                 Variables.Add(schemeVariable);
+                Debug.Log($"CurrentVariables count:{Variables.Count}");
             }
         }
 
@@ -42,7 +45,7 @@ namespace Session.Scheme.Variables
         {
             for (int i = 0; i < Variables.Count; i++)
             {
-                if (Variables[i].name == varName)
+                if (Variables[i].variableName == varName)
                 {
                     return i;
                 }

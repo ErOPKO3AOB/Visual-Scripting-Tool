@@ -22,5 +22,10 @@ namespace Session.Scheme.Variables
             else
                 throw new InvalidCastException($"Cannot cast {Value?.GetType()} to {typeof(T)}");
         }
+
+        public override object GetValue()
+        {
+            return Value;
+        }
     }
 }

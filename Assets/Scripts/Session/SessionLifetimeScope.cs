@@ -76,9 +76,9 @@ namespace Session
 
             // Register windows
             //builder.RegisterComponent(_projectConfig.BlockConfigs.VariablesListWindowPrefab.GetComponent<VariableListUI>()).As<SettingsBaseWindowUI>();
-            builder.RegisterFactory<string, BaseWindowUI>((IObjectResolver resolver) =>
+            builder.RegisterFactory<string, Transform, BaseWindowUI>((IObjectResolver resolver) =>
             {
-                return (string windowName) =>
+                return (string windowName, Transform spawnParent) =>
                 {
                     GameObject window = null;
 
@@ -86,8 +86,7 @@ namespace Session
                     {
                         if (windowName == _projectConfig.BlockConfigs.WindowPrefabsUI[i].WindowName)
                         {
-                            window = resolver.Instantiate(_projectConfig.BlockConfigs.WindowPrefabsUI[i].gameObject);
-                            Debug.Log($"FACTORY BUILDED {windowName}");
+                            window = resolver.Instantiate(_projectConfig.BlockConfigs.WindowPrefabsUI[i].gameObject, spawnParent);
                             break;
                         }
                     }

@@ -2398,6 +2398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86a5c42aae5fbbc478022b6c80947c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _windowName: VARIABLE_ITEM
   _nameInputField: {fileID: 925869315941659047}
   _typeDropdown: {fileID: 7264220554945839452}
   _valueInputField: {fileID: 4268680724530421096}

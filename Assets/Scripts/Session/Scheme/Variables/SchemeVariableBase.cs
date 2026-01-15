@@ -5,14 +5,15 @@ namespace Session.Scheme.Variables
     [Serializable]
     public abstract class SchemeVariableBase
     {
-        public readonly string name;
+        public readonly string variableName;
 
         public SchemeVariableBase(string name)
         {
-            this.name = name;
+            this.variableName = name;
         }
 
         public abstract Type ValueType { get; }
         public abstract void SetValue(object typedValue);
+        public abstract object GetValue();
     }
 }

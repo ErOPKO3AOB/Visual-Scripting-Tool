@@ -5,11 +5,11 @@ using VContainer;
 
 namespace Session.Scheme.Windows
 {
-    public class InputWindow : BaseWindowUI
+    public class InputWindowUI : BaseWindowUI
     {
         [Header("UI")]
         [SerializeField] private Button _variableSpawnButton;
-        //[SerializeField] private Button _closeButton;
+        [SerializeField] private Button _closeButton;
 
         [Inject]
         public void Construct(WindowService windowService, BlockConfigs blockConfigs)
@@ -23,11 +23,10 @@ namespace Session.Scheme.Windows
 
         private void Start()
         {
-            //_closeButton 
+            _closeButton.onClick.AddListener(() => { _windowService.CloseWindow(WindowName); });
 
             _variableSpawnButton.onClick.AddListener(() =>
             {
-                if (/*_blockConfigs == null || */_windowService == null) Debug.Log("NUULL");
                 _windowService.OpenWindow(_blockConfigs.WindowPrefabsUI[0].WindowName);
             });
         }
@@ -35,11 +34,7 @@ namespace Session.Scheme.Windows
         private void OnDestroy()
         {
             _variableSpawnButton.onClick.RemoveAllListeners();
-        }
-
-        public override void OnEndEdit()
-        {
-            throw new System.NotImplementedException();
+            _closeButton.onClick.RemoveAllListeners();
         }
     }
 }
