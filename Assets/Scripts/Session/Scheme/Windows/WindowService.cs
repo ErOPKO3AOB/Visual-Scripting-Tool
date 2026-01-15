@@ -7,21 +7,20 @@ namespace Session.Scheme.Windows
 {
     public class WindowService : IInitializable
     {
-        public WindowService(Func<SettingsBaseWindowUI> windowFactory, BlockConfigs blockConfigs)
+        public WindowService(Func<string, BaseWindowUI> windowFactory, BlockConfigs blockConfigs)
         {
             _windowFactory = windowFactory;
             _blockConfigs = blockConfigs;
-
         }
 
-        private readonly Func<SettingsBaseWindowUI> _windowFactory;
+        private readonly Func<string, BaseWindowUI> _windowFactory;
         private readonly BlockConfigs _blockConfigs;
 
         public void OpenWindow(string windowName)
         {
             Debug.Log("OPENED WINDOW");
 
-            _windowFactory.Invoke();
+            _windowFactory.Invoke(windowName);
         }
 
         public void CloseWindow(string windowName)
@@ -31,7 +30,7 @@ namespace Session.Scheme.Windows
 
         public void Initialize()
         {
-            OpenWindow(null);
+            OpenWindow(_blockConfigs.WindowPrefabsUI[1].WindowName); 
         }
 
         //private GameObject SearchWindow(string windowName)

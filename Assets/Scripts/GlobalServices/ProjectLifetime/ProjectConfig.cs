@@ -1,4 +1,5 @@
 using Session.Scheme.Block;
+using Session.Scheme.Windows;
 using System;
 using System.IO;
 using UnityEditor;
@@ -68,8 +69,8 @@ namespace GlobalServices.ProjectLifetime
         public string DraggableObjectTag { get { return _draggableObjectTag; } }
 
         [Header("Block windows")]
-        [SerializeField] private GameObject _variablesListWindowPrefab;
-        public GameObject VariablesListWindowPrefab { get { return _variablesListWindowPrefab; } }
+        [SerializeField] private BaseWindowUI[] _windowPrefabsUI;
+        public BaseWindowUI[] WindowPrefabsUI { get { return _windowPrefabsUI; } }
     }
 
     [Serializable]

@@ -5,11 +5,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
-using VContainer.Unity;
 
 namespace Session.Scheme.Windows
 {
-    public class VariableSettingsUI : SettingsBaseWindowUI, IInitializable, IDisposable
+    public class VariableWindowUI : BaseWindowUI
     {
         [Header("UI")]
         [SerializeField] private TMP_InputField _nameInputField;
@@ -57,7 +56,7 @@ namespace Session.Scheme.Windows
             InitializeValuePlaceHolder(_typeDropdown.value);
         }
 
-        public void Dispose()
+        public void OnDestroy()
         {
             _nameInputField.onSubmit.RemoveAllListeners();
             _typeDropdown.onValueChanged.RemoveAllListeners();
@@ -69,7 +68,7 @@ namespace Session.Scheme.Windows
         {
             _valueInputField.inputValidator = null;
             _valueInputField.text = null;
-            
+
             switch (value)
             {
                 case 0:

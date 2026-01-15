@@ -5,7 +5,7 @@ using VContainer;
 
 namespace Session.Scheme.Windows
 {
-    public class VariableListUI : SettingsBaseWindowUI
+    public class VariableListWindowUI : BaseWindowUI
     {
         [Inject]
         public void Construct(BlockConfigs blockConfigs)
@@ -27,7 +27,7 @@ namespace Session.Scheme.Windows
 
             _addNewVariableButton.onClick.AddListener(() =>
             {
-                //Instantiate(, _content.transform);
+                //Instantiate(_blockConfigs., _content.transform);
             });
 
             _closeButton.onClick.AddListener(() => { Destroy(gameObject); });
@@ -36,6 +36,7 @@ namespace Session.Scheme.Windows
         private void OnDestroy()
         {
             _addNewVariableButton.onClick.RemoveAllListeners();
+            _closeButton.onClick.RemoveAllListeners();
         }
 
         public override void OnEndEdit()

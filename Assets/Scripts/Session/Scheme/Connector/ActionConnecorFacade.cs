@@ -19,7 +19,7 @@ namespace Session.Scheme.Connector
 
         private void OnDestroy()
         {
-            _connector.firstProvider.Next = null;
+            //_connector.firstProvider.Next = null;
         }
     }
 }
