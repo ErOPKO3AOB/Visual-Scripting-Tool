@@ -2,8 +2,8 @@ using GlobalServices.ProjectLifetime;
 using Session.Scheme.Variables;
 using System;
 using System.Collections.Generic;
-using UnityEditor.PackageManager.UI;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using VContainer;
 
@@ -29,6 +29,8 @@ namespace Session.Scheme.Windows
         [SerializeField] private Button _closeButton;
 
         private List<VariableItemUI> _activeVariableItems = new List<VariableItemUI>();
+
+        public UnityAction<SchemeVariableBase> OnVariableChoose;
 
         private void Start()
         {
@@ -62,20 +64,26 @@ namespace Session.Scheme.Windows
 
         public void AddVariable(string name, Type type, object value)
         {
+            int existingIndex = _variableService.CheckExistance(name);
+
             if (name != null && type != null)
             {
                 switch (GetTypeIntegerValue(type))
                 {
                     case 0:
+                        if (value != null) int.Parse(value.ToString());
                         _variableService.BuildVariable<int>(name, value);
                         break;
                     case 1:
+                        if (value != null) float.Parse(value.ToString());
                         _variableService.BuildVariable<float>(name, value);
                         break;
                     case 2:
+                        if (value != null) value.ToString();
                         _variableService.BuildVariable<string>(name, value);
                         break;
                     case 3:
+                        if (value != null) bool.Parse(value.ToString());
                         _variableService.BuildVariable<bool>(name, value);
                         break;
                 }
@@ -89,15 +97,13 @@ namespace Session.Scheme.Windows
 
         public void RemoveVariable(VariableItemUI variable)
         {
-            Debug.Log("REMOWE");
-
             Destroy(variable.gameObject);
 
             if (_variableService.Variables.Count >= _activeVariableItems.Count)
             {
                 for (int i = 0; i < _activeVariableItems.Count; i++)
                 {
-                    if (_variableService.Variables[i].variableName == name)
+                    if (_variableService.Variables[i].variableName == variable.name)
                     {
                         _variableService.RemoveVariable(name);
                         _activeVariableItems.RemoveAt(i);
@@ -128,6 +134,18 @@ namespace Session.Scheme.Windows
             }
 
             return typeValue;
+        }
+
+        public void ChooseVariable(string variableName)
+        {
+            for (int i = 0; i < _activeVariableItems.Count; i++)
+            {
+                if (_variableService.Variables[i].variableName == variableName)
+                {
+                    OnVariableChoose?.Invoke(_variableService.Variables[i]);
+                    break;
+                }
+            }
         }
     }
 }

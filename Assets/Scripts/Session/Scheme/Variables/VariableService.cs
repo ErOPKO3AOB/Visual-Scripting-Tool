@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,15 +10,33 @@ namespace Session.Scheme.Variables
 
         public void BuildVariable<T>(string varName, object startValue = null)
         {
-            Debug.Log("BUILD VARIABLE");
+            if (string.IsNullOrEmpty(varName)) return;
+
             int index = CheckExistance(varName);
 
             if (index < 0)
             {
                 SchemeVariableBase schemeVariable = new SchemeVariable<T>(varName);
-                schemeVariable.SetValue(startValue);
                 Variables.Add(schemeVariable);
-                Debug.Log($"CurrentVariables count:{Variables.Count}");
+                schemeVariable.SetValue(startValue);
+            }
+
+            else
+            {
+                SetValueToVariable(varName, startValue);
+                Debug.Log($"Setting value to variable: name {varName} value {startValue}");
+            }
+        }
+
+        public void SetTypeToVariable<T>(string varName)
+        {
+            int index = CheckExistance(varName);
+
+            if (index > -1)
+            {
+                SchemeVariableBase schemeVariable = Variables[index];
+                RemoveVariable(schemeVariable.variableName);
+                BuildVariable<T>(schemeVariable.variableName, schemeVariable.GetValue());
             }
         }
 
@@ -41,13 +60,16 @@ namespace Session.Scheme.Variables
             }
         }
 
-        private int CheckExistance(string varName)
+        public int CheckExistance(string varName)
         {
-            for (int i = 0; i < Variables.Count; i++)
+            if (Variables.Count > 0)
             {
-                if (Variables[i].variableName == varName)
+                for (int i = 0; i < Variables.Count; i++)
                 {
-                    return i;
+                    if (Variables[i].variableName == varName)
+                    {
+                        return i;
+                    }
                 }
             }
 

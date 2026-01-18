@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace GlobalServices.InputField
 {
+    [CreateAssetMenu(fileName = "InputField/" + nameof(BoolValidator), menuName = nameof(BoolValidator))]
     public class BoolValidator : TMP_InputValidator
     {
         public override char Validate(ref string text, ref int pos, char ch)

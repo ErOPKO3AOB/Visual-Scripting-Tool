@@ -21,7 +21,7 @@ namespace Session.Scheme.Windows
 
         public BaseWindowUI OpenWindow(string windowName, Transform spawnParent = null)
         {
-            Debug.Log($"OPENED WINDOW {windowName}");
+            //Debug.Log($"OPENED WINDOW {windowName}");
 
             BaseWindowUI window = _windowFactory.Invoke(windowName, spawnParent);
             _activeWindows.Add(window);

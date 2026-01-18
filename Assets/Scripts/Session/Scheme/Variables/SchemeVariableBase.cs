@@ -13,7 +13,7 @@ namespace Session.Scheme.Variables
         }
 
         public abstract Type ValueType { get; }
-        public abstract void SetValue(object typedValue);
+        public abstract void SetValue(object value);
         public abstract object GetValue();
     }
 }
