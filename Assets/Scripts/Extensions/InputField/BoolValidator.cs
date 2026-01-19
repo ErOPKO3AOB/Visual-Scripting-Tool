@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace GlobalServices.InputField
+namespace Extensions.InputField
 {
     [CreateAssetMenu(fileName = "InputField/" + nameof(BoolValidator), menuName = nameof(BoolValidator))]
     public class BoolValidator : TMP_InputValidator

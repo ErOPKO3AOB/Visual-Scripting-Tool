@@ -16,12 +16,12 @@ namespace Session.Scheme.Windows
         {
             _blockConfigs = blockConfigs;
             _windowService = windowService;
-            _variableService = variableService;
+            VariableService = variableService;
         }
 
         private BlockConfigs _blockConfigs;
         private WindowService _windowService;
-        private VariableService _variableService;
+        public VariableService VariableService { get; private set; }
 
         [Header("UI")]
         [SerializeField] private Button _addNewVariableButton;
@@ -31,17 +31,18 @@ namespace Session.Scheme.Windows
         private List<VariableItemUI> _activeVariableItems = new List<VariableItemUI>();
 
         public UnityAction<SchemeVariableBase> OnVariableChoose;
+        public UnityAction<SchemeVariableBase> OnVariableDelete;
 
         private void Start()
         {
-            for (int i = 0; i < _variableService.Variables.Count; i++)
+            for (int i = 0; i < VariableService.Variables.Count; i++)
             {
-                SchemeVariableBase schemeVariable = _variableService.Variables[i];
+                SchemeVariableBase schemeVariable = VariableService.Variables[i];
 
                 VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_blockConfigs.WindowPrefabsUI[1].WindowName, _content.transform);
 
                 window.MasterList = this;
-                window.RebuildUI(GetTypeIntegerValue(schemeVariable.ValueType), schemeVariable.variableName, schemeVariable.GetValue());
+                window.RebuildUI(VariableService.GetTypeIntegerValue(schemeVariable.ValueType), schemeVariable.variableName, schemeVariable.GetValue());
 
                 _activeVariableItems.Add(window);
             }
@@ -64,27 +65,27 @@ namespace Session.Scheme.Windows
 
         public void AddVariable(string name, Type type, object value)
         {
-            int existingIndex = _variableService.CheckExistance(name);
+            int existingIndex = VariableService.CheckExistance(name);
 
             if (name != null && type != null)
             {
-                switch (GetTypeIntegerValue(type))
+                switch (VariableService.GetTypeIntegerValue(type))
                 {
                     case 0:
                         if (value != null) int.Parse(value.ToString());
-                        _variableService.BuildVariable<int>(name, value);
+                        VariableService.BuildVariable<int>(name, value);
                         break;
                     case 1:
                         if (value != null) float.Parse(value.ToString());
-                        _variableService.BuildVariable<float>(name, value);
+                        VariableService.BuildVariable<float>(name, value);
                         break;
                     case 2:
                         if (value != null) value.ToString();
-                        _variableService.BuildVariable<string>(name, value);
+                        VariableService.BuildVariable<string>(name, value);
                         break;
                     case 3:
                         if (value != null) bool.Parse(value.ToString());
-                        _variableService.BuildVariable<bool>(name, value);
+                        VariableService.BuildVariable<bool>(name, value);
                         break;
                 }
             }
@@ -99,13 +100,14 @@ namespace Session.Scheme.Windows
         {
             Destroy(variable.gameObject);
 
-            if (_variableService.Variables.Count >= _activeVariableItems.Count)
+            if (VariableService.Variables.Count >= _activeVariableItems.Count)
             {
                 for (int i = 0; i < _activeVariableItems.Count; i++)
                 {
-                    if (_variableService.Variables[i].variableName == variable.name)
+                    if (VariableService.Variables[i].variableName == variable.name)
                     {
-                        _variableService.RemoveVariable(name);
+                        OnVariableDelete?.Invoke(VariableService.Variables[i]);
+                        VariableService.RemoveVariable(name);
                         _activeVariableItems.RemoveAt(i);
                         break;
                     }
@@ -113,36 +115,15 @@ namespace Session.Scheme.Windows
             }
         }
 
-        private int GetTypeIntegerValue(Type type)
-        {
-            int typeValue = 0;
-
-            switch (type)
-            {
-                case Type intType when intType == typeof(int):
-                    typeValue = 0;
-                    break;
-                case Type floatType when floatType == typeof(float):
-                    typeValue = 1;
-                    break;
-                case Type stringType when stringType == typeof(string):
-                    typeValue = 2;
-                    break;
-                case Type boolType when boolType == typeof(bool):
-                    typeValue = 3;
-                    break;
-            }
-
-            return typeValue;
-        }
-
         public void ChooseVariable(string variableName)
         {
             for (int i = 0; i < _activeVariableItems.Count; i++)
             {
-                if (_variableService.Variables[i].variableName == variableName)
+                if (VariableService.Variables[i].variableName == variableName)
                 {
-                    OnVariableChoose?.Invoke(_variableService.Variables[i]);
+                    Debug.Log($"CHOOSING VARIABLE {VariableService.Variables[i].ValueType} {VariableService.Variables[i].variableName}");
+
+                    OnVariableChoose?.Invoke(VariableService.Variables[i]);
                     break;
                 }
             }

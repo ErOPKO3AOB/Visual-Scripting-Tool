@@ -75,5 +75,28 @@ namespace Session.Scheme.Variables
 
             return -1;
         }
+
+        public int GetTypeIntegerValue(Type type)
+        {
+            int typeValue = 0;
+
+            switch (type)
+            {
+                case Type intType when intType == typeof(int):
+                    typeValue = 0;
+                    break;
+                case Type floatType when floatType == typeof(float):
+                    typeValue = 1;
+                    break;
+                case Type stringType when stringType == typeof(string):
+                    typeValue = 2;
+                    break;
+                case Type boolType when boolType == typeof(bool):
+                    typeValue = 3;
+                    break;
+            }
+
+            return typeValue;
+        }
     }
 }

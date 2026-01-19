@@ -1,9 +1,8 @@
-using GlobalServices.InputField;
+using Extensions.InputField;
 using Session.Scheme.Variables;
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Session.Scheme.Windows
@@ -54,7 +53,10 @@ namespace Session.Scheme.Windows
             _typeDropdown.onValueChanged.AddListener((int value) => { InitializeValuePlaceHolder(value); OnEndEdit(); });
             _valueInputField.onEndEdit.AddListener((string value) => { _variableValue = value; OnEndEdit(); });
             _chooseButton.onClick.AddListener(() => { _masterList.ChooseVariable(_variableName); });
-            _deleteButton.onClick.AddListener(() => { _masterList.RemoveVariable(this); });
+            _deleteButton.onClick.AddListener(() =>
+            {
+                _masterList.RemoveVariable(this);
+            });
 
             InitializeValuePlaceHolder(_typeDropdown.value);
         }
@@ -73,6 +75,13 @@ namespace Session.Scheme.Windows
             _typeDropdown.value = typeValue;
             _nameInputField.text = name;
             _valueInputField.text = value?.ToString();
+        }
+
+        public void RebuildUI(SchemeVariableBase schemeVariable)
+        {
+            if (_masterList == null) Debug.Log("MASTER LIST IS NULL");
+            if (_masterList.VariableService == null) Debug.Log("MASTER LIST.VARIABLE SERVICE IS NULL");
+            RebuildUI(_masterList.VariableService.GetTypeIntegerValue(schemeVariable.ValueType), schemeVariable.variableName, null);
         }
 
         private void InitializeValuePlaceHolder(int value)

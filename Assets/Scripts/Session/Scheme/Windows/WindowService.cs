@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using VContainer.Unity;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 namespace Session.Scheme.Windows
 {
@@ -19,27 +20,32 @@ namespace Session.Scheme.Windows
 
         private List<BaseWindowUI> _activeWindows = new List<BaseWindowUI>();
 
+        public UnityAction<BaseWindowUI> OnOpenWindow;
+        public UnityAction<BaseWindowUI> OnCloseWindow;
+
         public BaseWindowUI OpenWindow(string windowName, Transform spawnParent = null)
         {
             //Debug.Log($"OPENED WINDOW {windowName}");
 
             BaseWindowUI window = _windowFactory.Invoke(windowName, spawnParent);
             _activeWindows.Add(window);
+            OnOpenWindow?.Invoke(window);
             return window;
         }
 
         public void CloseWindow(string windowName)
         {
-            GameObject window = null;
+            BaseWindowUI window = null;
 
             // Searching for last opened
             for (int i = _activeWindows.Count - 1; i >= 0; i--)
             {
                 if (_activeWindows[i].WindowName == windowName)
                 {
-                    window = _activeWindows[i].gameObject;
+                    window = _activeWindows[i];
+                    OnCloseWindow?.Invoke(window);
                     _activeWindows.RemoveAt(i);
-                    GameObject.Destroy(window);
+                    GameObject.Destroy(window.gameObject);
                     break;
                 }
             }
