@@ -1,4 +1,4 @@
-using GlobalServices.ProjectLifetime;
+using Session.Scheme.Block.Types;
 using Session.Scheme.Variables;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,65 +9,37 @@ namespace Session.Scheme.Windows
     public class InputWindowUI : BaseWindowUI
     {
         [Header("UI")]
-        [SerializeField] private Button _variableSpawnButton;
         [SerializeField] private Button _closeButton;
-        [SerializeField] private VariableItemUI _variableItem;
+        [SerializeField] private VariablePickerUI _variablePicker;
 
-        private VariableListWindowUI _variableListWindow;
+        private InputBlock _block;
 
         [Inject]
-        public void Construct(WindowService windowService, BlockConfigs blockConfigs)
+        public void Construct(WindowService windowService)
         {
             _windowService = windowService;
-            if (windowService == null) Debug.Log("WINDOW SERVICE IS NULL");
-            _blockConfigs = blockConfigs;
-            _windowService.OnCloseWindow += OnCloseWindow;
         }
 
         private WindowService _windowService;
-        private BlockConfigs _blockConfigs;
 
         private void Start()
         {
             _closeButton.onClick.AddListener(() => { _windowService.CloseWindow(WindowName); });
-
-            _variableSpawnButton.onClick.AddListener(() =>
-            {
-                _variableListWindow = (VariableListWindowUI)_windowService.OpenWindow(_blockConfigs.WindowPrefabsUI[0].WindowName);
-                _variableListWindow.OnVariableChoose += OnVariableChoose;
-                _variableListWindow.OnVariableChoose += OnVariableDelete;
-            });
+            _variablePicker.VariableList.OnVariableChoose += OnVariableChoose;
         }
 
-        private void OnCloseWindow(BaseWindowUI window)
+        private void OnVariableChoose(SchemeVariableBase variable)
         {
-            if (window.GetType() == typeof(VariableListWindowUI))
+            _block.SchemeVariables.Clear();
+            for (int i = 0; i < _variablePicker.VariableItems.Count; i++)
             {
-                VariableListWindowUI listWindow = (VariableListWindowUI)window;
-
-                listWindow.OnVariableChoose -= OnVariableChoose;
-                listWindow.OnVariableChoose -= OnVariableDelete;
+                _block.SchemeVariables.Add(_variablePicker.VariableItems[i].SchemeVariable);
             }
-        }
-
-        private void OnVariableChoose(SchemeVariableBase schemeVariable)
-        {
-            _variableItem.gameObject.SetActive(true);
-            _variableItem.RebuildUI(schemeVariable);
-        }
-
-        private void OnVariableDelete(SchemeVariableBase schemeVariable)
-        {
-            _variableItem.gameObject.SetActive(false);
-            _variableItem.RebuildUI(0, "", null);
         }
 
         private void OnDestroy()
         {
-            _variableSpawnButton.onClick.RemoveAllListeners();
             _closeButton.onClick.RemoveAllListeners();
-
-            _windowService.OnCloseWindow -= OnCloseWindow;
         }
     }
 }

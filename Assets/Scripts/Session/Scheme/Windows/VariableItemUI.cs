@@ -77,12 +77,12 @@ namespace Session.Scheme.Windows
             _valueInputField.text = value?.ToString();
         }
 
-        public void RebuildUI(SchemeVariableBase schemeVariable)
-        {
-            if (_masterList == null) Debug.Log("MASTER LIST IS NULL");
-            if (_masterList.VariableService == null) Debug.Log("MASTER LIST.VARIABLE SERVICE IS NULL");
-            RebuildUI(_masterList.VariableService.GetTypeIntegerValue(schemeVariable.ValueType), schemeVariable.variableName, null);
-        }
+        //public void RebuildUI(SchemeVariableBase schemeVariable)
+        //{
+        //    if (_masterList == null) Debug.Log("MASTER LIST IS NULL");
+        //    if (_masterList._variableService == null) Debug.Log("MASTER LIST.VARIABLE SERVICE IS NULL");
+        //    RebuildUI(_masterList.VariableService.GetTypeIntegerValue(schemeVariable.ValueType), schemeVariable.variableName, null);
+        //}
 
         private void InitializeValuePlaceHolder(int value)
         {

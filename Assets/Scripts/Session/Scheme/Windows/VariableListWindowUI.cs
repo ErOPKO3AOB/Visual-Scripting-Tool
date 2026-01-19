@@ -16,12 +16,12 @@ namespace Session.Scheme.Windows
         {
             _blockConfigs = blockConfigs;
             _windowService = windowService;
-            VariableService = variableService;
+            _variableService = variableService;
         }
 
         private BlockConfigs _blockConfigs;
         private WindowService _windowService;
-        public VariableService VariableService { get; private set; }
+        private VariableService _variableService;
 
         [Header("UI")]
         [SerializeField] private Button _addNewVariableButton;
@@ -35,14 +35,14 @@ namespace Session.Scheme.Windows
 
         private void Start()
         {
-            for (int i = 0; i < VariableService.Variables.Count; i++)
+            for (int i = 0; i < _variableService.Variables.Count; i++)
             {
-                SchemeVariableBase schemeVariable = VariableService.Variables[i];
+                SchemeVariableBase schemeVariable = _variableService.Variables[i];
 
                 VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_blockConfigs.WindowPrefabsUI[1].WindowName, _content.transform);
 
                 window.MasterList = this;
-                window.RebuildUI(VariableService.GetTypeIntegerValue(schemeVariable.ValueType), schemeVariable.variableName, schemeVariable.GetValue());
+                window.RebuildUI(_variableService.GetTypeIntegerValue(schemeVariable.ValueType), schemeVariable.variableName, schemeVariable.GetValue());
 
                 _activeVariableItems.Add(window);
             }
@@ -65,27 +65,27 @@ namespace Session.Scheme.Windows
 
         public void AddVariable(string name, Type type, object value)
         {
-            int existingIndex = VariableService.CheckExistance(name);
+            int existingIndex = _variableService.CheckExistance(name);
 
             if (name != null && type != null)
             {
-                switch (VariableService.GetTypeIntegerValue(type))
+                switch (_variableService.GetTypeIntegerValue(type))
                 {
                     case 0:
                         if (value != null) int.Parse(value.ToString());
-                        VariableService.BuildVariable<int>(name, value);
+                        _variableService.BuildVariable<int>(name, value);
                         break;
                     case 1:
                         if (value != null) float.Parse(value.ToString());
-                        VariableService.BuildVariable<float>(name, value);
+                        _variableService.BuildVariable<float>(name, value);
                         break;
                     case 2:
                         if (value != null) value.ToString();
-                        VariableService.BuildVariable<string>(name, value);
+                        _variableService.BuildVariable<string>(name, value);
                         break;
                     case 3:
                         if (value != null) bool.Parse(value.ToString());
-                        VariableService.BuildVariable<bool>(name, value);
+                        _variableService.BuildVariable<bool>(name, value);
                         break;
                 }
             }
@@ -100,14 +100,14 @@ namespace Session.Scheme.Windows
         {
             Destroy(variable.gameObject);
 
-            if (VariableService.Variables.Count >= _activeVariableItems.Count)
+            if (_variableService.Variables.Count >= _activeVariableItems.Count)
             {
                 for (int i = 0; i < _activeVariableItems.Count; i++)
                 {
-                    if (VariableService.Variables[i].variableName == variable.name)
+                    if (_variableService.Variables[i].variableName == variable.name)
                     {
-                        OnVariableDelete?.Invoke(VariableService.Variables[i]);
-                        VariableService.RemoveVariable(name);
+                        OnVariableDelete?.Invoke(_variableService.Variables[i]);
+                        _variableService.RemoveVariable(name);
                         _activeVariableItems.RemoveAt(i);
                         break;
                     }
@@ -117,13 +117,13 @@ namespace Session.Scheme.Windows
 
         public void ChooseVariable(string variableName)
         {
+            Debug.Log($"CHOOSING VARIABLE {variableName}");
             for (int i = 0; i < _activeVariableItems.Count; i++)
             {
-                if (VariableService.Variables[i].variableName == variableName)
+                if (_variableService.Variables[i].variableName == variableName)
                 {
-                    Debug.Log($"CHOOSING VARIABLE {VariableService.Variables[i].ValueType} {VariableService.Variables[i].variableName}");
 
-                    OnVariableChoose?.Invoke(VariableService.Variables[i]);
+                    OnVariableChoose?.Invoke(_variableService.Variables[i]);
                     break;
                 }
             }
