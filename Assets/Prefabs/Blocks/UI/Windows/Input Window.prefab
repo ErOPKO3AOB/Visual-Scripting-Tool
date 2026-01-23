@@ -803,9 +803,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a621598efc5b0a4d98f730a1e11f72b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _windowName: INPUT_WINDOW
+  _windowName: INPUT
   _closeButton: {fileID: 4920952843414628680}
-  _variableItem: {fileID: 921730477965453695, guid: 59d9a92bab69eab4c9ec67941b3fd9a5, type: 3}
+  _variablePicker: {fileID: 0}
 --- !u!1001 &1125765904257948553
 PrefabInstance:
   m_ObjectHideFlags: 0
