@@ -30,9 +30,6 @@ namespace User
         private Color _objectStartColor;
         private Vector3 _objectStartScale;
 
-        // Настройки
-        private const float DRAG_SPEED = 10f;
-
         public UnityAction OnDrag;
         public UnityAction OnStopDrag;
 
@@ -108,12 +105,8 @@ namespace User
             Vector2 worldPoint = _camera.ScreenToWorldPoint(_lastPointerPosition);
             Vector3 targetPosition = new Vector3(worldPoint.x, worldPoint.y, _currentDraggedObject.transform.position.z) + _dragOffset;
 
-            // Плавное перемещение
-            _currentDraggedObject.transform.position = Vector3.Lerp(
-                _currentDraggedObject.transform.position,
-                targetPosition,
-                Time.deltaTime * DRAG_SPEED
-            );
+            // Мгновенное перемещение (без плавности)
+            _currentDraggedObject.transform.position = targetPosition;
         }
 
         private void StopDrag()

@@ -1,4 +1,5 @@
 using GlobalServices.ProjectLifetime;
+using Session.Scheme.Block.Types;
 using Session.Scheme.Variables;
 using UnityEngine;
 using VContainer;
@@ -25,10 +26,10 @@ namespace Session.Scheme.Windows
             messageItem.BuildOutputMessage(message);
         }
 
-        public void SpawnInputMessage(ref SchemeVariableBase variable)
+        public void GetInput(string variableName, InputBlock inputBlock)
         {
             MessageItem messageItem = BuildMessageItem();
-            messageItem.BuildInputMessage();
+            messageItem.BuildInputMessage(variableName, inputBlock);
         }
 
         private MessageItem BuildMessageItem()

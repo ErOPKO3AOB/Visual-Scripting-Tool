@@ -29,6 +29,10 @@ namespace User
         private Vector3 _velocity = Vector3.zero;
         private float _zoomVelocity;
 
+        // ƒл€ фиксации начальной точки при перетаскивании
+        private Vector3 _dragStartCameraPosition;
+        private Vector2 _dragStartPointerPosition;
+
         // ƒл€ реализации IInterruptable
         private bool _isInterrupted = false;
         private Vector3 _positionBeforeInterrupt;
@@ -43,36 +47,50 @@ namespace User
             _inputService.OnClick += OnClick;
             _inputService.OnDragDelta += HandleDragDelta;
             _inputService.OnZoom += HandleMouseZoom;
+            _inputService.OnPointerPosition += OnPointerPosition;
         }
 
         public void Tick()
         {
             if (_isInterrupted) return;
 
-            if (_canDragCamera)
-            {
-                // ѕлавное перемещение
-                _facade.transform.position = Vector3.SmoothDamp(
-                    _facade.transform.position,
-                    _targetPosition,
-                    ref _velocity,
-                    0.1f
-                );
-            }
+            //  онтролируема€ плавность перемещени€ камеры
+            _facade.transform.position = Vector3.SmoothDamp(
+                _facade.transform.position,
+                _targetPosition,
+                ref _velocity,
+                _settings.MoveSmoothTime
+            );
 
             // ѕлавный зум
             _facade.Camera.orthographicSize = Mathf.SmoothDamp(
                 _facade.Camera.orthographicSize,
                 _targetZoom,
                 ref _zoomVelocity,
-                0.1f
+                _settings.ZoomSmoothTime
             );
         }
 
         private void OnClick(bool click)
         {
             if (_isInterrupted) return;
+
             _canDragCamera = click;
+
+            if (click)
+            {
+                // «апоминаем начальную позицию камеры и курсора при начале перетаскивани€
+                _dragStartCameraPosition = _facade.transform.position;
+                _dragStartPointerPosition = _lastPointerPosition;
+                _velocity = Vector3.zero; // —брасываем скорость при начале нового перетаскивани€
+            }
+        }
+
+        private Vector2 _lastPointerPosition;
+
+        private void OnPointerPosition(Vector2 pointerPosition)
+        {
+            _lastPointerPosition = pointerPosition;
         }
 
         private void HandleDragDelta(Vector2 delta)
@@ -81,11 +99,25 @@ namespace User
 
             if (!_canDragCamera || delta == Vector2.zero) return;
 
-            float currentZoom = _facade.Camera.orthographicSize;
-            float zoomFactor = Mathf.Clamp(currentZoom / 15f, 0.3f, 3f);
+            // ѕреобразуем начальную и текущую позиции курсора в мировые координаты
+            Vector3 startWorldPos = _facade.Camera.ScreenToWorldPoint(new Vector3(
+                _dragStartPointerPosition.x,
+                _dragStartPointerPosition.y,
+                -_facade.Camera.transform.position.z
+            ));
 
-            Vector3 move = new Vector3(-delta.x, -delta.y, 0) * _settings.MoveSensitivity * 0.01f * zoomFactor;
-            _targetPosition += move;
+            Vector3 currentWorldPos = _facade.Camera.ScreenToWorldPoint(new Vector3(
+                _lastPointerPosition.x,
+                _lastPointerPosition.y,
+                -_facade.Camera.transform.position.z
+            ));
+
+            // ¬ычисл€ем смещение в мировых координатах
+            Vector3 worldOffset = startWorldPos - currentWorldPos;
+
+            // Ќова€ целева€ позици€ = начальна€ позици€ камеры + смещение
+            // Ёто гарантирует, что точка, за которую ухватились, останетс€ под курсором
+            _targetPosition = _dragStartCameraPosition + worldOffset;
         }
 
         private void HandleMouseZoom(Vector2 zoomInput)
@@ -141,6 +173,7 @@ namespace User
             _inputService.OnDragDelta -= HandleDragDelta;
             _inputService.OnClick -= OnClick;
             _inputService.OnZoom -= HandleMouseZoom;
+            _inputService.OnPointerPosition -= OnPointerPosition;
 
             _draggableObjectController.OnDrag -= Interrupt;
             _draggableObjectController.OnStopDrag -= StopInterruption;

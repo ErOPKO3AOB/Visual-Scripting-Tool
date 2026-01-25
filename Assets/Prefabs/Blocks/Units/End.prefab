@@ -280,6 +280,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f99dd4c4f2fbee48915856db143a71d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _blockName: END
+  _openSettingsButton: {fileID: 0}
+  _settingsWindow: {fileID: 0}
 --- !u!61 &5538327831820836078
 BoxCollider2D:
   m_ObjectHideFlags: 0

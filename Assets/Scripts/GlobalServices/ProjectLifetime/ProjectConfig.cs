@@ -84,9 +84,15 @@ namespace GlobalServices.ProjectLifetime
         [SerializeField] private float _moveSensitivity = 1f;
         public float MoveSensitivity => _moveSensitivity;
 
+        [SerializeField] private float _moveSmoothTime = 0.1f;
+        public float MoveSmoothTime => _moveSmoothTime;
+
         [Header("Zoom")]
         [SerializeField] private float _zoomSensitivity = 1f;
         public float ZoomSensitivity => _zoomSensitivity;
+
+        [SerializeField] private float _zoomSmoothTime = 0.1f;
+        public float ZoomSmoothTime => _zoomSmoothTime;
     }
 
     [Serializable]

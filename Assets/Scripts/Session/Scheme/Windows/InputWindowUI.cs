@@ -12,7 +12,7 @@ namespace Session.Scheme.Windows
         [SerializeField] private Button _closeButton;
         [SerializeField] private VariablePickerUI _variablePicker;
 
-        private InputBlock _block;
+        public InputBlock Block { get; set; }
 
         [Inject]
         public void Construct(WindowService windowService)
@@ -25,16 +25,13 @@ namespace Session.Scheme.Windows
         private void Start()
         {
             _closeButton.onClick.AddListener(() => { _windowService.CloseWindow(WindowName); });
+            _variablePicker.PickType = VariablePickerUI.VariablePickType.Single;
             _variablePicker.VariableList.OnVariableChoose += OnVariableChoose;
         }
 
         private void OnVariableChoose(SchemeVariableBase variable)
         {
-            _block.SchemeVariables.Clear();
-            for (int i = 0; i < _variablePicker.VariableItems.Count; i++)
-            {
-                _block.SchemeVariables.Add(_variablePicker.VariableItems[i].SchemeVariable);
-            }
+            Block.VariableName = variable.variableName;
         }
 
         private void OnDestroy()
