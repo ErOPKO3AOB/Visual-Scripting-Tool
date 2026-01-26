@@ -38,6 +38,8 @@ namespace User
         private Vector3 _positionBeforeInterrupt;
         private float _zoomBeforeInterrupt;
         private bool _wasDraggingBeforeInterrupt;
+        
+        private Vector2 _lastPointerPosition;
 
         public void Initialize()
         {
@@ -85,8 +87,6 @@ namespace User
                 _velocity = Vector3.zero; // Сбрасываем скорость при начале нового перетаскивания
             }
         }
-
-        private Vector2 _lastPointerPosition;
 
         private void OnPointerPosition(Vector2 pointerPosition)
         {
