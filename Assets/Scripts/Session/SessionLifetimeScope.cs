@@ -1,7 +1,5 @@
 using GlobalServices.ProjectLifetime;
-using Session.Execution;
 using Session.Scheme;
-using Session.Scheme.Operators;
 using Session.Scheme.Variables;
 using Session.Scheme.Windows;
 using UnityEngine;
@@ -58,10 +56,6 @@ namespace Session
 
         private void ConfigureSchemeEssentials(IContainerBuilder builder)
         {
-            // Service for execution
-            builder.Register<ExecutionService>(Lifetime.Scoped)
-                .AsImplementedInterfaces();
-
             // Service for scheme building
             builder.Register<SchemeBuilderService>(Lifetime.Scoped)
                 .AsImplementedInterfaces()
@@ -69,10 +63,6 @@ namespace Session
 
             // Service for variable building
             builder.Register<VariableService>(Lifetime.Scoped)
-                .AsSelf();
-
-            // Service for operating variables
-            builder.Register<VariableOperatorService>(Lifetime.Scoped)
                 .AsSelf();
 
             // Service for opening windows

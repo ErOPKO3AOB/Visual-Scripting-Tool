@@ -122,7 +122,6 @@ namespace Session.Scheme.Windows
             {
                 if (_variableService.Variables[i].variableName == variableName)
                 {
-
                     OnVariableChoose?.Invoke(_variableService.Variables[i]);
                     break;
                 }

@@ -15,8 +15,8 @@ namespace Session.Scheme.Block
         }
 
         [SerializeField] private string _blockName;
-        [SerializeField] private Button _openSettingsButton;
-        [SerializeField] private BaseWindowUI _settingsWindow;
+//        [SerializeField] private Button _openSettingsButton;
+        [SerializeField] private BaseWindowUI _settingsWindowPrefab;
 
         public string BlockName { get { return _blockName; } }
 
@@ -25,21 +25,21 @@ namespace Session.Scheme.Block
 
         private void Start()
         {
-            if (_openSettingsButton != null && _settingsWindow != null)
-            {
-                _openSettingsButton.onClick.AddListener(() =>
-                {
-                    WindowService.OpenWindow(_settingsWindow.WindowName);
-                });
-            }
+            //if (_openSettingsButton != null && _settingsWindow != null)
+            //{
+            //    _openSettingsButton.onClick.AddListener(() =>
+            //    {
+            //        WindowService.OpenWindow(_settingsWindow.WindowName);
+            //    });
+            //}
         }
 
         private void OnDestroy()
         {
-            if (_openSettingsButton != null && _settingsWindow != null)
-            {
-                _openSettingsButton.onClick.RemoveAllListeners();
-            }
+            //if (_openSettingsButton != null && _settingsWindow != null)
+            //{
+            //    _openSettingsButton.onClick.RemoveAllListeners();
+            //}
         }
     }
 }

@@ -24,15 +24,21 @@ MonoBehaviour:
     _draggingSizeAffect: 1.1
     _draggableObjectTag: Draggable
     _windowPrefabsUI:
-    - {fileID: 6888468730971742389, guid: 330475c9cd810504fa959badd474dce2, type: 3}
-    - {fileID: 921730477965453695, guid: 59d9a92bab69eab4c9ec67941b3fd9a5, type: 3}
-    - {fileID: 1241162653714162332, guid: a74121947062de048861836482b90279, type: 3}
-    - {fileID: 8870349133641350771, guid: 8330f748990d7054fa434e1c8b8cf73f, type: 3}
     - {fileID: 2354169089373327394, guid: 6232d2d5c49f10347a994aceee791cef, type: 3}
+    - {fileID: 1241162653714162332, guid: a74121947062de048861836482b90279, type: 3}
+    - {fileID: 5748957065808567917, guid: fbceafbe318f05749bec70c039824f70, type: 3}
+    - {fileID: 5196163020083046144, guid: eeef526a83f5d664e9e9d539d4ca84f5, type: 3}
+    - {fileID: 6888468730971742389, guid: 330475c9cd810504fa959badd474dce2, type: 3}
+    - {fileID: 5616262377345924842, guid: 91c86913363a7484b8e5a43b68f45d03, type: 3}
     - {fileID: 1809556050422955096, guid: f4ace67ef892b684c86bc67c398efd38, type: 3}
+    - {fileID: 4916509032277850859, guid: b0770e07a3c97d94092f15fc1f83c1fc, type: 3}
+    - {fileID: 921730477965453695, guid: 59d9a92bab69eab4c9ec67941b3fd9a5, type: 3}
+    - {fileID: 8870349133641350771, guid: 8330f748990d7054fa434e1c8b8cf73f, type: 3}
   _cameraSettings:
     _camPrefab: {fileID: 5530218843876562416, guid: 1d3c82136d7828346976c8f7c37f89fa, type: 3}
     _moveSensitivity: 6
+    _moveSmoothTime: 0.1
     _zoomSensitivity: 2
+    _zoomSmoothTime: 0.1
   _inputSettings:
     _playerInputPrefab: {fileID: 7834929220904381916, guid: f7b29e977b86a8e47926c42ffd5f0964, type: 3}

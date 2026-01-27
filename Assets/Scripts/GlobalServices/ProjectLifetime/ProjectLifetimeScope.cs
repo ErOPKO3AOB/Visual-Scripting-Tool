@@ -1,4 +1,3 @@
-using GlobalServices.DataSave;
 using GlobalServices.SceneManagement;
 using UnityEngine;
 using VContainer;
@@ -18,9 +17,6 @@ namespace GlobalServices.ProjectLifetime
 
             // Scene management service
             ConfigureSceneManagement(builder);
-
-            // Data Save service
-            ConfigureDataSaveService(builder);
         }
 
         #region Implementations
@@ -40,11 +36,6 @@ namespace GlobalServices.ProjectLifetime
         private void ConfigureSceneManagement(IContainerBuilder builder)
         {
             builder.Register<SceneLoaderService>(Lifetime.Singleton).AsSelf();
-        }
-
-        private void ConfigureDataSaveService(IContainerBuilder builder)
-        {
-            builder.Register<DataSaveService>(Lifetime.Singleton).AsSelf();
         }
         #endregion
     }

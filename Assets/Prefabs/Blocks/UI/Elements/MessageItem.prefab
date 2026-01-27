@@ -855,6 +855,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96e86e1948815344ea0c9467a053db56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _windowName: MESSAGE
+  _windowName: MESSAGE_ITEM
   _outputText: {fileID: 5828448750152543822}
   _inputField: {fileID: 4857509751300815347}

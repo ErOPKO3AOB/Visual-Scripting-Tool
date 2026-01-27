@@ -1,6 +1,7 @@
 using Session.Scheme.Windows;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using VContainer;
 
@@ -27,6 +28,9 @@ namespace Session.Scheme.Variables
         public VariableListWindowUI VariableList { get; private set; }
 
         public List<ChoosedVariableItem> VariableItems { get; private set; } = new List<ChoosedVariableItem>(1);
+
+        public UnityAction<SchemeVariableBase> OnVariableChoosed;
+        public UnityAction<SchemeVariableBase> OnVariableDeleted;
 
         [Inject]
         public void Construct(WindowService windowService)
@@ -58,10 +62,14 @@ namespace Session.Scheme.Variables
             VariableItems.Add(variableItem);
             variableItem.Initialize(this, variable);
             _addNewButton.transform.SetParent(_content.transform);
+
+            OnVariableChoosed?.Invoke(variable);
         }
 
         public void OnVariableDelete(ChoosedVariableItem variableItem)
         {
+            OnVariableDeleted?.Invoke(variableItem.SchemeVariable);
+            
             VariableItems.Remove(variableItem);
             Destroy(variableItem.gameObject);
         }
