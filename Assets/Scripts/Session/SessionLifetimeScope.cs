@@ -1,5 +1,6 @@
 using GlobalServices.ProjectLifetime;
 using Session.Scheme;
+using Session.Scheme.Block;
 using Session.Scheme.Variables;
 using Session.Scheme.Windows;
 using UnityEngine;
@@ -37,7 +38,7 @@ namespace Session
                 .AsSelf();
 
             // Service for object dragging
-            builder.RegisterEntryPoint<DraggableObjectController>(Lifetime.Scoped).AsSelf();
+            builder.RegisterEntryPoint<WorldUIControllerService>(Lifetime.Scoped).AsSelf();
         }
 
         private void ConfigureCameraSystem(IContainerBuilder builder)
@@ -60,6 +61,27 @@ namespace Session
             builder.Register<SchemeBuilderService>(Lifetime.Scoped)
                 .AsImplementedInterfaces()
                 .AsSelf();
+
+            // Factory for spawning blocks
+            builder.RegisterFactory<string, Transform, SchemeBlockFacade>((IObjectResolver resolver) =>
+            {
+                return (string blockName, Transform spawnPosition) =>
+                {
+                    GameObject block = null;
+
+                    for (int i = 0; i < _projectConfig.BlockConfigs.BlockFacades.Length; i++)
+                    {
+                        if (blockName == _projectConfig.BlockConfigs.BlockFacades[i].BlockName)
+                        {
+                            Vector3 spawnPos = spawnPosition ? spawnPosition.position : Vector3.zero;
+                            block = resolver.Instantiate(_projectConfig.BlockConfigs.BlockFacades[i].gameObject, spawnPos, Quaternion.identity);
+                            break;
+                        }
+                    }
+
+                    return block.GetComponent<SchemeBlockFacade>();
+                };
+            }, Lifetime.Scoped);
 
             // Service for variable building
             builder.Register<VariableService>(Lifetime.Scoped)

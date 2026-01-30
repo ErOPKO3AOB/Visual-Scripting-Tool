@@ -25,7 +25,8 @@ namespace GlobalServices.ProjectLifetime
             // Регистрируем весь конфиг проекта
             builder.RegisterInstance(_projectConfig);
 
-            // Также регистрируем отдельно CameraSettings для удобства
+            builder.RegisterInstance(_projectConfig.MainScenes);
+
             builder.RegisterInstance(_projectConfig.CameraSettings);
 
             builder.RegisterInstance(_projectConfig.InputSettings);

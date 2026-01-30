@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace Session.Scheme.Windows
 {
-    public class WindowService : IInitializable
+    public class WindowService
     {
         public WindowService(Func<string, Transform, BaseWindowUI> windowFactory, BlockConfigs blockConfigs)
         {
@@ -25,8 +25,6 @@ namespace Session.Scheme.Windows
 
         public BaseWindowUI OpenWindow(string windowName, Transform spawnParent = null)
         {
-            //Debug.Log($"OPENED WINDOW {windowName}");
-
             BaseWindowUI window = _windowFactory.Invoke(windowName, spawnParent);
             _activeWindows.Add(window);
             OnOpenWindow?.Invoke(window);
@@ -50,11 +48,6 @@ namespace Session.Scheme.Windows
                 }
             }
 
-        }
-
-        public void Initialize()
-        {
-            OpenWindow(_blockConfigs.WindowPrefabsUI[2].WindowName); 
         }
     }
 }

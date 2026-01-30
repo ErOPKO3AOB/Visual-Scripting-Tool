@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7782900946518867674}
   - component: {fileID: 3730057059034472258}
   - component: {fileID: -9185724729736328592}
+  - component: {fileID: 927488780316880342}
   m_Layer: 0
   m_Name: Condition
   m_TagString: Draggable
@@ -32,10 +33,10 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1257436819240388476}
+  - {fileID: 562029593607183133}
+  - {fileID: 5988036590976612201}
   - {fileID: 6775490220516499075}
   - {fileID: 162852419193541348}
-  - {fileID: 5988036590976612201}
-  - {fileID: 562029593607183133}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3730057059034472258
@@ -139,6 +140,25 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 2, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &927488780316880342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1378101234671854058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f99dd4c4f2fbee48915856db143a71d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _blockName: CONDITION_BLOCK
+  _settingsWindowPrefab: {fileID: 0}
+  _settingsPoint: {fileID: 562029593607183133}
+  _inputPoint: {fileID: 5988036590976612201}
+  _outputPoints:
+  - {fileID: 6775490220516499075}
+  - {fileID: 162852419193541348}
 --- !u!1 &1482900419884930677
 GameObject:
   m_ObjectHideFlags: 0

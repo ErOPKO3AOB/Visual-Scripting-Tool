@@ -33,8 +33,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4119021697967983385}
-  - {fileID: 2391136037043780471}
   - {fileID: 5151929515470821742}
+  - {fileID: 2391136037043780471}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3231126769633888491
@@ -150,8 +150,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f99dd4c4f2fbee48915856db143a71d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _blockName: Method
-  _settingsWindowPrefab: {fileID: 0}
+  _blockName: METHOD_BLOCK
+  _settingsWindowPrefab: {fileID: 5748957065808567917, guid: fbceafbe318f05749bec70c039824f70, type: 3}
+  _settingsPoint: {fileID: 4119021697967983385}
+  _inputPoint: {fileID: 5151929515470821742}
+  _outputPoints:
+  - {fileID: 2391136037043780471}
 --- !u!1001 &3185135206897795986
 PrefabInstance:
   m_ObjectHideFlags: 0

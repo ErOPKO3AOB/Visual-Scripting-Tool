@@ -1,4 +1,5 @@
 using Session.Scheme.Block;
+using Session.Scheme.Block.Button;
 using Session.Scheme.Windows;
 using System;
 using System.IO;
@@ -32,8 +33,8 @@ namespace GlobalServices.ProjectLifetime
     public class MainScenesConfig
     {
 #if UNITY_EDITOR
-        [SerializeField] private SceneAsset _menuScene;
-        public string MenuScene { get { return _menuScene.name; } }
+        [SerializeField] private SceneAsset _workspaceScene;
+        public string WorkspaceScene { get { return _workspaceScene.name; } }
 #endif
     }
 
@@ -56,9 +57,10 @@ namespace GlobalServices.ProjectLifetime
     public class BlockConfigs
     {
         [Header("Block Units")]
-        [SerializeField] private SchemeBlockFacade _startBlock;
-        public SchemeBlockFacade StartBlock { get { return _startBlock; } }
+        [SerializeField] private SchemeBlockFacade[] _blockFacades;
+        public SchemeBlockFacade[] BlockFacades { get { return BlockFacades; } }
 
+        [Header("Drag")]
         [SerializeField] private Color _draggingColorAffect;
         public Color DraggingColorAffect { get { return _draggingColorAffect; } }
 
@@ -67,6 +69,17 @@ namespace GlobalServices.ProjectLifetime
 
         [SerializeField] private string _draggableObjectTag;
         public string DraggableObjectTag { get { return _draggableObjectTag; } }
+
+        [Header("Block Points")]
+        [SerializeField] private string _clickableObjectTag;
+        public string ClickableObjectTag { get { return _clickableObjectTag; } }
+
+        [SerializeField] private BlockButton _settingsButtonPrefab;
+        public BlockButton SettingsButtonPrefab { get { return _settingsButtonPrefab; } }
+        //[SerializeField] private BlockButton _inputButtonPrefab;
+        //public BlockButton InputButtonPrefab { get { return _inputButtonPrefab; } }
+        //[SerializeField] private BlockButton _outputButtonPrefab;
+        //public BlockButton OutputButtonPrefab { get { return _outputButtonPrefab; } }
 
         [Header("Block windows")]
         [SerializeField] private BaseWindowUI[] _windowPrefabsUI;

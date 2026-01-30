@@ -16,7 +16,7 @@ namespace GlobalServices.ProjectLifetime
 
         public void PostStart()
         {
-            _sceneLoader.SetScene(_mainScenes.MenuScene);
+            _sceneLoader.SetScene(_mainScenes.WorkspaceScene);
             _sceneLoader.LoadScene();
         }
     }

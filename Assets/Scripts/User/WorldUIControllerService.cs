@@ -1,4 +1,5 @@
 using GlobalServices.ProjectLifetime;
+using Session.Scheme.Block.Button;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ using VContainer.Unity;
 
 namespace User
 {
-    public class DraggableObjectController : IInitializable, ITickable, IDisposable
+    public class WorldUIControllerService : IInitializable, ITickable, IDisposable
     {
-        public DraggableObjectController(InputService inputService, CameraControllerFacade cameraControllerFacade, BlockConfigs blockConfigs)
+        public WorldUIControllerService(InputService inputService, CameraControllerFacade cameraControllerFacade, BlockConfigs blockConfigs)
         {
             _inputService = inputService;
             _camera = cameraControllerFacade.Camera;
@@ -52,8 +53,9 @@ namespace User
         {
             if (isClicked)
             {
-                TryStartDrag();
+                TryStartIntercation();
             }
+
             else
             {
                 StopDrag();
@@ -65,35 +67,44 @@ namespace User
             _lastPointerPosition = pointerPosition;
         }
 
-        private void TryStartDrag()
+        private void TryStartIntercation()
         {
             // Проверяем Raycast для 2D объектов
             Vector2 worldPoint = _camera.ScreenToWorldPoint(_lastPointerPosition);
             RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
 
-            if (hit.collider != null && hit.collider.gameObject.CompareTag(_blockConfigs.DraggableObjectTag))
+            if (hit.collider != null)
             {
-                _currentDraggedObject = hit.collider.gameObject;
-                _currentSpriteRenderer = _currentDraggedObject.GetComponent<SpriteRenderer>();
-                _objectStartColor = _currentSpriteRenderer.color;
-                _objectStartScale = _currentDraggedObject.transform.localScale;
-
-                if (_currentDraggedObject != null)
+                if (hit.collider.gameObject.CompareTag(_blockConfigs.DraggableObjectTag))
                 {
-                    // Начинаем перетаскивание
-                    if (_currentSpriteRenderer != null)
+                    _currentDraggedObject = hit.collider.gameObject;
+                    _currentSpriteRenderer = _currentDraggedObject.GetComponent<SpriteRenderer>();
+                    _objectStartColor = _currentSpriteRenderer.color;
+                    _objectStartScale = _currentDraggedObject.transform.localScale;
+
+                    if (_currentDraggedObject != null)
                     {
-                        _currentSpriteRenderer.color = _blockConfigs.DraggingColorAffect;
+                        // Начинаем перетаскивание
+                        if (_currentSpriteRenderer != null)
+                        {
+                            _currentSpriteRenderer.color = _blockConfigs.DraggingColorAffect;
+                        }
+
+                        // Легкое увеличение при захвате
+                        _currentDraggedObject.transform.localScale = _objectStartScale * _blockConfigs.DraggingSizeAffect;
+
+                        // Рассчитываем смещение
+                        Vector3 hitPoint = hit.point;
+                        _dragOffset = _currentDraggedObject.transform.position - new Vector3(hitPoint.x, hitPoint.y, _currentDraggedObject.transform.position.z);
+
+                        OnDrag?.Invoke();
                     }
+                }
 
-                    // Легкое увеличение при захвате
-                    _currentDraggedObject.transform.localScale = _objectStartScale * _blockConfigs.DraggingSizeAffect;
-
-                    // Рассчитываем смещение
-                    Vector3 hitPoint = hit.point;
-                    _dragOffset = _currentDraggedObject.transform.position - new Vector3(hitPoint.x, hitPoint.y, _currentDraggedObject.transform.position.z);
-
-                    OnDrag?.Invoke();
+                else if (hit.collider.gameObject.CompareTag(_blockConfigs.ClickableObjectTag))
+                {
+                    BlockButton blockButton = hit.collider.gameObject.GetComponent<BlockButton>();
+                    blockButton.Use();
                 }
             }
         }

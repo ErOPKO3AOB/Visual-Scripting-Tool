@@ -103,8 +103,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f99dd4c4f2fbee48915856db143a71d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _blockName: START
+  _blockName: START_BLOCK
   _settingsWindowPrefab: {fileID: 0}
+  _settingsPoint: {fileID: 0}
+  _inputPoint: {fileID: 0}
+  _outputPoints:
+  - {fileID: 5708619929944720964}
 --- !u!61 &-4213672460697208833
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -141,9 +145,9 @@ BoxCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
-    border: {x: 1.6666667, y: 1.6666667, z: 1.6666667, w: 1.6666667}
+    border: {x: 0.8333334, y: 0.8333334, z: 0.8333334, w: 0.8333334}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.6000001, y: 3.6000001}
+    oldSize: {x: 1.8000001, y: 1.8000001}
     newSize: {x: 1, y: 2}
     adaptiveTilingThreshold: 0.5
     drawMode: 1

@@ -13,16 +13,19 @@ MonoBehaviour:
   m_Name: ProjectConfig
   m_EditorClassIdentifier: 
   mainScenes:
-    _menuScene: {fileID: 102900000, guid: ea7aaada59b1f2548ad3468af73501d5, type: 3}
+    _workspaceScene: {fileID: 102900000, guid: 6e0f17fb4f107f242a326edb28e44ec8, type: 3}
   _dataConfigs:
     _settingsSaveFolderName: SettingsData
     _settingsFileName: Data
     _sessionsSaveFolderName: SessionsData
   _blockConfigs:
-    _startBlock: {fileID: 6773180056389733881, guid: 08e1eb50e3dbc2143baf058fc439233a, type: 3}
+    _blockFacades:
+    - {fileID: 7494691911212051630, guid: 32bdcfb266f7ca84ea5e88240e473a6d, type: 3}
     _draggingColorAffect: {r: 1, g: 0.43259233, b: 0, a: 1}
     _draggingSizeAffect: 1.1
     _draggableObjectTag: Draggable
+    _clickableObjectTag: Clickable
+    _settingsButtonPrefab: {fileID: 7208814946237509735, guid: e387ad09d95cbf746bf7609d946dd8b7, type: 3}
     _windowPrefabsUI:
     - {fileID: 2354169089373327394, guid: 6232d2d5c49f10347a994aceee791cef, type: 3}
     - {fileID: 1241162653714162332, guid: a74121947062de048861836482b90279, type: 3}
