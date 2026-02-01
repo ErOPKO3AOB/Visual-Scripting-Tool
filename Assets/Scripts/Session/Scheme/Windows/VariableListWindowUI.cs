@@ -9,7 +9,7 @@ using VContainer;
 
 namespace Session.Scheme.Windows
 {
-    public class VariableListWindowUI : BaseWindowUI
+    public class VariableListWindowUI : BaseWindow
     {
         [Inject]
         public void Construct(BlockConfigs blockConfigs, WindowService windowService, VariableService variableService)

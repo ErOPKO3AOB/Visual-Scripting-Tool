@@ -29,7 +29,7 @@ namespace Session.Scheme.Block.Types
 
         private bool _used = false;
 
-        private void OnOpenWindow(BaseWindowUI window)
+        private void OnOpenWindow(BaseWindow window)
         {
             if (window.GetType() != typeof(InputWindowUI)) return;
 

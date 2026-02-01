@@ -4,28 +4,30 @@ using UnityEngine;
 using VContainer.Unity;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using Session.Scheme.Block;
 
 namespace Session.Scheme.Windows
 {
     public class WindowService
     {
-        public WindowService(Func<string, Transform, BaseWindowUI> windowFactory, BlockConfigs blockConfigs)
+        public WindowService(Func<string, Transform, BaseWindow> windowFactory, BlockConfigs blockConfigs)
         {
             _windowFactory = windowFactory;
             _blockConfigs = blockConfigs;
         }
 
-        private readonly Func<string, Transform, BaseWindowUI> _windowFactory;
+        private readonly Func<string, Transform, BaseWindow> _windowFactory;
         private readonly BlockConfigs _blockConfigs;
 
-        private List<BaseWindowUI> _activeWindows = new List<BaseWindowUI>();
+        private List<BaseWindow> _activeWindows = new List<BaseWindow>();
 
-        public UnityAction<BaseWindowUI> OnOpenWindow;
-        public UnityAction<BaseWindowUI> OnCloseWindow;
+        public UnityAction<BaseWindow> OnOpenWindow;
+        public UnityAction<BaseWindow> OnCloseWindow;
 
-        public BaseWindowUI OpenWindow(string windowName, Transform spawnParent = null)
+        public BaseWindow OpenWindow(string windowName, Transform spawnParent = null, IActionProvider sender = null)
         {
-            BaseWindowUI window = _windowFactory.Invoke(windowName, spawnParent);
+            BaseWindow window = _windowFactory.Invoke(windowName, spawnParent);
+            window.SetSender(sender);
             _activeWindows.Add(window);
             OnOpenWindow?.Invoke(window);
             return window;
@@ -33,7 +35,7 @@ namespace Session.Scheme.Windows
 
         public void CloseWindow(string windowName)
         {
-            BaseWindowUI window = null;
+            BaseWindow window = null;
 
             // Searching for last opened
             for (int i = _activeWindows.Count - 1; i >= 0; i--)

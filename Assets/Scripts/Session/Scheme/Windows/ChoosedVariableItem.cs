@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Session.Scheme.Windows
 {
-    public class ChoosedVariableItem : BaseWindowUI
+    public class ChoosedVariableItem : BaseWindow
     {
         [Header("UI")]
         [SerializeField] private TMP_Text _typeText;

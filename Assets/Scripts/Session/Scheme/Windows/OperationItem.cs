@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 namespace Session.Scheme.Windows
 {
-    public class OperationItem : BaseWindowUI
+    public class OperationItem : BaseWindow
     {
         [Header("UI")]
         [SerializeField] private TMP_Dropdown _operationDropDown;

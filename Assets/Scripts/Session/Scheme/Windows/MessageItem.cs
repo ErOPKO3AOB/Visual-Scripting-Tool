@@ -6,7 +6,7 @@ using VContainer;
 
 namespace Session.Scheme.Windows
 {
-    public class MessageItem : BaseWindowUI
+    public class MessageItem : BaseWindow
     {
         [Inject]
         public void Construct(VariableService variableService)

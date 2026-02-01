@@ -58,7 +58,7 @@ namespace GlobalServices.ProjectLifetime
     {
         [Header("Block Units")]
         [SerializeField] private SchemeBlockFacade[] _blockFacades;
-        public SchemeBlockFacade[] BlockFacades { get { return BlockFacades; } }
+        public SchemeBlockFacade[] BlockFacades { get { return _blockFacades; } }
 
         [Header("Drag")]
         [SerializeField] private Color _draggingColorAffect;
@@ -82,8 +82,8 @@ namespace GlobalServices.ProjectLifetime
         //public BlockButton OutputButtonPrefab { get { return _outputButtonPrefab; } }
 
         [Header("Block windows")]
-        [SerializeField] private BaseWindowUI[] _windowPrefabsUI;
-        public BaseWindowUI[] WindowPrefabsUI { get { return _windowPrefabsUI; } }
+        [SerializeField] private BaseWindow[] _windowPrefabsUI;
+        public BaseWindow[] WindowPrefabsUI { get { return _windowPrefabsUI; } }
     }
 
     [Serializable]

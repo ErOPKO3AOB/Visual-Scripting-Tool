@@ -7,7 +7,7 @@ using VContainer;
 
 namespace Session.Scheme.Variables
 {
-    public class VariablePickerUI : BaseWindowUI
+    public class VariablePickerUI : BaseWindow
     {
         public enum VariablePickType
         {
@@ -46,7 +46,7 @@ namespace Session.Scheme.Variables
                 VariableList.OnVariableChoose += OnVariableChoose;
             });
 
-            _windowService.OnCloseWindow += (BaseWindowUI window) =>
+            _windowService.OnCloseWindow += (BaseWindow window) =>
             {
                 if (window.GetType() == typeof(VariableListWindowUI))
                 {

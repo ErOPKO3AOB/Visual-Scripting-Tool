@@ -6,7 +6,7 @@ using VContainer;
 
 namespace Session.Scheme.Windows
 {
-    public class OutputWindowUI : BaseWindowUI
+    public class OutputWindowUI : BaseWindow
     {
         [Header("UI")]
         [SerializeField] private Button _closeButton;

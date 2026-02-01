@@ -93,7 +93,7 @@ namespace Session
 
             // Register windows
             //builder.RegisterComponent(_projectConfig.BlockConfigs.VariablesListWindowPrefab.GetComponent<VariableListUI>()).As<SettingsBaseWindowUI>();
-            builder.RegisterFactory<string, Transform, BaseWindowUI>((IObjectResolver resolver) =>
+            builder.RegisterFactory<string, Transform, BaseWindow>((IObjectResolver resolver) =>
             {
                 return (string windowName, Transform spawnParent) =>
                 {
@@ -108,7 +108,7 @@ namespace Session
                         }
                     }
 
-                    return window.GetComponent<BaseWindowUI>();
+                    return window.GetComponent<BaseWindow>();
                 };
             }, Lifetime.Scoped);
         }

@@ -6,7 +6,7 @@ using VContainer;
 
 namespace Session.Scheme.Windows
 {
-    public class ConsoleWindow : BaseWindowUI
+    public class ConsoleWindow : BaseWindow
     {
         [Inject]
         public void Construct(WindowService windowService, BlockConfigs blockConfigs)

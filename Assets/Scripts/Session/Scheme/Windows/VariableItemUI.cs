@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Session.Scheme.Windows
 {
-    public class VariableItemUI : BaseWindowUI
+    public class VariableItemUI : BaseWindow
     {
         [Header("UI")]
         [SerializeField] private TMP_InputField _nameInputField;

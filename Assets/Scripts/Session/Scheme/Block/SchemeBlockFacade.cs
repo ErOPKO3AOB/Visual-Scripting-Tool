@@ -20,7 +20,7 @@ namespace Session.Scheme.Block
         [Header("Base")]
         [SerializeField] private string _blockName;
         public string BlockName { get { return _blockName; } }
-        [SerializeField] private BaseWindowUI _settingsWindowPrefab;
+        [SerializeField] private BaseWindow _settingsWindowPrefab;
 
         [Header("Essentials")]
         [SerializeField] private Transform _settingsPoint;
@@ -30,6 +30,14 @@ namespace Session.Scheme.Block
         public IActionProvider _model;
         private WindowService _windowService;
         private BlockConfigs _blockConfigs;
+
+        // Configs
+        public SpriteRenderer SpriteRenderer { get; private set; }
+
+        private void OnValidate()
+        {
+            SpriteRenderer = GetComponent<SpriteRenderer>();
+        }
 
         private void Start()
         {
