@@ -15,7 +15,7 @@ namespace Session.Scheme.Variables
         }
 
         [Header("Configs")]
-        [SerializeField] private VariableListWindowUI _variableListPrefab;
+        [SerializeField] private VariableListWindow _variableListPrefab;
         [SerializeField] private VariablePickType _pickType;
         public VariablePickType PickType { get { return _pickType; } set { _pickType = value; } }
         [SerializeField] private ChoosedVariableItem _choosedVariablePrefab;
@@ -25,7 +25,7 @@ namespace Session.Scheme.Variables
         [SerializeField] private Button _addNewButton;
 
         private WindowService _windowService;
-        public VariableListWindowUI VariableList { get; private set; }
+        public VariableListWindow VariableList { get; private set; }
 
         public List<ChoosedVariableItem> VariableItems { get; private set; } = new List<ChoosedVariableItem>(1);
 
@@ -42,20 +42,19 @@ namespace Session.Scheme.Variables
         {
             _addNewButton.onClick.AddListener(() =>
             {
-                VariableList = (VariableListWindowUI)_windowService.OpenWindow(_variableListPrefab.WindowName);
-                VariableList.OnVariableChoose += OnVariableChoose;
+                VariableList = (VariableListWindow)_windowService.OpenWindow(_variableListPrefab.WindowName, sender: this);
             });
 
-            _windowService.OnCloseWindow += (BaseWindow window) =>
-            {
-                if (window.GetType() == typeof(VariableListWindowUI))
-                {
-                    VariableList.OnVariableChoose -= OnVariableChoose;
-                }
-            };
+            //_windowService.OnCloseWindow += (BaseWindow window) =>
+            //{
+            //    if (window.GetType() == typeof(VariableListWindow))
+            //    {
+            //        VariableList.OnVariableChoose -= OnVariableChoose;
+            //    }
+            //};
         }
 
-        private void OnVariableChoose(SchemeVariableBase variable)
+        public void OnVariableChoose(SchemeVariableBase variable)
         {
             _addNewButton.transform.parent = null;
             ChoosedVariableItem variableItem = Instantiate(_choosedVariablePrefab, _content.transform).GetComponent<ChoosedVariableItem>();

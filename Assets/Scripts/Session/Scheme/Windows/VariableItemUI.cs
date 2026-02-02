@@ -32,8 +32,8 @@ namespace Session.Scheme.Windows
         private string _variableName;
         private object _variableValue = null;
 
-        private VariableListWindowUI _masterList;
-        public VariableListWindowUI MasterList
+        private VariableListWindow _masterList;
+        public VariableListWindow MasterList
         {
             get
             {

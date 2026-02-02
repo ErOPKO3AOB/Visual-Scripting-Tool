@@ -32,8 +32,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8762605291948820606}
   - {fileID: 5708619929944720964}
+  - {fileID: 8762605291948820606}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!212 &8174285627108726632
@@ -105,6 +105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _blockName: START_BLOCK
   _settingsWindowPrefab: {fileID: 0}
+  _label: {fileID: 6057550371318783411}
   _settingsPoint: {fileID: 0}
   _inputPoint: {fileID: 0}
   _outputPoints:
@@ -167,7 +168,7 @@ GameObject:
   - component: {fileID: 324076613263337444}
   - component: {fileID: 6057550371318783411}
   m_Layer: 0
-  m_Name: Text (TMP)
+  m_Name: Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

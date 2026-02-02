@@ -32,6 +32,8 @@ namespace Session.Scheme.Block.Types
             _operand1 = operand1;
             _operatorType = operatorType;
             _operand2 = operand2;
+
+            _facade.Label.text = $"{_operand1.variableName} {operatorType} {_operand2.variableName}";
         }
 
         public void Dispose()

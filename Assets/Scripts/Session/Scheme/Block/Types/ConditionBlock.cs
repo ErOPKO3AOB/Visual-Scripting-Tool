@@ -1,11 +1,12 @@
 using Session.Scheme.Variables;
+using System;
 using UnityEngine;
 
 namespace Session.Scheme.Block.Types
 {
-    public class IfBlock : IActionProvider
+    public class ConditionBlock : IActionProvider, IDisposable
     {
-        public IfBlock(SchemeBlockFacade facade, VariableService variableService)
+        public ConditionBlock(SchemeBlockFacade facade, VariableService variableService)
         {
             _facade = facade;
             _variableService = variableService;

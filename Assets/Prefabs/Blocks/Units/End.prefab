@@ -282,6 +282,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _blockName: END_BLOCK
   _settingsWindowPrefab: {fileID: 0}
+  _label: {fileID: 8823344277706465571}
   _settingsPoint: {fileID: 0}
   _inputPoint: {fileID: 6324277600386750283}
   _outputPoints: []

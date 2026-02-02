@@ -2,23 +2,33 @@ using Session.Scheme.Block.Types;
 using Session.Scheme.Variables;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
+using VContainer;
 
 namespace Session.Scheme.Windows
 {
     public class MethodWindow : BaseWindow
     {
+        [Inject]
+        public void Construct(WindowService windowService)
+        {
+            _windowService = windowService;
+        }
+
         [Header("UI")]
+        [SerializeField] private Button _closeButton;
         [SerializeField] private VariablePickerUI _varPicker1;
         [SerializeField] private OperationItem _operationItem;
         [SerializeField] private VariablePickerUI _varPicker2;
-
-        private MethodBlock _methodBlock;
 
         private SchemeVariableBase _operand1;
         private VariableService.OperatorType _operatorType;
         private SchemeVariableBase _operand2;
 
-        protected override void CastSender()
+        private WindowService _windowService;
+        private MethodBlock _methodBlock;
+
+        public override void SetSender(object sender)
         {
             try
             {
@@ -33,6 +43,8 @@ namespace Session.Scheme.Windows
 
         private void Start()
         {
+            _closeButton.onClick.AddListener(() => { _windowService.CloseWindow(WindowName); });
+
             _varPicker1.OnVariableChoosed += OnOperand1Choosed;
             _operationItem.OnOperationTypeChoosed += OnOperationTypeChoosed;
             _varPicker2.OnVariableChoosed += OnOperand2Choosed;
@@ -67,6 +79,8 @@ namespace Session.Scheme.Windows
 
         private void OnDestroy()
         {
+            _closeButton.onClick.RemoveAllListeners();
+
             _varPicker1.OnVariableChoosed -= OnOperand1Choosed;
             _operationItem.OnOperationTypeChoosed -= OnOperationTypeChoosed;
             _varPicker2.OnVariableChoosed -= OnOperand2Choosed;

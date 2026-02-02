@@ -8,15 +8,11 @@ namespace Session.Scheme.Windows
         [Header("Configs")]
         [SerializeField] private string _windowName;
         public string WindowName { get { return _windowName; } }
-        protected IActionProvider sender;
+        protected object sender;
 
-        public void SetSender(IActionProvider sender)
+        public virtual void SetSender(object sender)
         {
             this.sender = sender;
-
-            CastSender();
         }
-
-        protected abstract void CastSender();
     }
 }

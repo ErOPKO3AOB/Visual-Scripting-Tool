@@ -1,6 +1,7 @@
 using GlobalServices.ProjectLifetime;
 using Session.Scheme.Block.Button;
 using Session.Scheme.Windows;
+using TMPro;
 using UnityEngine;
 using VContainer;
 
@@ -23,6 +24,7 @@ namespace Session.Scheme.Block
         [SerializeField] private BaseWindow _settingsWindowPrefab;
 
         [Header("Essentials")]
+        [SerializeField] private TMP_Text _label;
         [SerializeField] private Transform _settingsPoint;
         [SerializeField] private Transform _inputPoint;
         [SerializeField] private Transform[] _outputPoints;
@@ -33,6 +35,7 @@ namespace Session.Scheme.Block
 
         // Configs
         public SpriteRenderer SpriteRenderer { get; private set; }
+        public TMP_Text Label { get { return _label; } set { _label = value; } }
 
         private void OnValidate()
         {
@@ -51,7 +54,7 @@ namespace Session.Scheme.Block
                     _settingsPoint)
                     .GetComponent<BlockButton>();
                 
-                settingsButton.ConstructManualy(_windowService, _settingsWindowPrefab);
+                settingsButton.ConstructManualy(_windowService, _settingsWindowPrefab, _model);
             }
 
             //Instantiate(_blockConfigs.InputButtonPrefab, _inputPoint);

@@ -20,11 +20,12 @@ namespace Session.Scheme.Windows
         private readonly BlockConfigs _blockConfigs;
 
         private List<BaseWindow> _activeWindows = new List<BaseWindow>();
+        public List<BaseWindow> ActiveWindows { get { return _activeWindows; } }
 
         public UnityAction<BaseWindow> OnOpenWindow;
         public UnityAction<BaseWindow> OnCloseWindow;
 
-        public BaseWindow OpenWindow(string windowName, Transform spawnParent = null, IActionProvider sender = null)
+        public BaseWindow OpenWindow(string windowName, Transform spawnParent = null, object sender = null)
         {
             BaseWindow window = _windowFactory.Invoke(windowName, spawnParent);
             window.SetSender(sender);

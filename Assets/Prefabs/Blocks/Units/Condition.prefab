@@ -154,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _blockName: CONDITION_BLOCK
   _settingsWindowPrefab: {fileID: 0}
+  _label: {fileID: 6752522116697313851}
   _settingsPoint: {fileID: 562029593607183133}
   _inputPoint: {fileID: 5988036590976612201}
   _outputPoints:
@@ -171,7 +172,7 @@ GameObject:
   - component: {fileID: 5503635070227678824}
   - component: {fileID: 6752522116697313851}
   m_Layer: 0
-  m_Name: Text (TMP)
+  m_Name: Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

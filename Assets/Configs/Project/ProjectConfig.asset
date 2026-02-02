@@ -41,7 +41,7 @@ MonoBehaviour:
     _camPrefab: {fileID: 5530218843876562416, guid: 1d3c82136d7828346976c8f7c37f89fa, type: 3}
     _moveSensitivity: 6
     _moveSmoothTime: 0.1
-    _zoomSensitivity: 2
+    _zoomSensitivity: 1
     _zoomSmoothTime: 0.1
   _inputSettings:
     _playerInputPrefab: {fileID: 7834929220904381916, guid: f7b29e977b86a8e47926c42ffd5f0964, type: 3}

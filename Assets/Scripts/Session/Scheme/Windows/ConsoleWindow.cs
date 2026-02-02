@@ -19,7 +19,7 @@ namespace Session.Scheme.Windows
         private BlockConfigs _blockConfigs;
 
         [SerializeField] private Transform _content;
-        
+
         public void SpawnOutuptMessage(string message)
         {
             MessageItem messageItem = BuildMessageItem();

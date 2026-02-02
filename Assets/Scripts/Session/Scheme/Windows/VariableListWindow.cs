@@ -3,13 +3,12 @@ using Session.Scheme.Variables;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 using VContainer;
 
 namespace Session.Scheme.Windows
 {
-    public class VariableListWindowUI : BaseWindow
+    public class VariableListWindow : BaseWindow
     {
         [Inject]
         public void Construct(BlockConfigs blockConfigs, WindowService windowService, VariableService variableService)
@@ -30,9 +29,6 @@ namespace Session.Scheme.Windows
 
         private List<VariableItemUI> _activeVariableItems = new List<VariableItemUI>();
 
-        public UnityAction<SchemeVariableBase> OnVariableChoose;
-        public UnityAction<SchemeVariableBase> OnVariableDelete;
-
         private void Start()
         {
             for (int i = 0; i < _variableService.Variables.Count; i++)
@@ -49,11 +45,12 @@ namespace Session.Scheme.Windows
 
             _addNewVariableButton.onClick.AddListener(() =>
             {
-                VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_blockConfigs.WindowPrefabsUI[1].WindowName, _content.transform);
+                VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_blockConfigs.WindowPrefabsUI[8].WindowName, _content.transform);
                 window.MasterList = this;
                 _activeVariableItems.Add(window);
             });
 
+            if (_windowService == null) Debug.Log("Window service is null");
             _closeButton.onClick.AddListener(() => { _windowService.CloseWindow(WindowName); });
         }
 
@@ -106,7 +103,7 @@ namespace Session.Scheme.Windows
                 {
                     if (_variableService.Variables[i].variableName == variable.name)
                     {
-                        OnVariableDelete?.Invoke(_variableService.Variables[i]);
+                        //OnVariableDelete?.Invoke(_variableService.Variables[i]);
                         _variableService.RemoveVariable(name);
                         _activeVariableItems.RemoveAt(i);
                         break;
@@ -122,7 +119,7 @@ namespace Session.Scheme.Windows
             {
                 if (_variableService.Variables[i].variableName == variableName)
                 {
-                    OnVariableChoose?.Invoke(_variableService.Variables[i]);
+                    //OnVariableChoose?.Invoke(_variableService.Variables[i]);
                     break;
                 }
             }

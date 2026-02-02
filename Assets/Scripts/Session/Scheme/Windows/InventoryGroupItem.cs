@@ -53,12 +53,12 @@ namespace Session.Scheme.Windows
 
         private void Start()
         {
-            for (int i = 0; i < _blockConfigs.BlockFacades.Length; i++)
-            {
-                SchemeBlockFacade facade = Instantiate(_blockConfigs.BlockFacades[i], _content);
-                _inventoryItems.Add(new InventoryItem(_blockConfigs.BlockFacades[i].BlockName, facade.gameObject.AddComponent<Button>()));
-                _inventoryItems[i].OnClicked += SpawnBlockFromInventory;
-            }
+            //for (int i = 0; i < _blockConfigs.BlockFacades.Length; i++)
+            //{
+            //    SchemeBlockFacade facade = Instantiate(_blockConfigs.BlockFacades[i], _content);
+            //    _inventoryItems.Add(new InventoryItem(_blockConfigs.BlockFacades[i].BlockName, facade.gameObject.AddComponent<Button>()));
+            //    _inventoryItems[i].OnClicked += SpawnBlockFromInventory;
+            //}
         }
 
         private void SpawnBlockFromInventory(string blockName)

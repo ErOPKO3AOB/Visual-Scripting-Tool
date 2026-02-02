@@ -1,7 +1,8 @@
 using Session.Scheme.Variables;
+using Session.Scheme.Windows;
 using System;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Session.Scheme.Block.Types
 {
@@ -10,9 +11,11 @@ namespace Session.Scheme.Block.Types
         public OutputBlock(SchemeBlockFacade facade)
         {
             _facade = facade;
+            _consoleWindow = GameObject.FindAnyObjectByType<ConsoleWindow>();
         }
 
         private readonly SchemeBlockFacade _facade;
+        private readonly ConsoleWindow _consoleWindow;
 
         public IActionProvider Next { get => _next; set => _next = value; }
         private IActionProvider _next;
@@ -21,7 +24,14 @@ namespace Session.Scheme.Block.Types
 
         public void ProvideAction()
         {
-            //SchemeConsole.SetOutput(SchemeVariable);
+            string message = "";
+
+            for (int i = 0; i < SchemeVariables.Count; i++)
+            {
+                message += SchemeVariables[i].GetValue().ToString();
+            }
+
+            _consoleWindow.SpawnOutuptMessage(message);
             _next.ProvideAction();
         }
 
