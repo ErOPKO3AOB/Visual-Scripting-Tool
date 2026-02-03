@@ -19,7 +19,7 @@ namespace Session.Scheme.Windows
         private readonly Func<string, Transform, BaseWindow> _windowFactory;
         private readonly BlockConfigs _blockConfigs;
 
-        private List<BaseWindow> _activeWindows = new List<BaseWindow>();
+        private List<BaseWindow> _activeWindows = new();
         public List<BaseWindow> ActiveWindows { get { return _activeWindows; } }
 
         public UnityAction<BaseWindow> OnOpenWindow;

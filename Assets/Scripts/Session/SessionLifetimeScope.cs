@@ -18,6 +18,8 @@ namespace Session
 
         protected override void Configure(IContainerBuilder builder)
         {
+            builder.RegisterEntryPoint<SessionInitializer>(Lifetime.Singleton);
+
             ConfigurePlayerInput(builder);
             ConfigureCameraSystem(builder);
             ConfigureSchemeEssentials(builder);
@@ -92,7 +94,6 @@ namespace Session
                 .AsSelf();
 
             // Register windows
-            //builder.RegisterComponent(_projectConfig.BlockConfigs.VariablesListWindowPrefab.GetComponent<VariableListUI>()).As<SettingsBaseWindowUI>();
             builder.RegisterFactory<string, Transform, BaseWindow>((IObjectResolver resolver) =>
             {
                 return (string windowName, Transform spawnParent) =>

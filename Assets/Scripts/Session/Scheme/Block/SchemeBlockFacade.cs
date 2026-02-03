@@ -67,7 +67,9 @@ namespace Session.Scheme.Block
 
         private void OnDestroy()
         {
-
+            Destroy(_settingsPoint.gameObject);
+            Destroy(_inputPoint.gameObject);
+            foreach (Transform t in _outputPoints) Destroy(t.gameObject);
         }
     }
 }

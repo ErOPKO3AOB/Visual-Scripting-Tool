@@ -16,8 +16,8 @@ namespace Session.Scheme
 
         private readonly Func<string, Transform, SchemeBlockFacade> _factory;
 
-        private List<IActionProvider> _blocks;
-        private List<ActionConnector> _connectors;
+        private List<IActionProvider> _blocks = new();
+        private List<ActionConnector> _connectors = new();
 
         public void Initialize()
         {
@@ -27,6 +27,14 @@ namespace Session.Scheme
         public void SpawnBlock(string blockName)
         {
             _factory.Invoke(blockName, null);
+        }
+
+        public void DestroyBlock(string blockName)
+        {
+            for (int i = 0; i < _blocks.Count; i++)
+            {
+                // Нужна инерфейсовая логика для блока типа IBlock
+            }
         }
 
         public void ConnectBlocksWithConnector(IActionProvider outputPoint, IActionProvider inputPoint, ActionConnector connector)

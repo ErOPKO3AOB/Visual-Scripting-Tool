@@ -60,6 +60,16 @@ namespace GlobalServices.ProjectLifetime
         [SerializeField] private SchemeBlockFacade[] _blockFacades;
         public SchemeBlockFacade[] BlockFacades { get { return _blockFacades; } }
 
+        [Header("Sprites")]
+        [SerializeField] private Sprite _boxSprite;
+        public Sprite BoxSprite { get { return _boxSprite; } }
+        [SerializeField] private Sprite _circleSprite;
+        public Sprite CircleSprite { get { return _circleSprite; } }
+        [SerializeField] private Sprite _rhombSprite;
+        public Sprite RhombSprite { get { return _rhombSprite; } }
+        [SerializeField] private Sprite _parallelogramSprite;
+        public Sprite ParallelogramSprite { get { return _parallelogramSprite; } }
+
         [Header("Drag")]
         [SerializeField] private Color _draggingColorAffect;
         public Color DraggingColorAffect { get { return _draggingColorAffect; } }
