@@ -3,7 +3,6 @@ using System;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
-using User.Input;
 
 namespace User
 {
@@ -175,14 +174,14 @@ namespace User
             _inputService.OnZoom -= HandleMouseZoom;
             _inputService.OnPointerPosition -= OnPointerPosition;
 
-            _draggableObjectController.OnDrag -= Interrupt;
-            _draggableObjectController.OnStopDrag -= StopInterruption;
+            _draggableObjectController.OnInteract -= Interrupt;
+            _draggableObjectController.OnStopInteract -= StopInterruption;
         }
 
         public void PostInitialize()
         {
-            _draggableObjectController.OnDrag += Interrupt;
-            _draggableObjectController.OnStopDrag += StopInterruption;
+            _draggableObjectController.OnInteract += Interrupt;
+            _draggableObjectController.OnStopInteract += StopInterruption;
         }
     }
 }

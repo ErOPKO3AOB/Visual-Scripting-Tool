@@ -1,17 +1,15 @@
 using GlobalServices.ProjectLifetime;
 using Session.Scheme.Block.Button;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
-using User.Input;
 using VContainer.Unity;
 
 namespace User
 {
-    public class WorldUIControllerService : IInitializable, ITickable, IDisposable
+    public class WorldUIControllerService : IInitializable, ILateTickable, IDisposable
     {
+        #region Initialization
         public WorldUIControllerService(InputService inputService, CameraControllerFacade cameraControllerFacade, BlockConfigs blockConfigs)
         {
             _inputService = inputService;
@@ -23,30 +21,24 @@ namespace User
         private readonly Camera _camera;
         private readonly BlockConfigs _blockConfigs;
 
+        public UnityAction OnInteract;
+        public UnityAction OnStopInteract;
+
+        private BaseBlockButton _currentObject;
         private Vector3 _dragOffset;
         private Vector2 _lastPointerPosition;
 
-        private GameObject _currentDraggedObject;
-        private SpriteRenderer _currentSpriteRenderer;
-        private Color _objectStartColor;
-        private Vector3 _objectStartScale;
-
-        public UnityAction OnDrag;
-        public UnityAction OnStopDrag;
-
         public void Initialize()
         {
-            // Подписываемся на события ввода
             _inputService.OnClick += OnClick;
             _inputService.OnPointerPosition += OnPointerPosition;
         }
+        #endregion
 
-        public void Tick()
+        #region Checks
+        public void LateTick()
         {
-            if (_currentDraggedObject != null)
-            {
-                UpdateDraggedObjectPosition();
-            }
+            InteractionProcess();
         }
 
         private void OnClick(bool isClicked)
@@ -58,7 +50,7 @@ namespace User
 
             else
             {
-                StopDrag();
+                StopInteraction();
             }
         }
 
@@ -69,71 +61,60 @@ namespace User
 
         private void TryStartIntercation()
         {
-            // Проверяем Raycast для 2D объектов
             Vector2 worldPoint = _camera.ScreenToWorldPoint(_lastPointerPosition);
             RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
 
             if (hit.collider != null)
             {
-                if (hit.collider.gameObject.CompareTag(_blockConfigs.DraggableObjectTag))
-                {
-                    _currentDraggedObject = hit.collider.gameObject;
-                    _currentSpriteRenderer = _currentDraggedObject.GetComponent<SpriteRenderer>();
-                    _objectStartColor = _currentSpriteRenderer.color;
-                    _objectStartScale = _currentDraggedObject.transform.localScale;
+                _currentObject = hit.collider.gameObject.GetComponent<BaseBlockButton>();
 
-                    if (_currentDraggedObject != null)
+                if (_currentObject != null)
+                {
+                    if (_currentObject is DraggableBlockButton || _currentObject is DraggableConnectorPoint)
                     {
-                        // Начинаем перетаскивание
-                        if (_currentSpriteRenderer != null)
-                        {
-                            _currentSpriteRenderer.color = _blockConfigs.DraggingColorAffect;
-                        }
-
-                        // Легкое увеличение при захвате
-                        _currentDraggedObject.transform.localScale = _objectStartScale * _blockConfigs.DraggingSizeAffect;
-
-                        // Рассчитываем смещение
-                        Vector3 hitPoint = hit.point;
-                        _dragOffset = _currentDraggedObject.transform.position - new Vector3(hitPoint.x, hitPoint.y, _currentDraggedObject.transform.position.z);
-
-                        OnDrag?.Invoke();
+                        _dragOffset = _currentObject.transform.position - new Vector3(hit.point.x, hit.point.y, _currentObject.transform.position.z);
                     }
-                }
 
-                else if (hit.collider.gameObject.CompareTag(_blockConfigs.ClickableObjectTag))
-                {
-                    BlockButton blockButton = hit.collider.gameObject.GetComponent<BlockButton>();
-                    blockButton.Use();
+                    _currentObject.Use();
+                    OnInteract?.Invoke();
                 }
             }
         }
+        #endregion
 
-        private void UpdateDraggedObjectPosition()
+        #region Interaction
+        private void InteractionProcess()
         {
-            if (_currentDraggedObject == null) return;
+            if (_currentObject == null) return;
 
-            Vector2 worldPoint = _camera.ScreenToWorldPoint(_lastPointerPosition);
-            Vector3 targetPosition = new Vector3(worldPoint.x, worldPoint.y, _currentDraggedObject.transform.position.z) + _dragOffset;
+            if (_currentObject is DraggableBlockButton)
+            {
+                Vector2 worldPoint = _camera.ScreenToWorldPoint(_lastPointerPosition);
+                Vector3 targetPosition = Vector3.Lerp(_currentObject.transform.position,
+                    new Vector3(worldPoint.x, worldPoint.y, _currentObject.transform.position.z) + _dragOffset,
+                    Time.deltaTime * _blockConfigs.DragSensitivity);
 
-            // Мгновенное перемещение (без плавности)
-            _currentDraggedObject.transform.position = targetPosition;
+                _currentObject.transform.position = targetPosition;
+            }
+
+            else if (_currentObject is DraggableConnectorPoint draggableConnectorPoint)
+            {
+                draggableConnectorPoint.SetWorldMousePosition(_camera.ScreenToWorldPoint(_lastPointerPosition));
+            }
         }
 
-        private void StopDrag()
+        private void StopInteraction()
         {
-            if (_currentDraggedObject != null)
+            if (_currentObject != null)
             {
-                // Восстанавливаем внешний вид
-                if (_currentSpriteRenderer != null)
-                {
-                    _currentSpriteRenderer.color = _objectStartColor;
-                }
+                if (_currentObject is DraggableBlockButton draggableBlockButton)
+                    draggableBlockButton.StopUsage();
+                else if (_currentObject is BlockOutputButton blockOutputButton)
+                    blockOutputButton.StopUsage();
 
-                _currentDraggedObject.transform.localScale = _objectStartScale;
-                _currentDraggedObject = null;
+                _currentObject = null;
 
-                OnStopDrag?.Invoke();
+                OnStopInteract?.Invoke();
             }
         }
 
@@ -142,5 +123,6 @@ namespace User
             _inputService.OnClick -= OnClick;
             _inputService.OnPointerPosition -= OnPointerPosition;
         }
+        #endregion
     }
 }

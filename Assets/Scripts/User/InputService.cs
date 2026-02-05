@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 using VContainer.Unity;
 using InputSettings = GlobalServices.ProjectLifetime.InputSettings;
 
-namespace User.Input
+namespace User
 {
     public class InputService : IInitializable
     {

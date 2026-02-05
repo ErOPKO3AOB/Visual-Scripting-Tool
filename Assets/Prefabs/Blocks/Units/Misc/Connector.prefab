@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 8387926853023287227}
   - component: {fileID: -6835166333610952189}
   - component: {fileID: 7594657896143815743}
-  - component: {fileID: -4492249327925806550}
   m_Layer: 0
   m_Name: Connector
-  m_TagString: Draggable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -92,10 +91,7 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -5
   m_Positions:
-  - {x: 0, y: -0.5, z: 0}
-  - {x: 0, y: -2, z: 0}
-  - {x: -4, y: -2, z: 0}
-  - {x: -4, y: -4, z: 0}
+  - {x: 0, y: 0, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.1
@@ -155,15 +151,3 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 0
---- !u!114 &-4492249327925806550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6094708853187789028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e8e0b55f4bb1384ba77a0f1cb1c1a89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

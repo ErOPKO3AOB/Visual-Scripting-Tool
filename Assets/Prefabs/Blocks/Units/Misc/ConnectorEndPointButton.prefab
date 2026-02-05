@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1520646508921866379}
   - component: {fileID: 3385780359507347480}
-  - component: {fileID: 4591105131827019657}
-  - component: {fileID: 330461141033527946}
+  - component: {fileID: -7551134841847389532}
+  - component: {fileID: 9166515427336357614}
   m_Layer: 0
-  m_Name: Output Button
+  m_Name: ConnectorEndPointButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,9 +28,9 @@ Transform:
   m_GameObject: {fileID: 4249063271737534313}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -54,7 +54,7 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
@@ -77,9 +77,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: -9013346659134127101, guid: ce60f96181e41674bba43dc7b22e8f49, type: 3}
-  m_Color: {r: 1, g: 0.06666667, b: 0, a: 1}
+  m_Color: {r: 0.8509804, g: 0.57180405, b: 0.12549017, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
@@ -89,7 +89,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &4591105131827019657
+--- !u!58 &-7551134841847389532
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,8 +124,8 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 1
---- !u!114 &330461141033527946
+  m_Radius: 0.75
+--- !u!114 &9166515427336357614
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -134,6 +134,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 4249063271737534313}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32cbc59c4fa31b340989bc5b7c71d23f, type: 3}
+  m_Script: {fileID: 11500000, guid: 5e8374bc26d4dd541ba86094cf2a6f53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

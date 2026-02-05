@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 1520646508921866379}
   - component: {fileID: 3385780359507347480}
   - component: {fileID: 7635390953411781014}
-  - component: {fileID: 8235624577685122226}
+  - component: {fileID: -2439143230964366184}
   m_Layer: 0
   m_Name: Input Button
-  m_TagString: Clickable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -125,7 +125,7 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 1
---- !u!114 &8235624577685122226
+--- !u!114 &-2439143230964366184
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -134,7 +134,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4249063271737534313}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7899f80683076a54c86e759acfab34b0, type: 3}
+  m_Script: {fileID: 11500000, guid: 5ab6a33ce962d4f4c9ef368e969fbe65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _type: 1
+  _holdTime: 1

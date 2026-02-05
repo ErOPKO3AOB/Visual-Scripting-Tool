@@ -14,25 +14,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainScenes:
     _workspaceScene: {fileID: 102900000, guid: 6e0f17fb4f107f242a326edb28e44ec8, type: 3}
-  _dataConfigs:
-    _settingsSaveFolderName: SettingsData
-    _settingsFileName: Data
-    _sessionsSaveFolderName: SessionsData
   _blockConfigs:
     _blockFacades:
     - {fileID: 7494691911212051630, guid: 32bdcfb266f7ca84ea5e88240e473a6d, type: 3}
     - {fileID: 4949882448197242693, guid: 6b26df2680e3a53489a8a8a15711b72c, type: 3}
     - {fileID: -8355040922653192364, guid: a9a83cfb7bcd6744690363cc6aea56b7, type: 3}
     - {fileID: 927488780316880342, guid: 5f1188a6fd6aa5c4ba27778d9520ffe0, type: 3}
+    _actionConnecorFacadePrefab: {fileID: -6835166333610952189, guid: a092fdec5d2ccee40988b1f0bfa508ad, type: 3}
     _boxSprite: {fileID: -9013346659134127101, guid: cfdfedad55a5fa042bc862078cc72962, type: 3}
     _circleSprite: {fileID: -9013346659134127101, guid: ce60f96181e41674bba43dc7b22e8f49, type: 3}
     _rhombSprite: {fileID: -9013346659134127101, guid: a43ed1ea27d6f694ba661938d2de3a7c, type: 3}
     _parallelogramSprite: {fileID: -9013346659134127101, guid: daf2b1e00d13fde4aba9f6906b0b217d, type: 3}
-    _draggingColorAffect: {r: 1, g: 0.43259233, b: 0, a: 1}
+    _draggingColorAffect: {r: 1, g: 0.43259233, b: 0, a: 0.29803923}
     _draggingSizeAffect: 1.1
-    _draggableObjectTag: Draggable
-    _clickableObjectTag: Clickable
-    _settingsButtonPrefab: {fileID: 7208814946237509735, guid: e387ad09d95cbf746bf7609d946dd8b7, type: 3}
+    _dragSensitivity: 16
+    _holdingColorAffect: {r: 0, g: 0.8303113, b: 1, a: 0}
+    _settingsButtonPrefab: {fileID: 4738267890814820774, guid: e387ad09d95cbf746bf7609d946dd8b7, type: 3}
+    _inputButtonPrefab: {fileID: -2439143230964366184, guid: 5d443f0d04b641645a60e2720b4b1462, type: 3}
+    _outputButtonPrefab: {fileID: 330461141033527946, guid: 36ba5fac353fca84a99c042169785ac6, type: 3}
+    _draggableConnectorPointPrefab: {fileID: 9166515427336357614, guid: ce228776bca552441b3d13938c8363ca, type: 3}
     _windowPrefabsUI:
     - {fileID: 4933336775592735967, guid: c61d77aafcab0a448924e3303b765627, type: 3}
     - {fileID: 4182976255418826037, guid: 66cd6c65825fe8d4bb2bef485a0eec63, type: 3}

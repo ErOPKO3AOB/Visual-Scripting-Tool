@@ -44,25 +44,28 @@ namespace Session.Scheme.Block
 
         private void Start()
         {
+            gameObject.AddComponent<DraggableBlockButton>().ConstructManually(_blockConfigs);
+
             if (_settingsWindowPrefab != null && _settingsPoint != null)
             {
                 if (_windowService == null) Debug.Log("Window service is null!");
                 if (_blockConfigs == null) Debug.Log("Block config is null!");
 
-                BlockButton settingsButton = Instantiate(
+                BlockSettingsButton settingsButton = Instantiate(
                     _blockConfigs.SettingsButtonPrefab, 
                     _settingsPoint)
-                    .GetComponent<BlockButton>();
+                    .GetComponent<BlockSettingsButton>();
                 
-                settingsButton.ConstructManualy(_windowService, _settingsWindowPrefab, _model);
+                settingsButton.ConstructManualy(_windowService, _settingsWindowPrefab, _model, _blockConfigs);
             }
 
-            //Instantiate(_blockConfigs.InputButtonPrefab, _inputPoint);
+            BlockInputButton blockInputButton = Instantiate(_blockConfigs.InputButtonPrefab, _inputPoint);
 
-            //for (int i = 0; i < _outputPoints.Length; i++)
-            //{
-            //    Instantiate(_blockConfigs.OutputButtonPrefab, _outputPoints[i]);
-            //}
+            for (int i = 0; i < _outputPoints.Length; i++)
+            {
+                BlockOutputButton blockOutputButton = Instantiate(_blockConfigs.OutputButtonPrefab, _outputPoints[i]);
+                blockOutputButton.ConstructManually(_blockConfigs, _model);
+            }
         }
 
         private void OnDestroy()

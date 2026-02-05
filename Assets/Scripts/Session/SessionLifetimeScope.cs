@@ -6,7 +6,6 @@ using Session.Scheme.Windows;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using User;
-using User.Input;
 using VContainer;
 using VContainer.Unity;
 

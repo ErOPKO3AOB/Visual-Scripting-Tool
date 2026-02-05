@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7494691911212051630}
   m_Layer: 0
   m_Name: Method
-  m_TagString: Draggable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -154,7 +154,6 @@ MonoBehaviour:
   _blockName: METHOD_BLOCK
   _settingsWindowPrefab: {fileID: 5748957065808567917, guid: fbceafbe318f05749bec70c039824f70, type: 3}
   _label: {fileID: 6315867800158064566}
-  _defaultRussianLabel: "\u041C\u0435\u0442\u043E\u0434"
   _settingsPoint: {fileID: 4119021697967983385}
   _inputPoint: {fileID: 5151929515470821742}
   _outputPoints:
