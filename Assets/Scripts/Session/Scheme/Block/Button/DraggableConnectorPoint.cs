@@ -30,6 +30,7 @@ namespace Session.Scheme.Block.Button
 
         public override void Use()
         {
+            _connecorFacade.LineRenderer.positionCount += 1;
             _currentIndex = _connecorFacade.LineRenderer.positionCount - 1;
             StartCoroutine(UseProccesRoutine());
         }
@@ -38,8 +39,13 @@ namespace Session.Scheme.Block.Button
         {
             while (_dragging)
             {
+                //Vector3 lastLinePosition = _connecorFacade.LineRenderer.GetPosition(_currentIndex);
+
+                //Vector3 finalPosition = _worldPointerPosition;
+
                 _connecorFacade.LineRenderer.SetPosition(_currentIndex, _worldPointerPosition);
-                
+                transform.position = _connecorFacade.LineRenderer.GetPosition(_currentIndex);
+
                 yield return null;
             }
         }

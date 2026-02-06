@@ -17,7 +17,7 @@ namespace Session.Scheme.Block.Button
         private BlockConfigs _blockConfigs;
         private IActionProvider _block;
 
-        [SerializeField] private float _holdTime = 2f;
+        [SerializeField] private float _holdTime = 0.1f;
         private float _holdTimer = 0;
         private bool _holding = false;
 
@@ -28,6 +28,8 @@ namespace Session.Scheme.Block.Button
 
         private bool _hasConnector = false;
         public bool HasConnector => _hasConnector;
+
+        private ActionConnecorFacade _actionConnecorFacade;
 
         private void OnValidate()
         {
@@ -44,13 +46,8 @@ namespace Session.Scheme.Block.Button
 
         public override void Use()
         {
-            if (!_hasConnector)
-            {
-                _holding = true;
-                StartCoroutine(UseProccesRoutine());
-
-                Debug.Log("Use");
-            }
+            _holding = true;
+            StartCoroutine(UseProccesRoutine());
         }
 
         private IEnumerator UseProccesRoutine()
@@ -59,24 +56,34 @@ namespace Session.Scheme.Block.Button
             while (_holding && _holdTimer < _holdTime)
             {
                 _holdTimer += Time.deltaTime;
-                _spriteRenderer.color = Color.Lerp(currentColor, _blockConfigs.DraggingColorAffect, _holdTimer / _holdTime);
+                _spriteRenderer.color = Color.Lerp(currentColor, _blockConfigs.HoldingColorAffect, _holdTimer / _holdTime);
                 yield return null;
             }
 
             // Fully holded
             if (_holdTimer >= _holdTime)
             {
-                _spriteRenderer.color = _blockConfigs.DraggingColorAffect;
-                ActionConnecorFacade actionConnecorFacade = Instantiate(_blockConfigs.ActionConnecorFacadePrefab, transform);
-                actionConnecorFacade.ConstructManually(_block, _blockConfigs);
-                _hasConnector = true;
+                _spriteRenderer.color = _blockConfigs.HoldingColorAffect;
+
+                if (_hasConnector && _actionConnecorFacade != null)
+                {
+                    Destroy(_actionConnecorFacade.gameObject);
+                    _hasConnector = false;
+                }
+
+                else
+                {
+                    _actionConnecorFacade = Instantiate(_blockConfigs.ActionConnecorFacadePrefab, transform);
+                    _actionConnecorFacade.ConstructManually(_block, _blockConfigs);
+                    _hasConnector = true;
+                }
             }
 
             StopUsage();
 
             currentColor = _spriteRenderer.color;
             float returningTimer = 0;
-            while (true)
+            while (returningTimer < _holdTime)
             {
                 returningTimer += Time.deltaTime;
                 _spriteRenderer.color = Color.Lerp(currentColor, _startColor, returningTimer / _holdTime);
@@ -88,7 +95,6 @@ namespace Session.Scheme.Block.Button
         {
             _holdTimer = 0;
             _holding = false;
-            Debug.Log("Stop usage");
         }
     }
 }
