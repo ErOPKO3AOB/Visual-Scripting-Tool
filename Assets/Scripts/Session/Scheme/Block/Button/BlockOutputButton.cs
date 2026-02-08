@@ -8,16 +8,19 @@ namespace Session.Scheme.Block.Button
 {
     public class BlockOutputButton : BaseBlockButton
     {
-        public void ConstructManually(BlockConfigs blockConfigs, IActionProvider block)
+        public void ConstructManually(BlockConfigs blockConfigs, IBlock block, Vector3 startConnectorOffset)
         {
             _blockConfigs = blockConfigs;
             _block = block;
+            _startConnectorOffset = startConnectorOffset;
         }
 
         private BlockConfigs _blockConfigs;
-        private IActionProvider _block;
+        private IBlock _block;
+        public IBlock Block => _block;
 
         [SerializeField] private float _holdTime = 0.1f;
+        private Vector3 _startConnectorOffset;
         private float _holdTimer = 0;
         private bool _holding = false;
 
@@ -30,6 +33,7 @@ namespace Session.Scheme.Block.Button
         public bool HasConnector => _hasConnector;
 
         private ActionConnecorFacade _actionConnecorFacade;
+        public ActionConnecorFacade ActionConnecorFacade => _actionConnecorFacade;
 
         private void OnValidate()
         {
@@ -67,6 +71,7 @@ namespace Session.Scheme.Block.Button
 
                 if (_hasConnector && _actionConnecorFacade != null)
                 {
+                    _actionConnecorFacade.OnDisconnected();
                     Destroy(_actionConnecorFacade.gameObject);
                     _hasConnector = false;
                 }
@@ -74,7 +79,7 @@ namespace Session.Scheme.Block.Button
                 else
                 {
                     _actionConnecorFacade = Instantiate(_blockConfigs.ActionConnecorFacadePrefab, transform);
-                    _actionConnecorFacade.ConstructManually(_block, _blockConfigs);
+                    _actionConnecorFacade.ConstructManually(_block, _blockConfigs, _startConnectorOffset);
                     _hasConnector = true;
                 }
             }

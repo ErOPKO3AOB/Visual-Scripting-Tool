@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1520646508921866379}
   - component: {fileID: 3385780359507347480}
-  - component: {fileID: 7635390953411781014}
-  - component: {fileID: -2439143230964366184}
+  - component: {fileID: 1041446880710125803}
+  - component: {fileID: -6782457134391177277}
   m_Layer: 0
   m_Name: Input Button
   m_TagString: Untagged
@@ -89,7 +89,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &7635390953411781014
+--- !u!114 &1041446880710125803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4249063271737534313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d252d6836a779bc4ea4626cbd36cf963, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!58 &-6782457134391177277
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,22 +131,9 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 1
---- !u!114 &-2439143230964366184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4249063271737534313}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ab6a33ce962d4f4c9ef368e969fbe65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _holdTime: 1

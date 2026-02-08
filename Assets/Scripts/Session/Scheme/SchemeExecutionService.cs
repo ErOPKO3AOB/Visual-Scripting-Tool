@@ -4,7 +4,7 @@ namespace Session.Scheme
 {
     public class SchemeExecutionService
     {
-        IActionProvider _startProvider;
+        IBlock _startProvider;
 
         public void StartProgramm()
         {

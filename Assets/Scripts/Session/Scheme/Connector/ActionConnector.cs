@@ -1,19 +1,38 @@
 using Session.Scheme.Block;
+using UnityEngine;
 
 namespace Session.Scheme.Connector
 {
     public class ActionConnector
     {
-        public ActionConnector(IActionProvider firstProvider)
+        public ActionConnector(IBlock firstProvider)
         {
-            this.firstProvider = firstProvider;
+            _firstProvider = firstProvider;
         }
 
-        public readonly IActionProvider firstProvider;
+        private readonly IBlock _firstProvider;
 
-        public void Connect(IActionProvider secondProvider)
+        public void Connect(IBlock secondProvider)
         {
-            firstProvider.Next = secondProvider;
+            _firstProvider.Next = secondProvider;
+            
+            var childFacade = _firstProvider.Next.Facade;
+            childFacade.DraggableBlockButton.SetDragUsage(false);
+            childFacade.transform.SetParent(_firstProvider.Facade.transform);
+            childFacade.Collider.enabled = false;
+            childFacade.Rigidbody.bodyType = RigidbodyType2D.Kinematic;
+        }
+
+        public void Disconnect()
+        {
+            if (_firstProvider.Next == null) return;
+
+            var childFacade = _firstProvider.Next.Facade;
+            childFacade.transform.SetParent(null);
+            childFacade.DraggableBlockButton.SetDragUsage(true);
+            childFacade.Collider.enabled = true;
+            childFacade.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
+            _firstProvider.Next = null;
         }
     }
 }

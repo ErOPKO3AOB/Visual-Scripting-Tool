@@ -21,11 +21,10 @@ namespace User
         private readonly Camera _camera;
         private readonly BlockConfigs _blockConfigs;
 
-        public UnityAction OnInteract;
-        public UnityAction OnStopInteract;
+        public UnityAction<BaseBlockButton> OnInteract;
+        public UnityAction<BaseBlockButton> OnStopInteract;
 
         private BaseBlockButton _currentObject;
-        private Vector3 _dragOffset;
         private Vector2 _lastPointerPosition;
 
         public void Initialize()
@@ -62,22 +61,12 @@ namespace User
         private void TryStartIntercation()
         {
             Vector2 worldPoint = _camera.ScreenToWorldPoint(_lastPointerPosition);
-            RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
+            RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero, 1);
 
-            if (hit.collider != null)
+            if (hit.collider != null && hit.collider.gameObject.TryGetComponent(out _currentObject))
             {
-                _currentObject = hit.collider.gameObject.GetComponent<BaseBlockButton>();
-
-                if (_currentObject != null)
-                {
-                    if (_currentObject is DraggableBlockButton || _currentObject is DraggableConnectorPoint)
-                    {
-                        _dragOffset = _currentObject.transform.position - new Vector3(hit.point.x, hit.point.y, _currentObject.transform.position.z);
-                    }
-
-                    _currentObject.Use();
-                    OnInteract?.Invoke();
-                }
+                _currentObject.Use();
+                OnInteract?.Invoke(_currentObject);
             }
         }
         #endregion
@@ -87,14 +76,9 @@ namespace User
         {
             if (_currentObject == null) return;
 
-            if (_currentObject is DraggableBlockButton)
+            if (_currentObject is DraggableBlockButton draggableBlockButton)
             {
-                Vector2 worldPoint = _camera.ScreenToWorldPoint(_lastPointerPosition);
-                Vector3 targetPosition = Vector3.Lerp(_currentObject.transform.position,
-                    new Vector3(worldPoint.x, worldPoint.y, _currentObject.transform.position.z) + _dragOffset,
-                    Time.deltaTime * _blockConfigs.DragSensitivity);
-
-                _currentObject.transform.position = targetPosition;
+                draggableBlockButton.SetWorldMousePosition(_camera.ScreenToWorldPoint(_lastPointerPosition));
             }
 
             else if (_currentObject is DraggableConnectorPoint draggableConnectorPoint)
@@ -111,10 +95,12 @@ namespace User
                     draggableBlockButton.StopUsage();
                 else if (_currentObject is BlockOutputButton blockOutputButton)
                     blockOutputButton.StopUsage();
+                else if (_currentObject is BlockInputTrigger blockInputTrigger)
+                    blockInputTrigger.StopUsage();
+
+                OnStopInteract?.Invoke(_currentObject);
 
                 _currentObject = null;
-
-                OnStopInteract?.Invoke();
             }
         }
 

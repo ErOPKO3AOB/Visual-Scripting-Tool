@@ -2,6 +2,7 @@ using GlobalServices.ProjectLifetime;
 using Session.Scheme.Block.Types;
 using Session.Scheme.Variables;
 using UnityEngine;
+using UnityEngine.UI;
 using VContainer;
 
 namespace Session.Scheme.Windows
@@ -19,6 +20,15 @@ namespace Session.Scheme.Windows
         private BlockConfigs _blockConfigs;
 
         [SerializeField] private Transform _content;
+        [SerializeField] private Button _closeButton;
+
+        private void Start()
+        {
+            _closeButton.onClick.AddListener(() =>
+            {
+                _windowService.CloseWindow(WindowName);
+            });
+        }
 
         public void SpawnOutuptMessage(string message)
         {
@@ -35,6 +45,11 @@ namespace Session.Scheme.Windows
         private MessageItem BuildMessageItem()
         {
             return (MessageItem)_windowService.OpenWindow(_blockConfigs.WindowPrefabsUI[5].WindowName, _content.transform);
+        }
+
+        private void OnDestroy()
+        {
+            _closeButton.onClick.RemoveAllListeners();
         }
     }
 }

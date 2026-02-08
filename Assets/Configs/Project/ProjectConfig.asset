@@ -28,9 +28,9 @@ MonoBehaviour:
     _draggingColorAffect: {r: 1, g: 0.43259233, b: 0, a: 0.29803923}
     _draggingSizeAffect: 1.1
     _dragSensitivity: 16
-    _holdingColorAffect: {r: 0, g: 0.8303113, b: 1, a: 1}
+    _holdingColorAffect: {r: 0.36445352, g: 0.735849, b: 0.37686664, a: 1}
     _settingsButtonPrefab: {fileID: 4738267890814820774, guid: e387ad09d95cbf746bf7609d946dd8b7, type: 3}
-    _inputButtonPrefab: {fileID: -2439143230964366184, guid: 5d443f0d04b641645a60e2720b4b1462, type: 3}
+    _inputTriggerPrefab: {fileID: 1041446880710125803, guid: 5d443f0d04b641645a60e2720b4b1462, type: 3}
     _outputButtonPrefab: {fileID: 330461141033527946, guid: 36ba5fac353fca84a99c042169785ac6, type: 3}
     _draggableConnectorPointPrefab: {fileID: 9166515427336357614, guid: ce228776bca552441b3d13938c8363ca, type: 3}
     _windowPrefabsUI:

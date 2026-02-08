@@ -364,6 +364,8 @@ MonoBehaviour:
   _windowName: DOWN_MENU_ITEM
   _inventoryItems: []
   _inventoryContent: {fileID: 2123644751546688145}
+  _BUTTON_NOT_ASSIGNED: {fileID: 3003185628650760980}
+  _consoleButton: {fileID: 8724452975316612895}
 --- !u!1 &4530919495538228773
 GameObject:
   m_ObjectHideFlags: 0

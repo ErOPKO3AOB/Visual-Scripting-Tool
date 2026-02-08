@@ -1,4 +1,5 @@
 using GlobalServices.ProjectLifetime;
+using Session.Scheme.Block.Button;
 using System;
 using UnityEngine;
 using VContainer;
@@ -142,7 +143,7 @@ namespace User
         }
 
         // Реализация IInterruptable
-        public void Interrupt()
+        public void Interrupt(BaseBlockButton baseBlockButton)
         {
             if (_isInterrupted) return;
 
@@ -159,7 +160,7 @@ namespace User
             _zoomVelocity = 0f;
         }
 
-        public void StopInterruption()
+        public void StopInterruption(BaseBlockButton baseBlockButton)
         {
             if (!_isInterrupted) return;
 

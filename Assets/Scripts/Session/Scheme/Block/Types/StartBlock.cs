@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Session.Scheme.Block.Types
 {
-    public class StartBlock : IActionProvider, IDisposable
+    public class StartBlock : IBlock, IDisposable
     {
         public StartBlock(SchemeBlockFacade facade)
         {
@@ -11,9 +11,11 @@ namespace Session.Scheme.Block.Types
         }
 
         private readonly SchemeBlockFacade _facade;
+        public SchemeBlockFacade Facade => _facade;
 
-        public IActionProvider Next { get => _next; set => _next = value; }
-        private IActionProvider _next;
+        public IBlock Next { get; set; }
+        public bool SingleInstance { get => _facade.SingleInstance; }
+
 
         public void ProvideAction()
         {

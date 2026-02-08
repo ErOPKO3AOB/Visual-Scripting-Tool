@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Session.Scheme.Block.Types
 {
-    public class OutputBlock : IActionProvider, IDisposable
+    public class OutputBlock : IBlock, IDisposable
     {
         public OutputBlock(SchemeBlockFacade facade)
         {
@@ -15,10 +15,13 @@ namespace Session.Scheme.Block.Types
         }
 
         private readonly SchemeBlockFacade _facade;
+        public SchemeBlockFacade Facade => _facade;
+
         private readonly ConsoleWindow _consoleWindow;
 
-        public IActionProvider Next { get => _next; set => _next = value; }
-        private IActionProvider _next;
+        public IBlock Next { get; set; }
+        public bool SingleInstance { get => _facade.SingleInstance; }
+
 
         public List<SchemeVariableBase> SchemeVariables { get; set; }
 
@@ -32,7 +35,7 @@ namespace Session.Scheme.Block.Types
             }
 
             _consoleWindow.SpawnOutuptMessage(message);
-            _next.ProvideAction();
+            Next.ProvideAction();
         }
 
         public void Dispose()

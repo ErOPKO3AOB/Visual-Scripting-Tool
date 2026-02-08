@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Session.Scheme.Block.Types
 {
-    public class MethodBlock : IActionProvider, IDisposable
+    public class MethodBlock : IBlock, IDisposable
     {
         public MethodBlock(SchemeBlockFacade facade, VariableService variableService)
         {
@@ -13,13 +13,17 @@ namespace Session.Scheme.Block.Types
         }
 
         private readonly SchemeBlockFacade _facade;
+        public SchemeBlockFacade Facade => _facade;
+
         private readonly VariableService _variableService;
 
         private SchemeVariableBase _operand1;
         private VariableService.OperatorType _operatorType;
         private SchemeVariableBase _operand2;
 
-        public IActionProvider Next { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public IBlock Next { get; set; }
+        public bool SingleInstance { get => _facade.SingleInstance; }
+
 
         public void ProvideAction()
         {

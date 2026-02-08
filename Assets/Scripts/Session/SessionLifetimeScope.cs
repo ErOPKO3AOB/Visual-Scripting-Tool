@@ -39,7 +39,8 @@ namespace Session
                 .AsSelf();
 
             // Service for object dragging
-            builder.RegisterEntryPoint<WorldUIControllerService>(Lifetime.Scoped).AsSelf();
+            builder.RegisterEntryPoint<WorldUIControllerService>(Lifetime.Scoped)
+                .AsSelf();
         }
 
         private void ConfigureCameraSystem(IContainerBuilder builder)
@@ -75,7 +76,7 @@ namespace Session
                         if (blockName == _projectConfig.BlockConfigs.BlockFacades[i].BlockName)
                         {
                             Vector3 spawnPos = spawnPosition ? spawnPosition.position : Vector3.zero;
-                            block = resolver.Instantiate(_projectConfig.BlockConfigs.BlockFacades[i].gameObject, spawnPos, Quaternion.identity);
+                            block = resolver.Instantiate(_projectConfig.BlockConfigs.BlockFacades[i].gameObject, spawnPos, _projectConfig.BlockConfigs.BlockFacades[i].transform.rotation);
                             break;
                         }
                     }

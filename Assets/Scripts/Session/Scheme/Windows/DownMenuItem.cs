@@ -3,6 +3,7 @@ using Session.Scheme.Block.Types;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using VContainer;
 
 namespace Session.Scheme.Windows
@@ -21,8 +22,13 @@ namespace Session.Scheme.Windows
         private BlockConfigs _blockConfigs;
         private WindowService _windowService;
 
+        [Header("Inventory")]
         [SerializeField] private List<InventoryBlockItem> _inventoryItems = new();
         [SerializeField] private Transform _inventoryContent;
+
+        [Header("Buttons")]
+        [SerializeField] private Button _BUTTON_NOT_ASSIGNED;
+        [SerializeField] private Button _consoleButton;
 
         private void Start()
         {
@@ -52,11 +58,26 @@ namespace Session.Scheme.Windows
 
                 _inventoryItems.Add(inventoryItem);
             }
+
+            _consoleButton.onClick.AddListener(() =>
+            {
+                _windowService.OpenWindow("CONSOLE_WINDOW");
+            });
         }
 
         private void SpawnBlockFromInventory(string blockName)
         {
             _schemeBuilderService.SpawnBlock(blockName);
+        }
+
+        private void OnDestroy()
+        {
+            foreach (var item in _inventoryItems)
+            {
+                item.OnPressed -= SpawnBlockFromInventory;
+            }
+
+            _consoleButton.onClick.RemoveAllListeners();
         }
     }
 }

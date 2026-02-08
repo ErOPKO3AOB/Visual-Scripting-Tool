@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Session.Scheme.Block.Types
 {
-    public class InputBlock : IActionProvider, IDisposable
+    public class InputBlock : IBlock, IDisposable
     {
         public InputBlock(SchemeBlockFacade facade, VariableService variableService)
         {
@@ -17,11 +17,14 @@ namespace Session.Scheme.Block.Types
         }
 
         private readonly SchemeBlockFacade _facade;
+        public SchemeBlockFacade Facade => _facade;
+
         private readonly ConsoleWindow _consoleWindow;
         private readonly VariableService _variableService;
 
-        public IActionProvider Next { get => _next; set => _next = value; }
-        private IActionProvider _next;
+        public IBlock Next { get; set; }
+        public bool SingleInstance { get => _facade.SingleInstance; }
+
 
         public string VariableName { get; set; }
 
@@ -43,7 +46,7 @@ namespace Session.Scheme.Block.Types
                 yield return null;
             }
 
-            _next.ProvideAction();
+            Next.ProvideAction();
         }
 
         public void SetInput(object value)

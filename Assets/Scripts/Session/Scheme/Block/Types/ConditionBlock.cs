@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Session.Scheme.Block.Types
 {
-    public class ConditionBlock : IActionProvider, IDisposable
+    public class ConditionBlock : IBlock, IDisposable
     {
         public ConditionBlock(SchemeBlockFacade facade, VariableService variableService)
         {
@@ -13,16 +13,18 @@ namespace Session.Scheme.Block.Types
         }
 
         private readonly SchemeBlockFacade _facade;
+        public SchemeBlockFacade Facade => _facade;
         private readonly VariableService _variableService;
 
         private SchemeVariableBase _operand1;
         private VariableService.ConditionalOperatorType _conditionalOperatorType;
         private SchemeVariableBase _operand2;
 
-        public IActionProvider Next { get; set; }
+        public IBlock Next { get; set; }
+        public bool SingleInstance { get => _facade.SingleInstance; }
 
-        private IActionProvider _trueOutput;
-        private IActionProvider _falseOutput;
+        private IBlock _trueOutput;
+        private IBlock _falseOutput;
 
         public void ProvideAction()
         {
@@ -39,12 +41,12 @@ namespace Session.Scheme.Block.Types
             Next.ProvideAction();
         }
 
-        public void SetTrueOutput(IActionProvider output)
+        public void SetTrueOutput(IBlock output)
         {
             _trueOutput = output;
         }
 
-        public void SetFalseOutput(IActionProvider output)
+        public void SetFalseOutput(IBlock output)
         {
             _falseOutput = output;
         }

@@ -59,7 +59,7 @@ namespace GlobalServices.ProjectLifetime
         [Header("Block Buttons")]
         [SerializeField] private Color _holdingColorAffect;
         [SerializeField] private BlockSettingsButton _settingsButtonPrefab;
-        [SerializeField] private BlockInputButton _inputButtonPrefab;
+        [SerializeField] private BlockInputTrigger _inputTriggerPrefab;
         [SerializeField] private BlockOutputButton _outputButtonPrefab;
         [SerializeField] private DraggableConnectorPoint _draggableConnectorPointPrefab;
 
@@ -77,7 +77,7 @@ namespace GlobalServices.ProjectLifetime
         public float DragSensitivity => _dragSensitivity;
         public Color HoldingColorAffect => _holdingColorAffect;
         public BlockSettingsButton SettingsButtonPrefab => _settingsButtonPrefab;
-        public BlockInputButton InputButtonPrefab => _inputButtonPrefab;
+        public BlockInputTrigger InputTriggerPrefab => _inputTriggerPrefab;
         public BlockOutputButton OutputButtonPrefab => _outputButtonPrefab;
         public DraggableConnectorPoint DraggableConnectorPointPrefab => _draggableConnectorPointPrefab; 
         public BaseWindow[] WindowPrefabsUI => _windowPrefabsUI;

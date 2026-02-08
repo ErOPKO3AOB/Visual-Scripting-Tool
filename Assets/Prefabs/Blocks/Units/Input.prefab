@@ -186,6 +186,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1547040428903693231}
+  - component: {fileID: 450910942084014059}
   - component: {fileID: -4330635024794068059}
   - component: {fileID: 363330209929860548}
   - component: {fileID: 4949882448197242693}
@@ -215,6 +216,33 @@ Transform:
   - {fileID: 165620565314307834}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &450910942084014059
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3570618108295478734}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 1
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!61 &-4330635024794068059
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -329,12 +357,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _blockName: INPUT_BLOCK
+  _singleInstance: 0
   _settingsWindowPrefab: {fileID: 0}
   _label: {fileID: 6708189617793512293}
   _settingsPoint: {fileID: 233042475611779716}
   _inputPoint: {fileID: 7347344838210287088}
   _outputPoints:
   - {fileID: 6098597830458538090}
+  _connectorOffsets:
+  - {x: 0, y: -1, z: 0}
 --- !u!1001 &1594702067926252047
 PrefabInstance:
   m_ObjectHideFlags: 0
