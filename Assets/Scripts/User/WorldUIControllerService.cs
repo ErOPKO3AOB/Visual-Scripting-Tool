@@ -21,8 +21,8 @@ namespace User
         private readonly Camera _camera;
         private readonly BlockConfigs _blockConfigs;
 
-        public UnityAction<BaseBlockButton> OnInteract;
-        public UnityAction<BaseBlockButton> OnStopInteract;
+        public UnityAction<BaseBlockButton> OnInteractCallback;
+        public UnityAction<BaseBlockButton> OnStopInteractCallback;
 
         private BaseBlockButton _currentObject;
         private Vector2 _lastPointerPosition;
@@ -66,7 +66,7 @@ namespace User
             if (hit.collider != null && hit.collider.gameObject.TryGetComponent(out _currentObject))
             {
                 _currentObject.Use();
-                OnInteract?.Invoke(_currentObject);
+                OnInteractCallback?.Invoke(_currentObject);
             }
         }
         #endregion
@@ -98,7 +98,7 @@ namespace User
                 else if (_currentObject is BlockInputTrigger blockInputTrigger)
                     blockInputTrigger.StopUsage();
 
-                OnStopInteract?.Invoke(_currentObject);
+                OnStopInteractCallback?.Invoke(_currentObject);
 
                 _currentObject = null;
             }

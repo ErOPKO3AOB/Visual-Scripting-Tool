@@ -25,7 +25,7 @@ namespace Session.Scheme.Variables
             else
             {
                 SetValueToVariable(varName, startValue);
-                Debug.Log($"Setting value to variable: name {varName} value {startValue}");
+                //Debug.Log($"Setting value to variable: name {varName} value {startValue}");
             }
         }
 

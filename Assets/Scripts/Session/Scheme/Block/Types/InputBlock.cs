@@ -46,7 +46,7 @@ namespace Session.Scheme.Block.Types
                 yield return null;
             }
 
-            Next.ProvideAction();
+            Next?.ProvideAction();
         }
 
         public void SetInput(object value)

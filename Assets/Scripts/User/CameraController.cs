@@ -1,5 +1,6 @@
 using GlobalServices.ProjectLifetime;
 using Session.Scheme.Block.Button;
+using Session.Scheme.Windows;
 using System;
 using UnityEngine;
 using VContainer;
@@ -10,18 +11,20 @@ namespace User
     public class CameraController : IInitializable, ITickable, IDisposable, IPostInitializable
     {
         [Inject]
-        public CameraController(CameraControllerFacade facade, CameraSettings settings, InputService inputService, WorldUIControllerService draggableObjectController)
+        public CameraController(CameraControllerFacade facade, CameraSettings settings, InputService inputService, WorldUIControllerService draggableObjectController, WindowService windowService)
         {
             _facade = facade;
             _settings = settings;
             _inputService = inputService;
             _draggableObjectController = draggableObjectController;
+            _windowService = windowService;
         }
 
         private readonly CameraControllerFacade _facade;
         private readonly CameraSettings _settings;
         private readonly InputService _inputService;
         private readonly WorldUIControllerService _draggableObjectController;
+        private readonly WindowService _windowService;
 
         private bool _canDragCamera;
         private Vector3 _targetPosition;
@@ -142,7 +145,6 @@ namespace User
             _targetZoom = Mathf.Clamp(_targetZoom, 1f, 30f);
         }
 
-        // Реализация IInterruptable
         public void Interrupt(BaseBlockButton baseBlockButton)
         {
             if (_isInterrupted) return;
@@ -151,11 +153,9 @@ namespace User
             _wasDraggingBeforeInterrupt = _canDragCamera;
             _canDragCamera = false;
 
-            // Сохраняем текущие значения для возможного восстановления
             _positionBeforeInterrupt = _targetPosition;
             _zoomBeforeInterrupt = _targetZoom;
 
-            // Сбрасываем скорости для плавного останова
             _velocity = Vector3.zero;
             _zoomVelocity = 0f;
         }
@@ -175,14 +175,14 @@ namespace User
             _inputService.OnZoom -= HandleMouseZoom;
             _inputService.OnPointerPosition -= OnPointerPosition;
 
-            _draggableObjectController.OnInteract -= Interrupt;
-            _draggableObjectController.OnStopInteract -= StopInterruption;
+            _draggableObjectController.OnInteractCallback -= Interrupt;
+            _draggableObjectController.OnStopInteractCallback -= StopInterruption;
         }
 
         public void PostInitialize()
         {
-            _draggableObjectController.OnInteract += Interrupt;
-            _draggableObjectController.OnStopInteract += StopInterruption;
+            _draggableObjectController.OnInteractCallback += Interrupt;
+            _draggableObjectController.OnStopInteractCallback += StopInterruption;
         }
     }
 }

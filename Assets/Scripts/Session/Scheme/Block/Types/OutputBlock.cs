@@ -35,7 +35,7 @@ namespace Session.Scheme.Block.Types
             }
 
             _consoleWindow.SpawnOutuptMessage(message);
-            Next.ProvideAction();
+            Next?.ProvideAction();
         }
 
         public void Dispose()

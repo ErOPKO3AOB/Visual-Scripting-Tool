@@ -38,7 +38,7 @@ namespace Session.Scheme.Block.Types
                 Next = _falseOutput;
             }
 
-            Next.ProvideAction();
+            Next?.ProvideAction();
         }
 
         public void SetTrueOutput(IBlock output)

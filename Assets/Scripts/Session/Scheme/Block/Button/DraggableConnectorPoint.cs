@@ -23,7 +23,7 @@ namespace Session.Scheme.Block.Button
         private int _currentIndex;
 
         private Vector3 _dragStartLocalPosition;
-        private bool _isXAxisMovement = false;
+        private Vector3 _wireDirection;
 
         protected override void Start()
         {
@@ -32,6 +32,23 @@ namespace Session.Scheme.Block.Button
             int lastIndex = _connecorFacade.LineRenderer.positionCount - 1;
             Vector3 lastPointLocal = _connecorFacade.LineRenderer.GetPosition(lastIndex);
             transform.localPosition = lastPointLocal;
+
+            UpdateWireDirection();
+        }
+
+        private void UpdateWireDirection()
+        {
+            int pointCount = _connecorFacade.LineRenderer.positionCount;
+            if (pointCount >= 2)
+            {
+                Vector3 currentPoint = transform.localPosition;
+                Vector3 previousPoint = _connecorFacade.LineRenderer.GetPosition(pointCount - 2);
+                _wireDirection = (currentPoint - previousPoint).normalized;
+            }
+            else
+            {
+                _wireDirection = Vector3.right;
+            }
         }
 
         public void SetWorldMousePosition(Vector3 worldPosition)
@@ -46,23 +63,8 @@ namespace Session.Scheme.Block.Button
 
         private IEnumerator UseProccesRoutine()
         {
-            float timer = 0f;
-            float waitTime = 0.2f;
-
             _dragStartLocalPosition = transform.localPosition;
-
-            while (timer < waitTime)
-            {
-                Vector3 mouseDelta = _localPointerPosition - _dragStartLocalPosition;
-
-                if (Mathf.Abs(mouseDelta.x) > Mathf.Abs(mouseDelta.y))
-                    _isXAxisMovement = true;
-                else
-                    _isXAxisMovement = false;
-
-                timer += Time.deltaTime;
-                yield return null;
-            }
+            UpdateWireDirection();
 
             _connecorFacade.LineRenderer.positionCount += 1;
             _currentIndex = _connecorFacade.LineRenderer.positionCount - 1;
@@ -72,17 +74,41 @@ namespace Session.Scheme.Block.Button
             while (_dragging)
             {
                 Vector3 mouseDelta = _localPointerPosition - _dragStartLocalPosition;
-                Vector3 constrainedDelta = Vector3.zero;
 
-                if (_isXAxisMovement)
-                    constrainedDelta = new Vector3(mouseDelta.x, 0f, 0f);
+                Vector3 newLocalPosition = _dragStartLocalPosition;
+
+                if (Mathf.Abs(mouseDelta.x) > Mathf.Abs(mouseDelta.y))
+                {
+                    if (Mathf.Abs(_wireDirection.x) > 0.1f)
+                    {
+                        if ((_wireDirection.x > 0 && mouseDelta.x >= 0) ||
+                            (_wireDirection.x < 0 && mouseDelta.x <= 0))
+                        {
+                            newLocalPosition.x = _dragStartLocalPosition.x + mouseDelta.x;
+                        }
+                    }
+                    else
+                    {
+                        newLocalPosition.x = _dragStartLocalPosition.x + mouseDelta.x;
+                    }
+                }
                 else
-                    constrainedDelta = new Vector3(0f, mouseDelta.y, 0f);
-
-                Vector3 newLocalPosition = _dragStartLocalPosition + constrainedDelta;
+                {
+                    if (Mathf.Abs(_wireDirection.y) > 0.1f)
+                    {
+                        if ((_wireDirection.y > 0 && mouseDelta.y >= 0) ||
+                            (_wireDirection.y < 0 && mouseDelta.y <= 0))
+                        {
+                            newLocalPosition.y = _dragStartLocalPosition.y + mouseDelta.y;
+                        }
+                    }
+                    else
+                    {
+                        newLocalPosition.y = _dragStartLocalPosition.y + mouseDelta.y;
+                    }
+                }
 
                 transform.localPosition = newLocalPosition;
-
                 _connecorFacade.LineRenderer.SetPosition(_currentIndex, newLocalPosition);
 
                 yield return null;

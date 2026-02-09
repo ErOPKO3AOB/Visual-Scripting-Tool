@@ -18,23 +18,30 @@ namespace Session.Scheme.Block.Button
         {
             base.Start();
 
-            _worldUIControllerService.OnStopInteract += OnStopWorldUIInteraction;
+            _worldUIControllerService.OnStopInteractCallback += OnStopWorldUIInteraction;
         }
 
         private void OnStopWorldUIInteraction(BaseBlockButton baseBlockButton)
         {
-            if (baseBlockButton is DraggableConnectorPoint draggableConnectorPoint && this != draggableConnectorPoint.Block.Facade.BlockInputTrigger)
+            if (baseBlockButton is DraggableConnectorPoint draggableConnectorPoint 
+                && this != draggableConnectorPoint.Block.Facade.BlockInputTrigger)
             {
-                Debug.DrawRay(transform.position, Vector2.up, Color.red);
-
-                RaycastHit2D hitInfo = Physics2D.CircleCast(transform.position, 0.5f, Vector2.up);
+                RaycastHit2D hitInfo = Physics2D.CircleCast(transform.position, 0.25f, Vector3.forward);
                 
                 if (hitInfo.collider.gameObject.GetComponent<DraggableConnectorPoint>() == draggableConnectorPoint)
                 {
-                    Debug.Log("CONNECTED!");
                     SchemeBlockFacade facade = draggableConnectorPoint.Block.Facade;
-                    // TODO: ядекюрэ бшвхякемхе хмдейяю б гюбхяхлнярх нр рнцн, хг йюйни хлеммн юсроср рнвйх ашк бшбедем йнммейрнп
-                    facade.BlockOutputButtons[0].ActionConnecorFacade.OnConnected(_block);
+
+                    int outputBlockIndex = 0;
+                    for (int i = 0; i < draggableConnectorPoint.Block.Facade.BlockOutputButtons.Length; i++)
+                    {
+                        if (draggableConnectorPoint.Block.Facade.BlockOutputButtons[i] == facade.BlockOutputButtons[i])
+                        {
+                            outputBlockIndex = i;
+                        }
+                    }
+
+                    facade.BlockOutputButtons[outputBlockIndex].ActionConnecorFacade.OnConnected(_block);
                 }
             }
         }
@@ -51,7 +58,7 @@ namespace Session.Scheme.Block.Button
 
         private void OnDestroy()
         {
-            _worldUIControllerService.OnStopInteract -= OnStopWorldUIInteraction;
+            _worldUIControllerService.OnStopInteractCallback -= OnStopWorldUIInteraction;
         }
     }
 }

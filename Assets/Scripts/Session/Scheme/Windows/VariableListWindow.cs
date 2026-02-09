@@ -35,7 +35,7 @@ namespace Session.Scheme.Windows
             {
                 SchemeVariableBase schemeVariable = _variableService.Variables[i];
 
-                VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_blockConfigs.WindowPrefabsUI[1].WindowName, _content.transform);
+                VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_blockConfigs.WindowPrefabsUI[11].WindowName, _content.transform);
 
                 window.MasterList = this;
                 window.RebuildUI(_variableService.GetTypeIntegerValue(schemeVariable.ValueType), schemeVariable.variableName, schemeVariable.GetValue());
@@ -45,7 +45,7 @@ namespace Session.Scheme.Windows
 
             _addNewVariableButton.onClick.AddListener(() =>
             {
-                VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_blockConfigs.WindowPrefabsUI[8].WindowName, _content.transform);
+                VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_blockConfigs.WindowPrefabsUI[11].WindowName, _content.transform);
                 window.MasterList = this;
                 _activeVariableItems.Add(window);
             });
@@ -114,11 +114,11 @@ namespace Session.Scheme.Windows
 
         public void ChooseVariable(string variableName)
         {
-            Debug.Log($"CHOOSING VARIABLE {variableName}");
             for (int i = 0; i < _activeVariableItems.Count; i++)
             {
                 if (_variableService.Variables[i].variableName == variableName)
                 {
+                    Debug.Log($"CHOOSING VARIABLE {variableName}");
                     //OnVariableChoose?.Invoke(_variableService.Variables[i]);
                     break;
                 }

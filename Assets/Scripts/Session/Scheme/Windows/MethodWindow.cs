@@ -43,7 +43,11 @@ namespace Session.Scheme.Windows
 
         private void Start()
         {
-            _closeButton.onClick.AddListener(() => { _windowService.CloseWindow(WindowName); });
+            _closeButton.onClick.AddListener(() => 
+            { 
+                _windowService.CloseWindow(WindowName);
+                SendOperationToMethodBlock();
+            });
 
             _varPicker1.OnVariableChoosed += OnOperand1Choosed;
             _operationItem.OnOperationTypeChoosed += OnOperationTypeChoosed;
@@ -75,6 +79,8 @@ namespace Session.Scheme.Windows
         {
             if (_operand1 != null && _operand2 != null)
                 _methodBlock.SetOperation(_operand1, _operatorType, _operand2);
+            //else
+            //    _methodBlock.SetOperation(new SchemeVariable<int>("A"), _operatorType, new SchemeVariable<int>("B"));
         }
 
         private void OnDestroy()

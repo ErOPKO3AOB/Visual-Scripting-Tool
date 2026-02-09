@@ -21,12 +21,12 @@ namespace Session.Scheme.Variables
             if (value == null || string.IsNullOrEmpty(value.ToString()))
             {
                 Value = default;
-                Debug.Log($"value {value} is defaul");
+                //Debug.Log($"value {value} is defaul");
             }
 
             else
             {
-                Debug.Log($"{Value.GetType()} + {value.GetType()}");
+                //Debug.Log($"{Value.GetType()} + {value.GetType()}");
 
                 if (Value.GetType() == value.GetType())
                     Value = (T)value;
