@@ -80,7 +80,7 @@
                 {
                     "name": "",
                     "id": "e6443247-af95-4dcb-a2c7-884061038f23",
-                    "path": "<Touchscreen>/primaryTouch/delta",
+                    "path": "<Touchscreen>/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -114,6 +114,17 @@
                     "name": "",
                     "id": "1eab9d88-d971-4247-b59f-95670fc73242",
                     "path": "<Pointer>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PointerPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8d82fb88-f464-43ce-adb2-32d509ef84ee",
+                    "path": "<Touchscreen>/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

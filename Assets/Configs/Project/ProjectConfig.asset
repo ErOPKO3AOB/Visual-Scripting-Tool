@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainScenes:
     _workspaceScene: {fileID: 102900000, guid: 6e0f17fb4f107f242a326edb28e44ec8, type: 3}
+    _workscapeSceneName: Workspace
   _blockConfigs:
     _blockFacades:
     - {fileID: 7494691911212051630, guid: 32bdcfb266f7ca84ea5e88240e473a6d, type: 3}

@@ -26,6 +26,13 @@ namespace GlobalServices.ProjectLifetime
         public BlockConfigs BlockConfigs => _blockConfigs;
         public CameraSettings CameraSettings => _cameraSettings;
         public InputSettings InputSettings => _inputSettings;
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            MainScenes.OnValidate();
+        }
+#endif
     }
 
     [Serializable]
@@ -33,8 +40,26 @@ namespace GlobalServices.ProjectLifetime
     {
 #if UNITY_EDITOR
         [SerializeField] private SceneAsset _workspaceScene;
+#endif
+        [SerializeField] private string _workscapeSceneName;
 
-        public string WorkspaceScene { get { return _workspaceScene.name; } }
+        public string WorkspaceScene 
+        { 
+            get 
+            { 
+#if UNITY_EDITOR
+                return _workspaceScene.name;
+#else
+                return _workscapeSceneName;
+#endif
+            }
+        }
+
+#if UNITY_EDITOR
+        public void OnValidate()
+        {
+            _workscapeSceneName = _workspaceScene.name;
+        }
 #endif
     }
 
