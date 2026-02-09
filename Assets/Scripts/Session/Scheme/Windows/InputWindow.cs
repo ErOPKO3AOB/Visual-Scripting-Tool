@@ -10,7 +10,7 @@ namespace Session.Scheme.Windows
     public class InputWindow : BaseWindow
     {
         [Inject]
-        public void Construct(WindowService windowService)
+        public void Construct(WindowFactory windowService)
         {
             _windowService = windowService;
         }
@@ -21,7 +21,7 @@ namespace Session.Scheme.Windows
 
         private InputBlock _inputBlock;
 
-        private WindowService _windowService;
+        private WindowFactory _windowService;
 
         public override void SetSender(object sender)
         {

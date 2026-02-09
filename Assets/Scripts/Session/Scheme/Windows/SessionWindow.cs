@@ -7,7 +7,7 @@ namespace Session.Scheme.Windows
     public class SessionWindow : BaseWindow
     {
         [Inject]
-        public void Construct(WindowService windowService, BlockConfigs blockConfigs)
+        public void Construct(WindowFactory windowService, BlockConfigs blockConfigs)
         {
             _windowService = windowService;
             _blockConfigs = blockConfigs;
@@ -16,7 +16,7 @@ namespace Session.Scheme.Windows
         [SerializeField] private Transform _content;
         [SerializeField] private int[] _essentialWindowIndecies;
 
-        private WindowService _windowService;
+        private WindowFactory _windowService;
         private BlockConfigs _blockConfigs;
 
         private void Start()

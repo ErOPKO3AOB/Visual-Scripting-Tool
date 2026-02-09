@@ -11,16 +11,16 @@ namespace Session.Scheme.Windows
     public class DownMenuItem : BaseWindow
     {
         [Inject]
-        public void Construct(SchemeBuilderService schemeBuilderService, BlockConfigs blockConfigs, WindowService windowService)
+        public void Construct(SchemeBlockFactory schemeBuilderService, BlockConfigs blockConfigs, WindowFactory windowService)
         {
             _schemeBuilderService = schemeBuilderService;
             _blockConfigs = blockConfigs;
             _windowService = windowService;
         }
 
-        private SchemeBuilderService _schemeBuilderService;
+        private SchemeBlockFactory _schemeBuilderService;
         private BlockConfigs _blockConfigs;
-        private WindowService _windowService;
+        private WindowFactory _windowService;
 
         [Header("Inventory")]
         [SerializeField] private List<InventoryBlockItem> _inventoryItems = new();
@@ -29,10 +29,11 @@ namespace Session.Scheme.Windows
         [Header("Buttons")]
         [SerializeField] private Button _BUTTON_NOT_ASSIGNED;
         [SerializeField] private Button _consoleButton;
+        [SerializeField] private Button _deleteButton;
 
         private void Start()
         {
-            for (int i = 0; i < _blockConfigs.BlockFacades.Length; i++)
+            for (int i = 0; i < _blockConfigs.BlockFacades.Count; i++)
             {
                 InventoryBlockItem inventoryItem = (InventoryBlockItem)_windowService.OpenWindow("INVENTORY_BLOCK_ITEM", _inventoryContent, this);
 
@@ -53,7 +54,10 @@ namespace Session.Scheme.Windows
                         break;
                 }
 
-                inventoryItem.ConstructManualy(type, _blockConfigs.BlockFacades[i].BlockName, _blockConfigs.BlockFacades[i].BlockName);
+                inventoryItem.ConstructManualy(type,
+                    _blockConfigs.BlockFacades[i].BlockName,
+                    _blockConfigs.BlockFacades[i].Label.GetText(),
+                    _blockConfigs.BlockFacades[i].SpriteRenderer.color);
                 inventoryItem.OnPressed += SpawnBlockFromInventory;
 
                 _inventoryItems.Add(inventoryItem);

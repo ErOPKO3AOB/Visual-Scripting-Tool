@@ -50,7 +50,7 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
+  m_UseAutoMass: 1
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
@@ -182,6 +182,7 @@ MonoBehaviour:
   _blockName: OUTPUT_BLOCK
   _singleInstance: 0
   _settingsWindowPrefab: {fileID: 5196163020083046144, guid: eeef526a83f5d664e9e9d539d4ca84f5, type: 3}
+  _spriteRenderer: {fileID: 363330209929860548}
   _label: {fileID: 2859770237101880521}
   _settingsPoint: {fileID: 233042475611779716}
   _inputPoint: {fileID: 7347344838210287088}

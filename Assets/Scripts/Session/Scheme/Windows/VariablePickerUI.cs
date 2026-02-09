@@ -24,7 +24,7 @@ namespace Session.Scheme.Variables
         [SerializeField] private Transform _content;
         [SerializeField] private Button _addNewButton;
 
-        private WindowService _windowService;
+        private WindowFactory _windowService;
         public VariableListWindow VariableList { get; private set; }
 
         public List<ChoosedVariableItem> VariableItems { get; private set; } = new List<ChoosedVariableItem>(1);
@@ -33,7 +33,7 @@ namespace Session.Scheme.Variables
         public UnityAction<SchemeVariableBase> OnVariableDeleted;
 
         [Inject]
-        public void Construct(WindowService windowService)
+        public void Construct(WindowFactory windowService)
         {
             _windowService = windowService;
         }

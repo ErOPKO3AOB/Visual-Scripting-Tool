@@ -1,38 +1,50 @@
 using GlobalServices.ProjectLifetime;
 using Session.Scheme.Block;
 using Session.Scheme.Block.Types;
-using Session.Scheme.Connector;
 using Session.Scheme.Variables;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using User;
+using VContainer;
 using VContainer.Unity;
 
 namespace Session.Scheme
 {
-    public class SchemeBuilderService : IDisposable
+    public class SchemeBlockFactory
     {
-        public SchemeBuilderService(Func<string, Transform, SchemeBlockFacade> factory, BlockConfigs blockConfigs, VariableService variableService, CameraControllerFacade cameraControllerFacade)
+        public SchemeBlockFactory(IObjectResolver objectResolver, BlockConfigs blockConfigs, VariableService variableService, CameraControllerFacade cameraControllerFacade)
         {
-            _factory = factory;
+            _objectResolver = objectResolver;
             _blockConfigs = blockConfigs;
             _variableService = variableService;
             _cameraControllerFacade = cameraControllerFacade;
         }
 
-        private readonly Func<string, Transform, SchemeBlockFacade> _factory;
+        private readonly IObjectResolver _objectResolver;
         private readonly BlockConfigs _blockConfigs;
         private readonly VariableService _variableService;
         private readonly CameraControllerFacade _cameraControllerFacade;
 
         private List<IBlock> _blocks = new();
-        private List<ActionConnector> _connectors = new();
 
-        public void SpawnBlock(string blockName)
+        public SchemeBlockFacade SpawnBlock(string blockName)
         {
-            SchemeBlockFacade schemeBlockFacade = _factory.Invoke(blockName, _cameraControllerFacade.transform);
+            Debug.Log("Camera transform pos: " + _cameraControllerFacade.transform.position);
 
+            // Spawning block
+            var schemeBlockFacade = _objectResolver.Instantiate(
+                // Finding prefab by name
+                _blockConfigs.BlockFacades.Find(b => b.BlockName == blockName)
+                .gameObject, 
+                null,
+                worldPositionStays: true)
+                // Getting component
+                .GetComponent<SchemeBlockFacade>();
+
+            schemeBlockFacade.Rigidbody.position = _cameraControllerFacade.transform.position;
+            
+            // Searching for block type
             IBlock block = null;
 
             if (blockName == _blockConfigs.BlockFacades[0].BlockName)
@@ -47,32 +59,15 @@ namespace Session.Scheme
             schemeBlockFacade.Model = block;
 
             _blocks.Add(block);
+
+            return schemeBlockFacade;
         }
 
         public void DestroyBlock(string blockName)
         {
-            for (int i = 0; i < _blocks.Count; i++)
-            {
-                //_blocks[i].Dispose();
-                // Нужна инерфейсовая логика для блока типа IBlock
-            }
-        }
-
-        public void ConnectBlocksWithConnector(IBlock outputPoint, IBlock inputPoint, ActionConnector connector)
-        {
-            //connector.SetInputConnection(outputPoint);
-            //connector.SetOutputConnection(inputPoint);
-        }
-
-        public void SpawnConnector()
-        {
-
-        }
-
-        void IDisposable.Dispose()
-        {
-            _blocks.Clear();
-            _connectors.Clear();
+            IBlock block = _blocks.Find(b => b.Facade.BlockName == blockName);
+            _blocks.Remove(block);
+            GameObject.Destroy(block.Facade.gameObject);
         }
     }
 }

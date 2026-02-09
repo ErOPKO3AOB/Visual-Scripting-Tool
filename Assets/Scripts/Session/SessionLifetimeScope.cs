@@ -60,58 +60,17 @@ namespace Session
         private void ConfigureSchemeEssentials(IContainerBuilder builder)
         {
             // Service for scheme building
-            builder.Register<SchemeBuilderService>(Lifetime.Scoped)
+            builder.Register<SchemeBlockFactory>(Lifetime.Scoped)
                 .AsImplementedInterfaces()
                 .AsSelf();
-
-            // Factory for spawning blocks
-            builder.RegisterFactory<string, Transform, SchemeBlockFacade>((IObjectResolver resolver) =>
-            {
-                return (string blockName, Transform spawnPosition) =>
-                {
-                    GameObject block = null;
-
-                    for (int i = 0; i < _projectConfig.BlockConfigs.BlockFacades.Length; i++)
-                    {
-                        if (blockName == _projectConfig.BlockConfigs.BlockFacades[i].BlockName)
-                        {
-                            Vector3 spawnPos = spawnPosition ? spawnPosition.position : Vector3.zero;
-                            block = resolver.Instantiate(_projectConfig.BlockConfigs.BlockFacades[i].gameObject, spawnPos, _projectConfig.BlockConfigs.BlockFacades[i].transform.rotation);
-                            break;
-                        }
-                    }
-
-                    return block.GetComponent<SchemeBlockFacade>();
-                };
-            }, Lifetime.Scoped);
 
             // Service for variable building
             builder.Register<VariableService>(Lifetime.Scoped)
                 .AsSelf();
 
             // Service for opening windows
-            builder.RegisterEntryPoint<WindowService>(Lifetime.Scoped)
+            builder.RegisterEntryPoint<WindowFactory>(Lifetime.Scoped)
                 .AsSelf();
-
-            // Register windows
-            builder.RegisterFactory<string, Transform, BaseWindow>((IObjectResolver resolver) =>
-            {
-                return (string windowName, Transform spawnParent) =>
-                {
-                    GameObject window = null;
-
-                    for (int i = 0; i < _projectConfig.BlockConfigs.WindowPrefabsUI.Length; i++)
-                    {
-                        if (windowName == _projectConfig.BlockConfigs.WindowPrefabsUI[i].WindowName)
-                        {
-                            window = resolver.Instantiate(_projectConfig.BlockConfigs.WindowPrefabsUI[i].gameObject, spawnParent);
-                            break;
-                        }
-                    }
-
-                    return window.GetComponent<BaseWindow>();
-                };
-            }, Lifetime.Scoped);
         }
     }
 }

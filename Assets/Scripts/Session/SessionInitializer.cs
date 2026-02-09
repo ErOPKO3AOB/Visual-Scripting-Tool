@@ -6,13 +6,13 @@ namespace Session
 {
     public class SessionInitializer : IInitializable
     {
-        public SessionInitializer(WindowService windowService, BlockConfigs blockConfigs)
+        public SessionInitializer(WindowFactory windowService, BlockConfigs blockConfigs)
         {
             _windowService = windowService;
             _blockConfigs = blockConfigs;
         }
 
-        private readonly WindowService _windowService;
+        private readonly WindowFactory _windowService;
         private readonly BlockConfigs _blockConfigs;
 
         public void Initialize()

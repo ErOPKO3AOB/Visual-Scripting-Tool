@@ -3,7 +3,9 @@ using Session.Scheme.Block.Button;
 using Session.Scheme.Connector;
 using Session.Scheme.Windows;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -67,7 +69,7 @@ namespace GlobalServices.ProjectLifetime
     public class BlockConfigs
     {
         [Header("Block Units")]
-        [SerializeField] private SchemeBlockFacade[] _blockFacades;
+        [SerializeField] private List<SchemeBlockFacade> _blockFacades;
         [SerializeField] private ActionConnecorFacade _actionConnecorFacadePrefab;
 
         [Header("Sprites")]
@@ -89,9 +91,9 @@ namespace GlobalServices.ProjectLifetime
         [SerializeField] private DraggableConnectorPoint _draggableConnectorPointPrefab;
 
         [Header("Block windows")]
-        [SerializeField] private BaseWindow[] _windowPrefabsUI;
+        [SerializeField] private List<BaseWindow> _windowPrefabsUI;
 
-        public SchemeBlockFacade[] BlockFacades => _blockFacades;
+        public List<SchemeBlockFacade> BlockFacades => _blockFacades;
         public ActionConnecorFacade ActionConnecorFacadePrefab => _actionConnecorFacadePrefab;
         public Sprite BoxSprite => _boxSprite;
         public Sprite CircleSprite => _circleSprite;
@@ -105,7 +107,7 @@ namespace GlobalServices.ProjectLifetime
         public BlockInputTrigger InputTriggerPrefab => _inputTriggerPrefab;
         public BlockOutputButton OutputButtonPrefab => _outputButtonPrefab;
         public DraggableConnectorPoint DraggableConnectorPointPrefab => _draggableConnectorPointPrefab; 
-        public BaseWindow[] WindowPrefabsUI => _windowPrefabsUI;
+        public List<BaseWindow> WindowPrefabsUI => _windowPrefabsUI;
     }
 
     [Serializable]

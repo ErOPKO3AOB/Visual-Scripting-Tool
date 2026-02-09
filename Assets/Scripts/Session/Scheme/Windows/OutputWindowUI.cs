@@ -10,7 +10,7 @@ namespace Session.Scheme.Windows
     public class OutputWindowUI : BaseWindow
     {
         [Inject]
-        public void Construct(WindowService windowService)
+        public void Construct(WindowFactory windowService)
         {
             _windowService = windowService;
         }
@@ -20,7 +20,7 @@ namespace Session.Scheme.Windows
         [SerializeField] private VariablePickerUI _variablePicker;
 
         private OutputBlock _outputBlock;
-        private WindowService _windowService;
+        private WindowFactory _windowService;
 
         public override void SetSender(object sender)
         {

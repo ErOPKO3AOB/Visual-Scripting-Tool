@@ -17,15 +17,11 @@ namespace Session.Scheme.Windows
             _blockConfigs = blockConfigs;
         }
 
-        public void ConstructManualy(Type blockType, string blockName, string labelName)
+        public void ConstructManualy(Type blockType, string blockName, string labelName, Color blockColor)
         {
-            //Color blockColor = new();
-
             if (blockType == typeof(ConditionBlock))
             {
                 _image.sprite = _blockConfigs.RhombSprite;
-
-                
             }
 
             else if (blockType == typeof(InputBlock) || blockType == typeof(OutputBlock))
@@ -43,7 +39,9 @@ namespace Session.Scheme.Windows
                 _image.sprite = _blockConfigs.BoxSprite;
             }
 
-            //_image.color = 
+            transform.localScale = new Vector2(2, 1);
+
+            _image.color = blockColor;
             _blockName = blockName;
             _label.text = labelName;
 

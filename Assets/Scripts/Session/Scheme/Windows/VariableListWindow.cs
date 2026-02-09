@@ -11,7 +11,7 @@ namespace Session.Scheme.Windows
     public class VariableListWindow : BaseWindow
     {
         [Inject]
-        public void Construct(BlockConfigs blockConfigs, WindowService windowService, VariableService variableService)
+        public void Construct(BlockConfigs blockConfigs, WindowFactory windowService, VariableService variableService)
         {
             _blockConfigs = blockConfigs;
             _windowService = windowService;
@@ -19,7 +19,7 @@ namespace Session.Scheme.Windows
         }
 
         private BlockConfigs _blockConfigs;
-        private WindowService _windowService;
+        private WindowFactory _windowService;
         private VariableService _variableService;
 
         [Header("UI")]

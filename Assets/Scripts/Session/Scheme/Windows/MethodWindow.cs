@@ -10,7 +10,7 @@ namespace Session.Scheme.Windows
     public class MethodWindow : BaseWindow
     {
         [Inject]
-        public void Construct(WindowService windowService)
+        public void Construct(WindowFactory windowService)
         {
             _windowService = windowService;
         }
@@ -25,7 +25,7 @@ namespace Session.Scheme.Windows
         private VariableService.OperatorType _operatorType;
         private SchemeVariableBase _operand2;
 
-        private WindowService _windowService;
+        private WindowFactory _windowService;
         private MethodBlock _methodBlock;
 
         public override void SetSender(object sender)

@@ -10,13 +10,13 @@ namespace Session.Scheme.Windows
     public class ConsoleWindow : BaseWindow
     {
         [Inject]
-        public void Construct(WindowService windowService, BlockConfigs blockConfigs)
+        public void Construct(WindowFactory windowService, BlockConfigs blockConfigs)
         {
             _windowService = windowService;
             _blockConfigs = blockConfigs;
         }
 
-        private WindowService _windowService;
+        private WindowFactory _windowService;
         private BlockConfigs _blockConfigs;
 
         [SerializeField] private Transform _content;

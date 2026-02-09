@@ -1,22 +1,21 @@
 using GlobalServices.ProjectLifetime;
-using System;
-using UnityEngine;
-using VContainer.Unity;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
-using Session.Scheme.Block;
+using VContainer;
+using VContainer.Unity;
 
 namespace Session.Scheme.Windows
 {
-    public class WindowService
+    public class WindowFactory
     {
-        public WindowService(Func<string, Transform, BaseWindow> windowFactory, BlockConfigs blockConfigs)
+        public WindowFactory(IObjectResolver objectResolver, BlockConfigs blockConfigs)
         {
-            _windowFactory = windowFactory;
+            _objectResolver = objectResolver;
             _blockConfigs = blockConfigs;
         }
 
-        private readonly Func<string, Transform, BaseWindow> _windowFactory;
+        private readonly IObjectResolver _objectResolver;
         private readonly BlockConfigs _blockConfigs;
 
         private List<BaseWindow> _activeWindows = new();
@@ -27,10 +26,18 @@ namespace Session.Scheme.Windows
 
         public BaseWindow OpenWindow(string windowName, Transform spawnParent = null, object sender = null)
         {
-            BaseWindow window = _windowFactory.Invoke(windowName, spawnParent);
+            BaseWindow window = _objectResolver.Instantiate(
+                // Finding window by name and spawning
+                _blockConfigs.WindowPrefabsUI.Find(w => w.WindowName == windowName)
+                .gameObject,
+                spawnParent).
+                // Getting window component
+                GetComponent<BaseWindow>();
+
             window.SetSender(sender);
             _activeWindows.Add(window);
             OnOpenWindow?.Invoke(window);
+
             return window;
         }
 

@@ -12,7 +12,7 @@ namespace Session.Scheme.Block
     public class SchemeBlockFacade : MonoBehaviour
     {
         [Inject]
-        public void Construct(WindowService windowService, BlockConfigs blockConfigs, WorldUIControllerService worldUIControllerService)
+        public void Construct(WindowFactory windowService, BlockConfigs blockConfigs, WorldUIControllerService worldUIControllerService)
         {
             _windowService = windowService;
             _blockConfigs = blockConfigs;
@@ -27,17 +27,20 @@ namespace Session.Scheme.Block
         [SerializeField] private BaseWindow _settingsWindowPrefab;
 
         [Header("Essentials")]
+        [SerializeField] private Rigidbody2D _rigidbody;
+        [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private BlockLabel _label;
         [SerializeField] private Transform _settingsPoint;
         [SerializeField] private Transform _inputPoint;
         [SerializeField] private Transform[] _outputPoints;
         [SerializeField] private Vector3[] _connectorOffsets;
 
+
         public BlockInputTrigger BlockInputTrigger { get; private set; }
         public BlockOutputButton[] BlockOutputButtons { get; private set; }
         public BlockSettingsButton BlockSettingsButton { get; private set; }
 
-        private WindowService _windowService;
+        private WindowFactory _windowService;
         private BlockConfigs _blockConfigs;
         private WorldUIControllerService _worldUIControllerService;
 
@@ -45,14 +48,16 @@ namespace Session.Scheme.Block
 
         // Configs
         public BoxCollider2D Collider { get; private set; }
-        public Rigidbody2D Rigidbody { get; private set; }
-        public SpriteRenderer SpriteRenderer { get; private set; }
+        public Rigidbody2D Rigidbody => _rigidbody;
+        public SpriteRenderer SpriteRenderer => _spriteRenderer;
         public BlockLabel Label { get { return _label; } set { _label = value; } }
 
         public DraggableBlockButton DraggableBlockButton { get; private set; }
 
         private void OnValidate()
         {
+            _rigidbody = GetComponent<Rigidbody2D>();
+            _spriteRenderer = GetComponent<SpriteRenderer>();
             Array.Resize(ref _connectorOffsets, _outputPoints.Length);
         }
 
@@ -61,8 +66,6 @@ namespace Session.Scheme.Block
             _label.OnChanged += OnLabelChanged;
 
             Collider = GetComponent<BoxCollider2D>();
-            Rigidbody = GetComponent<Rigidbody2D>();
-            SpriteRenderer = GetComponent<SpriteRenderer>();
 
             DraggableBlockButton = gameObject.AddComponent<DraggableBlockButton>();
             DraggableBlockButton.ConstructManually(_blockConfigs);
