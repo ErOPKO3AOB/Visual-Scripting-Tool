@@ -28,10 +28,10 @@ namespace Session.Scheme
 
         private List<IBlock> _blocks = new();
 
+        public bool DestroyWaiting {  get; private set; }
+
         public SchemeBlockFacade SpawnBlock(string blockName)
         {
-            Debug.Log("Camera transform pos: " + _cameraControllerFacade.transform.position);
-
             // Spawning block
             var schemeBlockFacade = _objectResolver.Instantiate(
                 // Finding prefab by name
@@ -63,9 +63,19 @@ namespace Session.Scheme
             return schemeBlockFacade;
         }
 
-        public void DestroyBlock(string blockName)
+        public void MakeAllBlocksWaitForDestroying(bool value)
         {
-            IBlock block = _blocks.Find(b => b.Facade.BlockName == blockName);
+            DestroyWaiting = value;
+
+            _blocks.ForEach((block) => 
+            {
+                block.Facade.SetDestroyWaiting(DestroyWaiting);
+            });
+        }
+
+        public void DestroyBlock(SchemeBlockFacade schemeBlockFacade)
+        {
+            IBlock block = _blocks.Find(b => b.Facade.BlockName == schemeBlockFacade.BlockName && b.Facade == schemeBlockFacade);
             _blocks.Remove(block);
             GameObject.Destroy(block.Facade.gameObject);
         }

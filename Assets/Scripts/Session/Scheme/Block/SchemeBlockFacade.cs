@@ -12,12 +12,18 @@ namespace Session.Scheme.Block
     public class SchemeBlockFacade : MonoBehaviour
     {
         [Inject]
-        public void Construct(WindowFactory windowService, BlockConfigs blockConfigs, WorldUIControllerService worldUIControllerService)
+        public void Construct(WindowFactory windowService, BlockConfigs blockConfigs, WorldUIControllerService worldUIControllerService, SchemeBlockFactory schemeBlockFactory)
         {
             _windowService = windowService;
             _blockConfigs = blockConfigs;
             _worldUIControllerService = worldUIControllerService;
+            _schemeBlockFactory = schemeBlockFactory;
         }
+
+        private WindowFactory _windowService;
+        private BlockConfigs _blockConfigs;
+        private WorldUIControllerService _worldUIControllerService;
+        private SchemeBlockFactory _schemeBlockFactory;
 
         [Header("Base")]
         [SerializeField] private string _blockName;
@@ -30,19 +36,16 @@ namespace Session.Scheme.Block
         [SerializeField] private Rigidbody2D _rigidbody;
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private BlockLabel _label;
-        [SerializeField] private Transform _settingsPoint;
+        [SerializeField] private Transform _menuPoint;
         [SerializeField] private Transform _inputPoint;
         [SerializeField] private Transform[] _outputPoints;
         [SerializeField] private Vector3[] _connectorOffsets;
-
 
         public BlockInputTrigger BlockInputTrigger { get; private set; }
         public BlockOutputButton[] BlockOutputButtons { get; private set; }
         public BlockSettingsButton BlockSettingsButton { get; private set; }
 
-        private WindowFactory _windowService;
-        private BlockConfigs _blockConfigs;
-        private WorldUIControllerService _worldUIControllerService;
+        public BlockDeleteButton BlockDeleteButton { get; private set; }
 
         public IBlock Model { get; set; }
 
@@ -70,11 +73,11 @@ namespace Session.Scheme.Block
             DraggableBlockButton = gameObject.AddComponent<DraggableBlockButton>();
             DraggableBlockButton.ConstructManually(_blockConfigs);
 
-            if (_settingsWindowPrefab != null && _settingsPoint != null)
+            if (_settingsWindowPrefab != null && _menuPoint != null)
             {
                 BlockSettingsButton = Instantiate(
                     _blockConfigs.SettingsButtonPrefab,
-                    _settingsPoint)
+                    _menuPoint)
                     .GetComponent<BlockSettingsButton>();
 
                 BlockSettingsButton.ConstructManualy(_windowService, _settingsWindowPrefab, Model);
@@ -91,7 +94,11 @@ namespace Session.Scheme.Block
                 BlockOutputButtons[i].ConstructManually(_blockConfigs, Model, _connectorOffsets[i]);
             }
 
+            BlockDeleteButton = Instantiate(_blockConfigs.DeleteButtonPrefab, _menuPoint);
+            BlockDeleteButton.ConstructManualy(_schemeBlockFactory, Model);
+
             _label.SetText(_label.GetText());
+            SetDestroyWaiting(_schemeBlockFactory.DestroyWaiting);
         }
 
         private void OnLabelChanged(Vector2 size)
@@ -99,7 +106,7 @@ namespace Session.Scheme.Block
             SpriteRenderer.size = size;
             Collider.size = size;
             _inputPoint.transform.localPosition = new Vector2(_inputPoint.transform.localPosition.x, size.y / 2);
-            _settingsPoint.transform.localPosition = new Vector2(size.x / 2, size.y / 2);
+            _menuPoint.transform.localPosition = new Vector2(size.x / 2, size.y / 2);
 
             for (int i = 0; i < _outputPoints.Length; i++)
             {
@@ -132,9 +139,16 @@ namespace Session.Scheme.Block
             }
         }
 
+        public void SetDestroyWaiting(bool value)
+        {
+            if (BlockSettingsButton != null)
+                BlockSettingsButton.gameObject.SetActive(!value);
+            BlockDeleteButton.gameObject.SetActive(value);
+        }
+
         private void OnDestroy()
         {
-            Destroy(_settingsPoint.gameObject);
+            Destroy(_menuPoint.gameObject);
             Destroy(_inputPoint.gameObject);
             foreach (Transform t in _outputPoints) Destroy(t.gameObject);
 

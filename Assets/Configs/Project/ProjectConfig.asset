@@ -34,6 +34,7 @@ MonoBehaviour:
     _inputTriggerPrefab: {fileID: 1041446880710125803, guid: 5d443f0d04b641645a60e2720b4b1462, type: 3}
     _outputButtonPrefab: {fileID: 330461141033527946, guid: 36ba5fac353fca84a99c042169785ac6, type: 3}
     _draggableConnectorPointPrefab: {fileID: 9166515427336357614, guid: ce228776bca552441b3d13938c8363ca, type: 3}
+    _deleteButtonPrefab: {fileID: 4821818397051145339, guid: fbcdf6d2bffd8674080d1819177ec476, type: 3}
     _windowPrefabsUI:
     - {fileID: 4933336775592735967, guid: c61d77aafcab0a448924e3303b765627, type: 3}
     - {fileID: 4182976255418826037, guid: 66cd6c65825fe8d4bb2bef485a0eec63, type: 3}

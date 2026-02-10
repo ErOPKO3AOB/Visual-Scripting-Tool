@@ -89,6 +89,7 @@ namespace GlobalServices.ProjectLifetime
         [SerializeField] private BlockInputTrigger _inputTriggerPrefab;
         [SerializeField] private BlockOutputButton _outputButtonPrefab;
         [SerializeField] private DraggableConnectorPoint _draggableConnectorPointPrefab;
+        [SerializeField] private BlockDeleteButton _deleteButtonPrefab;
 
         [Header("Block windows")]
         [SerializeField] private List<BaseWindow> _windowPrefabsUI;
@@ -107,6 +108,7 @@ namespace GlobalServices.ProjectLifetime
         public BlockInputTrigger InputTriggerPrefab => _inputTriggerPrefab;
         public BlockOutputButton OutputButtonPrefab => _outputButtonPrefab;
         public DraggableConnectorPoint DraggableConnectorPointPrefab => _draggableConnectorPointPrefab; 
+        public BlockDeleteButton DeleteButtonPrefab => _deleteButtonPrefab;
         public List<BaseWindow> WindowPrefabsUI => _windowPrefabsUI;
     }
 

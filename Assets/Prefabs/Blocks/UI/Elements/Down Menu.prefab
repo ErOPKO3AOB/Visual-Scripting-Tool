@@ -504,7 +504,7 @@ MonoBehaviour:
   _inventoryContent: {fileID: 2123644751546688145}
   _BUTTON_NOT_ASSIGNED: {fileID: 3003185628650760980}
   _consoleButton: {fileID: 8724452975316612895}
-  _deleteButton: {fileID: 2623555000687389801}
+  _deleteToggle: {fileID: 8009022946082981003}
 --- !u!1 &4530919495538228773
 GameObject:
   m_ObjectHideFlags: 0
@@ -755,9 +755,9 @@ GameObject:
   - component: {fileID: 1562195278462865888}
   - component: {fileID: 8346748244760216177}
   - component: {fileID: 6558649931206772365}
-  - component: {fileID: 2623555000687389801}
+  - component: {fileID: 8009022946082981003}
   m_Layer: 5
-  m_Name: Delete_Btn
+  m_Name: Delete_Tgl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -821,7 +821,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2623555000687389801
+--- !u!114 &8009022946082981003
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -830,7 +830,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8851677965143569286}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -843,10 +843,10 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.75, g: 0, b: 0, a: 1}
-    m_HighlightedColor: {r: 0.1602, g: 0.2, b: 0.2, a: 1}
-    m_PressedColor: {r: 0.1875, g: 0.25, b: 0.19886364, a: 1}
-    m_SelectedColor: {r: 0.22, g: 0.22, b: 0.22, a: 1}
-    m_DisabledColor: {r: 0.15, g: 0.105000004, b: 0.105000004, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -862,9 +862,13 @@ MonoBehaviour:
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 6558649931206772365}
-  m_OnClick:
+  toggleTransition: 1
+  graphic: {fileID: 4103385622890643463}
+  m_Group: {fileID: 0}
+  onValueChanged:
     m_PersistentCalls:
       m_Calls: []
+  m_IsOn: 0
 --- !u!1 &8908465154251576249
 GameObject:
   m_ObjectHideFlags: 0

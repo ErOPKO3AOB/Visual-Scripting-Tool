@@ -43,21 +43,12 @@ namespace Session.Scheme.Windows
 
         public void CloseWindow(string windowName)
         {
-            BaseWindow window = null;
+            // Finding last
+            BaseWindow window = _activeWindows.FindLast(w => w.WindowName == windowName);
 
-            // Searching for last opened
-            for (int i = _activeWindows.Count - 1; i >= 0; i--)
-            {
-                if (_activeWindows[i].WindowName == windowName)
-                {
-                    window = _activeWindows[i];
-                    OnCloseWindow?.Invoke(window);
-                    _activeWindows.RemoveAt(i);
-                    GameObject.Destroy(window.gameObject);
-                    break;
-                }
-            }
-
+            OnCloseWindow?.Invoke(window);
+            _activeWindows.Remove(window);
+            GameObject.Destroy(window.gameObject);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Session.Scheme.Windows
         [Header("Buttons")]
         [SerializeField] private Button _BUTTON_NOT_ASSIGNED;
         [SerializeField] private Button _consoleButton;
-        [SerializeField] private Button _deleteButton;
+        [SerializeField] private Toggle _deleteToggle;
 
         private void Start()
         {
@@ -67,6 +67,11 @@ namespace Session.Scheme.Windows
             {
                 _windowService.OpenWindow("CONSOLE_WINDOW");
             });
+
+            _deleteToggle.onValueChanged.AddListener((value) => 
+            {
+                _schemeBuilderService.MakeAllBlocksWaitForDestroying(value);
+            });
         }
 
         private void SpawnBlockFromInventory(string blockName)
@@ -82,6 +87,8 @@ namespace Session.Scheme.Windows
             }
 
             _consoleButton.onClick.RemoveAllListeners();
+
+            _deleteToggle.onValueChanged.RemoveAllListeners();
         }
     }
 }

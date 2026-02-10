@@ -51,7 +51,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 1
-  m_Mass: 1
+  m_Mass: 2.0000002
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 0
@@ -182,9 +182,10 @@ MonoBehaviour:
   _blockName: INPUT_BLOCK
   _singleInstance: 0
   _settingsWindowPrefab: {fileID: 1241162653714162332, guid: a74121947062de048861836482b90279, type: 3}
+  _rigidbody: {fileID: 450910942084014059}
   _spriteRenderer: {fileID: 363330209929860548}
   _label: {fileID: 5025507957939751296}
-  _settingsPoint: {fileID: 233042475611779716}
+  _menuPoint: {fileID: 233042475611779716}
   _inputPoint: {fileID: 7347344838210287088}
   _outputPoints:
   - {fileID: 6098597830458538090}
@@ -240,7 +241,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4249063271737534313, guid: ba0103cc95d0f6448a761444c5fc6215, type: 3}
       propertyPath: m_Name
-      value: Settings
+      value: MenuPos
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

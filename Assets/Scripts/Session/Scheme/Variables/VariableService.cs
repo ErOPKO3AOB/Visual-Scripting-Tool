@@ -257,7 +257,7 @@ namespace Session.Scheme.Variables
             IsLessOrEqual,
         }
 
-        public bool UseComparison(string operand1Name, ConditionalOperatorType opType, string operand2Name)
+        public bool UseComparsion(string operand1Name, ConditionalOperatorType opType, string operand2Name)
         {
             SchemeVariableBase operand1 = Variables[CheckExistance(operand1Name)];
             SchemeVariableBase operand2 = Variables[CheckExistance(operand2Name)];

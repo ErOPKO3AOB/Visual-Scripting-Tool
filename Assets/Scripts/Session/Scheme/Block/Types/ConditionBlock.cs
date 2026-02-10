@@ -28,15 +28,8 @@ namespace Session.Scheme.Block.Types
 
         public void ProvideAction()
         {
-            if (_variableService.UseComparison(_operand1.variableName, _conditionalOperatorType, _operand2.variableName) == true)
-            {
-                Next = _trueOutput;
-            }
-
-            else
-            {
-                Next = _falseOutput;
-            }
+            bool comparsionValue = _variableService.UseComparsion(_operand1.variableName, _conditionalOperatorType, _operand2.variableName);
+            Next = comparsionValue ? _trueOutput : _falseOutput;
 
             Next?.ProvideAction();
         }

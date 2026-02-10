@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1520646508921866379}
   m_Layer: 0
-  m_Name: SettingsPos
+  m_Name: MenuPos
   m_TagString: Untagged
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
