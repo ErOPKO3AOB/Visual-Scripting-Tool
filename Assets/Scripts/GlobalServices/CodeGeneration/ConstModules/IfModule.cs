@@ -9,29 +9,29 @@ namespace GlobalServices.CodeGeneration.ConstModules
     {
         public string Value { get; private set; } = $"if {CodeModulesConsts.OPENED_BRACE}{CodeModulesConsts.CLOSED_BRACE} {CodeModulesConsts.OPENED_CURLY_BRACE} {CodeModulesConsts.CLOSED_CURLY_BRACE}";
         
-        public void PasteExpressionInBraces(string operand1Name, VariableService.ConditionalOperatorType opType, string operand2Name)
+        public void PasteExpressionInBraces(string operand1Name, VariableService.ConditionOperatorType opType, string operand2Name)
         {
             bool symbolFound = false;
             string opTypeString = "";
 
             switch (opType)
             {
-                case VariableService.ConditionalOperatorType.IsEqual:
+                case VariableService.ConditionOperatorType.IsEqual:
                     opTypeString = "==";
                     break;
-                case VariableService.ConditionalOperatorType.IsNotEqual:
+                case VariableService.ConditionOperatorType.IsNotEqual:
                     opTypeString = "!=";
                     break;
-                case VariableService.ConditionalOperatorType.IsGreater:
+                case VariableService.ConditionOperatorType.IsGreater:
                     opTypeString = ">";
                     break;
-                case VariableService.ConditionalOperatorType.IsGreaterOrEqual:
+                case VariableService.ConditionOperatorType.IsGreaterOrEqual:
                     opTypeString = ">=";
                     break;
-                case VariableService.ConditionalOperatorType.IsLess:
+                case VariableService.ConditionOperatorType.IsLess:
                     opTypeString = "<";
                     break;
-                case VariableService.ConditionalOperatorType.IsLessOrEqual:
+                case VariableService.ConditionOperatorType.IsLessOrEqual:
                     opTypeString = "<=";
                     break;
             }

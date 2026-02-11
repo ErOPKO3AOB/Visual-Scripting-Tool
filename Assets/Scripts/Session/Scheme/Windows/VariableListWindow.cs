@@ -29,6 +29,21 @@ namespace Session.Scheme.Windows
 
         private List<VariableItemUI> _activeVariableItems = new List<VariableItemUI>();
 
+        private VariablePickerUI _variablePicker;
+
+        public override void SetSender(object sender)
+        {
+            try
+            {
+                _variablePicker = (VariablePickerUI)sender;
+            }
+
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+            }
+        }
+
         private void Start()
         {
             for (int i = 0; i < _variableService.Variables.Count; i++)
@@ -62,26 +77,28 @@ namespace Session.Scheme.Windows
 
         public void AddVariable(string name, Type type, object value)
         {
-            int existingIndex = _variableService.CheckExistance(name);
-
             if (name != null && type != null)
             {
                 switch (_variableService.GetTypeIntegerValue(type))
                 {
                     case 0:
                         if (value != null) int.Parse(value.ToString());
+                        else value = 0;
                         _variableService.BuildVariable<int>(name, value);
                         break;
                     case 1:
                         if (value != null) float.Parse(value.ToString());
+                        else value = 0;
                         _variableService.BuildVariable<float>(name, value);
                         break;
                     case 2:
                         if (value != null) value.ToString();
+                        else value = "";
                         _variableService.BuildVariable<string>(name, value);
                         break;
                     case 3:
                         if (value != null) bool.Parse(value.ToString());
+                        else value = false;
                         _variableService.BuildVariable<bool>(name, value);
                         break;
                 }
@@ -93,36 +110,20 @@ namespace Session.Scheme.Windows
             }
         }
 
-        public void RemoveVariable(VariableItemUI variable)
+        public void RemoveVariable(VariableItemUI variableItem)
         {
-            Destroy(variable.gameObject);
+            SchemeVariableBase variable = _variableService.Variables.Find(v => v.variableName == variableItem.VariableName);
+            _variableService.RemoveVariable(variable.variableName);
 
-            if (_variableService.Variables.Count >= _activeVariableItems.Count)
-            {
-                for (int i = 0; i < _activeVariableItems.Count; i++)
-                {
-                    if (_variableService.Variables[i].variableName == variable.name)
-                    {
-                        //OnVariableDelete?.Invoke(_variableService.Variables[i]);
-                        _variableService.RemoveVariable(name);
-                        _activeVariableItems.RemoveAt(i);
-                        break;
-                    }
-                }
-            }
+            _activeVariableItems.Remove(variableItem);
+            Destroy(variableItem.gameObject);
         }
 
         public void ChooseVariable(string variableName)
         {
-            for (int i = 0; i < _activeVariableItems.Count; i++)
-            {
-                if (_variableService.Variables[i].variableName == variableName)
-                {
-                    Debug.Log($"CHOOSING VARIABLE {variableName}");
-                    //OnVariableChoose?.Invoke(_variableService.Variables[i]);
-                    break;
-                }
-            }
+            int variableIndex = _variableService.CheckExistance(_activeVariableItems.Find(v => v.VariableName == variableName).VariableName);
+            if (variableIndex != -1)
+                _variablePicker.OnVariableChoose(_variableService.Variables[variableIndex]);
         }
     }
 }

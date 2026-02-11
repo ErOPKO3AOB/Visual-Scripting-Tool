@@ -28,11 +28,13 @@ namespace Session.Scheme.Windows
         [SerializeField] private string _boolPlaceHolder = "¬ведите булевое значение true/false";
         [SerializeField] private BoolValidator _boolValidator;
 
+        private VariableListWindow _masterList;
         private Type _variableType;
         private string _variableName;
         private object _variableValue = null;
+        
+        public string VariableName => _variableName;
 
-        private VariableListWindow _masterList;
         public VariableListWindow MasterList
         {
             get
@@ -76,13 +78,6 @@ namespace Session.Scheme.Windows
             _nameInputField.text = name;
             _valueInputField.text = value?.ToString();
         }
-
-        //public void RebuildUI(SchemeVariableBase schemeVariable)
-        //{
-        //    if (_masterList == null) Debug.Log("MASTER LIST IS NULL");
-        //    if (_masterList._variableService == null) Debug.Log("MASTER LIST.VARIABLE SERVICE IS NULL");
-        //    RebuildUI(_masterList.VariableService.GetTypeIntegerValue(schemeVariable.ValueType), schemeVariable.variableName, null);
-        //}
 
         private void InitializeValuePlaceHolder(int value)
         {

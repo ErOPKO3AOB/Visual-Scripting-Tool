@@ -8,30 +8,67 @@ namespace Session.Scheme.Windows
 {
     public class OperationItem : BaseWindow
     {
+        public enum OperationType
+        {
+            Method, Condition
+        }
+
         [Header("UI")]
         [SerializeField] private TMP_Dropdown _operationDropDown;
+        public TMP_Dropdown OperationDropDown => _operationDropDown;
 
-        public UnityAction<VariableService.OperatorType> OnOperationTypeChoosed;
-
-        private void Start()
+        private OperationType _operatorType;
+        public UnityAction<object> OnOperationTypeChoosed;
+        
+        public OperationType OperatorType 
         {
-            InitializeDropdown();
-
-            _operationDropDown.onValueChanged.AddListener((int value) =>
+            get 
             {
-                VariableService.OperatorType operatorType = (VariableService.OperatorType)value;
+                return _operatorType; 
+            }
+            
+            set 
+            {
+                _operatorType = value;
+                
+                InitializeDropdown();
 
-                OnOperationTypeChoosed?.Invoke(operatorType);
-            });
+                _operationDropDown.onValueChanged.AddListener((int value) =>
+                {
+                    Type operatorType = default;
+
+                    switch (_operatorType)
+                    {
+                        case OperationType.Method:
+                            operatorType = typeof(VariableService.MethodOperatorType);
+                            break;
+                        case OperationType.Condition:
+                            operatorType = typeof(VariableService.ConditionOperatorType);
+                            break;
+                    }
+
+                    OnOperationTypeChoosed?.Invoke(value);
+                });
+            } 
         }
 
         private void InitializeDropdown()
         {
             _operationDropDown.ClearOptions();
 
-            var enumValues = Enum.GetValues(typeof(VariableService.OperatorType));
-            var enumType = typeof(VariableService.OperatorType);
+            Type enumType = default;
 
+            switch (_operatorType)
+            {
+                case OperationType.Method:
+                    enumType = typeof(VariableService.MethodOperatorType);
+                    break;
+                case OperationType.Condition:
+                    enumType = typeof(VariableService.ConditionOperatorType);
+                    break;
+            }
+
+            var enumValues = Enum.GetValues(enumType);
             var options = new System.Collections.Generic.List<TMP_Dropdown.OptionData>();
 
             foreach (var value in enumValues)

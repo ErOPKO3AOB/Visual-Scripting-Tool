@@ -17,7 +17,7 @@ namespace Session.Scheme.Block.Types
         private readonly VariableService _variableService;
 
         private SchemeVariableBase _operand1;
-        private VariableService.ConditionalOperatorType _conditionalOperatorType;
+        private VariableService.ConditionOperatorType _conditionalOperatorType;
         private SchemeVariableBase _operand2;
 
         public IBlock Next { get; set; }
@@ -44,7 +44,7 @@ namespace Session.Scheme.Block.Types
             _falseOutput = output;
         }
 
-        public void SetOperation(SchemeVariableBase operand1, VariableService.ConditionalOperatorType operatorType, SchemeVariableBase operand2)
+        public void SetOperation(SchemeVariableBase operand1, VariableService.ConditionOperatorType operatorType, SchemeVariableBase operand2)
         {
             _operand1 = operand1;
             _conditionalOperatorType = operatorType;

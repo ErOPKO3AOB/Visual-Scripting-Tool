@@ -6,6 +6,45 @@ namespace Session.Scheme.Variables
 {
     public class VariableService
     {
+        public enum MethodOperatorType
+        {
+            [InspectorName("=")]
+            FirstEqualSecond,
+
+            [InspectorName("+=")]
+            FirstPlusSecond,
+
+            [InspectorName("-=")]
+            FirstMinusSecond,
+
+            [InspectorName("/=")]
+            FirstDividedBySecond,
+
+            [InspectorName("*=")]
+            FirstMultypliedBySecond
+        }
+
+        public enum ConditionOperatorType
+        {
+            [InspectorName("==")]
+            IsEqual,
+
+            [InspectorName("!=")]
+            IsNotEqual,
+
+            [InspectorName(">")]
+            IsGreater,
+
+            [InspectorName(">=")]
+            IsGreaterOrEqual,
+
+            [InspectorName("<")]
+            IsLess,
+
+            [InspectorName("<=")]
+            IsLessOrEqual,
+        }
+
         public List<SchemeVariableBase> Variables { get; private set; } = new List<SchemeVariableBase>();
 
         #region Variable Creating
@@ -102,25 +141,7 @@ namespace Session.Scheme.Variables
         #endregion
 
         #region Variable Operating
-        public enum OperatorType
-        {
-            [InspectorName("=")]
-            FirstEqualSecond,
-
-            [InspectorName("+=")]
-            FirstPlusSecond,
-
-            [InspectorName("-=")]
-            FirstMinusSecond,
-
-            [InspectorName("/=")]
-            FirstDividedBySecond,
-
-            [InspectorName("*=")]
-            FirstMultypliedBySecond
-        }
-
-        public void UseOperation(string operand1Name, OperatorType opType, string operand2Name)
+        public void UseOperation(string operand1Name, MethodOperatorType opType, string operand2Name)
         {
             SchemeVariableBase operand1 = Variables[CheckExistance(operand1Name)];
             SchemeVariableBase operand2 = Variables[CheckExistance(operand2Name)];
@@ -138,19 +159,19 @@ namespace Session.Scheme.Variables
 
                 switch (opType)
                 {
-                    case OperatorType.FirstEqualSecond:
+                    case MethodOperatorType.FirstEqualSecond:
                         operand1.SetValue((int)operand2.GetValue());
                         break;
-                    case OperatorType.FirstPlusSecond:
+                    case MethodOperatorType.FirstPlusSecond:
                         operand1.SetValue((int)operand1.GetValue() + (int)operand2.GetValue());
                         break;
-                    case OperatorType.FirstMinusSecond:
+                    case MethodOperatorType.FirstMinusSecond:
                         operand1.SetValue((int)operand1.GetValue() - (int)operand2.GetValue());
                         break;
-                    case OperatorType.FirstDividedBySecond:
+                    case MethodOperatorType.FirstDividedBySecond:
                         operand1.SetValue((int)operand1.GetValue() / (int)operand2.GetValue());
                         break;
-                    case OperatorType.FirstMultypliedBySecond:
+                    case MethodOperatorType.FirstMultypliedBySecond:
                         operand1.SetValue((int)operand1.GetValue() * (int)operand2.GetValue());
                         break;
                 }
@@ -163,19 +184,19 @@ namespace Session.Scheme.Variables
 
                 switch (opType)
                 {
-                    case OperatorType.FirstEqualSecond:
+                    case MethodOperatorType.FirstEqualSecond:
                         operand1.SetValue((float)operand2.GetValue());
                         break;
-                    case OperatorType.FirstPlusSecond:
+                    case MethodOperatorType.FirstPlusSecond:
                         operand1.SetValue((float)operand1.GetValue() + (float)operand2.GetValue());
                         break;
-                    case OperatorType.FirstMinusSecond:
+                    case MethodOperatorType.FirstMinusSecond:
                         operand1.SetValue((float)operand1.GetValue() - (float)operand2.GetValue());
                         break;
-                    case OperatorType.FirstDividedBySecond:
+                    case MethodOperatorType.FirstDividedBySecond:
                         operand1.SetValue((float)operand1.GetValue() / (float)operand2.GetValue());
                         break;
-                    case OperatorType.FirstMultypliedBySecond:
+                    case MethodOperatorType.FirstMultypliedBySecond:
                         operand1.SetValue((float)operand1.GetValue() * (float)operand2.GetValue());
                         break;
                 }
@@ -188,10 +209,10 @@ namespace Session.Scheme.Variables
 
                 switch (opType)
                 {
-                    case OperatorType.FirstEqualSecond:
+                    case MethodOperatorType.FirstEqualSecond:
                         operand1.SetValue((string)operand2.GetValue());
                         break;
-                    case OperatorType.FirstPlusSecond:
+                    case MethodOperatorType.FirstPlusSecond:
                         operand1.SetValue((string)operand1.GetValue() + (string)operand2.GetValue());
                         break;
                         //case OperatorType.FirstMinusSecond:
@@ -213,7 +234,7 @@ namespace Session.Scheme.Variables
 
                 switch (opType)
                 {
-                    case OperatorType.FirstEqualSecond:
+                    case MethodOperatorType.FirstEqualSecond:
                         operand1.SetValue((bool)operand2.GetValue());
                         break;
                         //case OperatorType.FirstPlusSecond:
@@ -235,29 +256,8 @@ namespace Session.Scheme.Variables
         }
         #endregion
 
-        #region Variable Comparison
-        public enum ConditionalOperatorType
-        {
-            [InspectorName("==")]
-            IsEqual,
-
-            [InspectorName("!=")]
-            IsNotEqual,
-
-            [InspectorName(">")]
-            IsGreater,
-
-            [InspectorName(">=")]
-            IsGreaterOrEqual,
-
-            [InspectorName("<")]
-            IsLess,
-
-            [InspectorName("<=")]
-            IsLessOrEqual,
-        }
-
-        public bool UseComparsion(string operand1Name, ConditionalOperatorType opType, string operand2Name)
+        #region Variable Comparsion
+        public bool UseComparsion(string operand1Name, ConditionOperatorType opType, string operand2Name)
         {
             SchemeVariableBase operand1 = Variables[CheckExistance(operand1Name)];
             SchemeVariableBase operand2 = Variables[CheckExistance(operand2Name)];
@@ -272,22 +272,22 @@ namespace Session.Scheme.Variables
             {
                 switch (opType)
                 {
-                    case ConditionalOperatorType.IsEqual:
+                    case ConditionOperatorType.IsEqual:
                         if ((int)operand1.GetValue() == (int)operand2.GetValue()) return true;
                         break;
-                    case ConditionalOperatorType.IsNotEqual:
+                    case ConditionOperatorType.IsNotEqual:
                         if ((int)operand1.GetValue() != (int)operand2.GetValue()) return true;
                         break;
-                    case ConditionalOperatorType.IsGreater:
+                    case ConditionOperatorType.IsGreater:
                         if ((int)operand1.GetValue() > (int)operand2.GetValue()) return true;
                         break;
-                    case ConditionalOperatorType.IsGreaterOrEqual:
+                    case ConditionOperatorType.IsGreaterOrEqual:
                         if ((int)operand1.GetValue() >= (int)operand2.GetValue()) return true;
                         break;
-                    case ConditionalOperatorType.IsLess:
+                    case ConditionOperatorType.IsLess:
                         if ((int)operand1.GetValue() < (int)operand2.GetValue()) return true;
                         break;
-                    case ConditionalOperatorType.IsLessOrEqual:
+                    case ConditionOperatorType.IsLessOrEqual:
                         if ((int)operand1.GetValue() <= (int)operand2.GetValue()) return true;
                         break;
                 }
@@ -297,22 +297,22 @@ namespace Session.Scheme.Variables
             {
                 switch (opType)
                 {
-                    case ConditionalOperatorType.IsEqual:
+                    case ConditionOperatorType.IsEqual:
                         if ((float)operand1.GetValue() == (float)operand2.GetValue()) return true;
                         break;
-                    case ConditionalOperatorType.IsNotEqual:
+                    case ConditionOperatorType.IsNotEqual:
                         if ((float)operand1.GetValue() != (float)operand2.GetValue()) return true;
                         break;
-                    case ConditionalOperatorType.IsGreater:
+                    case ConditionOperatorType.IsGreater:
                         if ((float)operand1.GetValue() > (float)operand2.GetValue()) return true;
                         break;
-                    case ConditionalOperatorType.IsGreaterOrEqual:
+                    case ConditionOperatorType.IsGreaterOrEqual:
                         if ((float)operand1.GetValue() >= (float)operand2.GetValue()) return true;
                         break;
-                    case ConditionalOperatorType.IsLess:
+                    case ConditionOperatorType.IsLess:
                         if ((float)operand1.GetValue() < (float)operand2.GetValue()) return true;
                         break;
-                    case ConditionalOperatorType.IsLessOrEqual:
+                    case ConditionOperatorType.IsLessOrEqual:
                         if ((float)operand1.GetValue() <= (float)operand2.GetValue()) return true;
                         break;
                 }
@@ -325,28 +325,28 @@ namespace Session.Scheme.Variables
 
                 switch (opType)
                 {
-                    case ConditionalOperatorType.IsEqual:
+                    case ConditionOperatorType.IsEqual:
                         if ((string)operand1.GetValue() == (string)operand2.GetValue()) return true;
                         break;
-                    case ConditionalOperatorType.IsNotEqual:
+                    case ConditionOperatorType.IsNotEqual:
                         if ((string)operand1.GetValue() != (string)operand2.GetValue()) return true;
                         break;
-                    case ConditionalOperatorType.IsGreater:
+                    case ConditionOperatorType.IsGreater:
                         first = (string)operand1.GetValue();
                         second = (string)operand2.GetValue();
                         if (first.Length > second.Length) return true;
                         break;
-                    case ConditionalOperatorType.IsGreaterOrEqual:
+                    case ConditionOperatorType.IsGreaterOrEqual:
                         first = (string)operand1.GetValue();
                         second = (string)operand2.GetValue();
                         if (first.Length >= second.Length) return true;
                         break;
-                    case ConditionalOperatorType.IsLess:
+                    case ConditionOperatorType.IsLess:
                         first = (string)operand1.GetValue();
                         second = (string)operand2.GetValue();
                         if (first.Length < second.Length) return true;
                         break;
-                    case ConditionalOperatorType.IsLessOrEqual:
+                    case ConditionOperatorType.IsLessOrEqual:
                         first = (string)operand1.GetValue();
                         second = (string)operand2.GetValue();
                         if (first.Length <= second.Length) return true;
@@ -358,10 +358,10 @@ namespace Session.Scheme.Variables
             {
                 switch (opType)
                 {
-                    case ConditionalOperatorType.IsEqual:
+                    case ConditionOperatorType.IsEqual:
                         if ((bool)operand1.GetValue() == (bool)operand2.GetValue()) return true;
                         break;
-                    case ConditionalOperatorType.IsNotEqual:
+                    case ConditionOperatorType.IsNotEqual:
                         if ((bool)operand1.GetValue() != (bool)operand2.GetValue()) return true; break;
                     //case ConditionalOperatorType.IsGreater:
                     //break;

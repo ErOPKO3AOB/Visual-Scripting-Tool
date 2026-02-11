@@ -943,7 +943,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab388b7cd301b5348bb96d4400009836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _windowName: METHOD
+  _windowName: METHOD_WINDOW
   _closeButton: {fileID: 4920952843414628680}
   _varPicker1: {fileID: 8396479550575896058}
   _operationItem: {fileID: 6272956661167242159}

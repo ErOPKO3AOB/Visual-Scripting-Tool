@@ -803,7 +803,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a621598efc5b0a4d98f730a1e11f72b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _windowName: INPUT
+  _windowName: INPUT_WINDOW
   _closeButton: {fileID: 4920952843414628680}
   _variablePicker: {fileID: 8396479550575896058}
 --- !u!1001 &1125765904257948553

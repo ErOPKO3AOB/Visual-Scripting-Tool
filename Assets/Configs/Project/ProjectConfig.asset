@@ -49,6 +49,7 @@ MonoBehaviour:
     - {fileID: 4916509032277850859, guid: b0770e07a3c97d94092f15fc1f83c1fc, type: 3}
     - {fileID: 921730477965453695, guid: 59d9a92bab69eab4c9ec67941b3fd9a5, type: 3}
     - {fileID: 8870349133641350771, guid: 8330f748990d7054fa434e1c8b8cf73f, type: 3}
+    - {fileID: 5625429448162583138, guid: 449d256c835b7b4488acea92e81be676, type: 3}
   _cameraSettings:
     _camPrefab: {fileID: 5530218843876562416, guid: 1d3c82136d7828346976c8f7c37f89fa, type: 3}
     _moveSensitivity: 6

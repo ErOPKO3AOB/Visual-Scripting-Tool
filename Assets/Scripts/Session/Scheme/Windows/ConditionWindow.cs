@@ -7,13 +7,16 @@ using VContainer;
 
 namespace Session.Scheme.Windows
 {
-    public class MethodWindow : BaseWindow
+    public class ConditionWindow : BaseWindow
     {
         [Inject]
-        public void Construct(WindowFactory windowService)
+        public void Construct(WindowFactory windowFactory)
         {
-            _windowService = windowService;
+            _windowFactory= windowFactory;
         }
+
+        private ConditionBlock _conditionBlock;
+        private WindowFactory _windowFactory;
 
         [Header("UI")]
         [SerializeField] private Button _closeButton;
@@ -22,18 +25,15 @@ namespace Session.Scheme.Windows
         [SerializeField] private VariablePickerUI _varPicker2;
 
         private SchemeVariableBase _operand1;
-        private VariableService.MethodOperatorType _operatorType;
+        private VariableService.ConditionOperatorType _operatorType;
         private SchemeVariableBase _operand2;
 
-        private WindowFactory _windowService;
-        private MethodBlock _methodBlock;
 
         public override void SetSender(object sender)
         {
             try
             {
-                _methodBlock = (MethodBlock)sender;
-                RebuildUI();
+                _conditionBlock = (ConditionBlock)sender;
             }
 
             catch (Exception e)
@@ -44,13 +44,12 @@ namespace Session.Scheme.Windows
 
         private void Start()
         {
-            _varPicker1.PickType = VariablePickerUI.VariablePickType.Single;
-            _varPicker2.PickType = VariablePickerUI.VariablePickType.Single;
-
+            _operationItem.OperatorType = OperationItem.OperationType.Condition;
+         
             _closeButton.onClick.AddListener(() =>
             {
-                _windowService.CloseWindow(WindowName);
-                SendOperationToMethodBlock();
+                _windowFactory.CloseWindow(WindowName);
+                SendOperationToConditionBlock();
             });
 
             _varPicker1.OnVariableChoosed += OnOperand1Choosed;
@@ -58,43 +57,31 @@ namespace Session.Scheme.Windows
             _varPicker2.OnVariableChoosed += OnOperand2Choosed;
         }
 
-        private void RebuildUI()
-        {
-            Debug.Log($"Current value is {(int)_methodBlock.OperatorType}");
-
-            _operationItem.OperatorType = OperationItem.OperationType.Method;
-            _operationItem.OperationDropDown.value = (int)_methodBlock.OperatorType;
-            if (_methodBlock.Operand1 != null)
-                _varPicker1.OnVariableChoose(_methodBlock.Operand1);
-            if (_methodBlock.Operand2 != null)
-                _varPicker2.OnVariableChoose(_methodBlock.Operand2);
-        }
-
         private void OnOperand1Choosed(SchemeVariableBase variable)
         {
             _operand1 = variable;
 
-            SendOperationToMethodBlock();
+            SendOperationToConditionBlock();
         }
 
         private void OnOperationTypeChoosed(object operatorType)
         {
-            _operatorType = (VariableService.MethodOperatorType)operatorType;
+            _operatorType = (VariableService.ConditionOperatorType)operatorType;
 
-            SendOperationToMethodBlock();
+            SendOperationToConditionBlock();
         }
 
         private void OnOperand2Choosed(SchemeVariableBase variable)
         {
             _operand2 = variable;
 
-            SendOperationToMethodBlock();
+            SendOperationToConditionBlock();
         }
 
-        private void SendOperationToMethodBlock()
+        private void SendOperationToConditionBlock()
         {
             if (_operand1 != null && _operand2 != null)
-                _methodBlock.SetOperation(_operand1, _operatorType, _operand2);
+                _conditionBlock.SetOperation(_operand1, _operatorType, _operand2);
         }
 
         private void OnDestroy()

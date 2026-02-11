@@ -15,9 +15,13 @@ namespace Session.Scheme.Block.Types
         private readonly SchemeBlockFacade _facade;
         private readonly VariableService _variableService;
 
-        private VariableService.OperatorType _operatorType;
+        private VariableService.MethodOperatorType _operatorType;
         private SchemeVariableBase _operand1;
         private SchemeVariableBase _operand2;
+
+        public VariableService.MethodOperatorType OperatorType => _operatorType;
+        public SchemeVariableBase Operand1 => _operand1;
+        public SchemeVariableBase Operand2 => _operand2;
 
         public SchemeBlockFacade Facade => _facade;
         public IBlock Next { get; set; }
@@ -29,15 +33,20 @@ namespace Session.Scheme.Block.Types
             Next?.ProvideAction();
         }
 
-        public void SetOperation(SchemeVariableBase operand1, VariableService.OperatorType operatorType, SchemeVariableBase operand2)
+        public void SetOperation(SchemeVariableBase operand1, VariableService.MethodOperatorType operatorType, SchemeVariableBase operand2)
         {
             _operand1 = operand1;
             _operatorType = operatorType;
             _operand2 = operand2;
-         
-            Debug.Log($"Trying set operation: {_operand1.variableName} {operatorType} {_operand2.variableName}");
 
-            _facade.Label.SetText($"{_operand1.variableName} {operatorType} {_operand2.variableName}");
+            var attribute = (InspectorNameAttribute)Attribute.GetCustomAttribute(
+               typeof(VariableService.MethodOperatorType), typeof(InspectorNameAttribute));
+
+            string displayName = attribute != null ? attribute.displayName : operatorType.ToString();
+
+            Debug.Log($"Trying set operation: {_operand1.variableName} {displayName} {_operand2.variableName}");
+
+            _facade.Label.SetText($"{_operand1.variableName} {displayName} {_operand2.variableName}");
         }
 
         public void Dispose()
