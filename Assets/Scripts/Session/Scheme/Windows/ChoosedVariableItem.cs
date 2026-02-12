@@ -19,7 +19,7 @@ namespace Session.Scheme.Windows
         {
             SchemeVariable = schemeVariable;
 
-            _deleteButton.onClick.AddListener(() => variablePickerUI.OnVariableDelete(this));
+            _deleteButton.onClick.AddListener(() => { variablePickerUI.OnVariableDelete(); });
 
             _typeText.text = SchemeVariable.ValueType.ToString();
             _nameText.text = SchemeVariable.variableName.ToString();

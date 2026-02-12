@@ -937,6 +937,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _windowName: VARIABLES_LIST
+  _interruptsWorldInteractionUI: 1
   _addNewVariableButton: {fileID: 102255643684584603}
   _content: {fileID: 7426348529580619162}
   _closeButton: {fileID: 1874308894953424726}

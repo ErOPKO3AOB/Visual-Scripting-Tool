@@ -80,7 +80,7 @@ namespace Session.Scheme.Windows
             _closeButton.onClick.RemoveAllListeners();
         }
 
-        public void AddVariable(string name, Type type, object value)
+        public void AddVariable(string name, Type type, object value = null)
         {
             if (name != null && type != null)
             {
@@ -126,8 +126,9 @@ namespace Session.Scheme.Windows
 
         public void ChooseVariable(string variableName)
         {
-            int variableIndex = _variableService.CheckExistance(_activeVariableItems.Find(v => v.VariableName == variableName).VariableName);
-            if (variableIndex != -1)
+            int variableIndex = _variableService.CheckExistance(variableName);
+            Debug.Log($"Var index: {variableIndex} and var name: {variableName}");
+            if (variableIndex > -1)
                 _variablePicker.OnVariableChoose(_variableService.Variables[variableIndex]);
         }
     }

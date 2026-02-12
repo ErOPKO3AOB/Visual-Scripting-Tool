@@ -7,8 +7,10 @@ namespace Session.Scheme.Windows
     {
         [Header("Configs")]
         [SerializeField] private string _windowName;
-        public string WindowName { get { return _windowName; } }
+        
         protected object sender;
+        
+        public string WindowName => _windowName;
 
         public virtual void SetSender(object sender)
         {

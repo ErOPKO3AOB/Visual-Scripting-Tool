@@ -39,7 +39,6 @@ namespace Session.Scheme.Windows
         private void Start()
         {
             _closeButton.onClick.AddListener(() => { _windowService.CloseWindow(WindowName); });
-            _variablePicker.PickType = VariablePickerUI.VariablePickType.Single;
         }
 
         private void OnVariableChoose(SchemeVariableBase variable)

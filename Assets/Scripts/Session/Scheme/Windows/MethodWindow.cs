@@ -44,9 +44,6 @@ namespace Session.Scheme.Windows
 
         private void Start()
         {
-            _varPicker1.PickType = VariablePickerUI.VariablePickType.Single;
-            _varPicker2.PickType = VariablePickerUI.VariablePickType.Single;
-
             _closeButton.onClick.AddListener(() =>
             {
                 _windowService.CloseWindow(WindowName);

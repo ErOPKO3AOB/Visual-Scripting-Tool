@@ -143,6 +143,7 @@ namespace Session.Scheme.Block
         {
             if (BlockSettingsButton != null)
                 BlockSettingsButton.gameObject.SetActive(!value);
+            if (BlockDeleteButton != null)
             BlockDeleteButton.gameObject.SetActive(value);
         }
 

@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Xml.Linq;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 namespace Session.Scheme.Variables
 {
@@ -106,15 +104,9 @@ namespace Session.Scheme.Variables
         public int CheckExistance(string varName)
         {
             if (Variables.Count > 0)
-            {
                 for (int i = 0; i < Variables.Count; i++)
-                {
                     if (Variables[i].variableName == varName)
-                    {
                         return i;
-                    }
-                }
-            }
 
             return -1;
         }
@@ -366,14 +358,14 @@ namespace Session.Scheme.Variables
                         break;
                     case ConditionOperatorType.IsNotEqual:
                         if ((bool)operand1.GetValue() != (bool)operand2.GetValue()) return true; break;
-                    //case ConditionalOperatorType.IsGreater:
-                    //break;
-                    //case ConditionalOperatorType.IsGreaterOrEqual:
-                    //    break;
-                    //case ConditionalOperatorType.IsLess:
-                    //    break;
-                    //case ConditionalOperatorType.IsLessOrEqual:
-                    //    break;
+                        //case ConditionalOperatorType.IsGreater:
+                        //break;
+                        //case ConditionalOperatorType.IsGreaterOrEqual:
+                        //    break;
+                        //case ConditionalOperatorType.IsLess:
+                        //    break;
+                        //case ConditionalOperatorType.IsLessOrEqual:
+                        //    break;
                 }
             }
 

@@ -1,5 +1,5 @@
-using GlobalServices.ProjectLifetime;
 using Session.Scheme.Block.Button;
+using Session.Scheme.Windows;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,16 +10,14 @@ namespace User
     public class WorldUIControllerService : IInitializable, ILateTickable, IDisposable
     {
         #region Initialization
-        public WorldUIControllerService(InputService inputService, CameraControllerFacade cameraControllerFacade, BlockConfigs blockConfigs)
+        public WorldUIControllerService(InputService inputService, CameraControllerFacade cameraControllerFacade)
         {
             _inputService = inputService;
             _camera = cameraControllerFacade.Camera;
-            _blockConfigs = blockConfigs;
         }
 
         private readonly InputService _inputService;
         private readonly Camera _camera;
-        private readonly BlockConfigs _blockConfigs;
 
         public UnityAction<BaseBlockButton> OnInteractCallback;
         public UnityAction<BaseBlockButton> OnStopInteractCallback;

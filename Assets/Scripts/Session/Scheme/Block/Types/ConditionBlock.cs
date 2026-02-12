@@ -20,11 +20,16 @@ namespace Session.Scheme.Block.Types
         private VariableService.ConditionOperatorType _conditionalOperatorType;
         private SchemeVariableBase _operand2;
 
+        private IBlock _trueOutput;
+        private IBlock _falseOutput;
+
         public IBlock Next { get; set; }
         public bool SingleInstance { get => _facade.SingleInstance; }
 
-        private IBlock _trueOutput;
-        private IBlock _falseOutput;
+        public VariableService.ConditionOperatorType OperatorType => _conditionalOperatorType;
+        public SchemeVariableBase Operand1 => _operand1;
+        public SchemeVariableBase Operand2 => _operand2;
+
 
         public void ProvideAction()
         {
@@ -49,6 +54,12 @@ namespace Session.Scheme.Block.Types
             _operand1 = operand1;
             _conditionalOperatorType = operatorType;
             _operand2 = operand2;
+
+            string operand1Label = _operand1 != null ? _operand1.variableName : "no variable";
+            string operatorTypeLabel = _conditionalOperatorType.ToString();
+            string operand2Label = _operand2 != null ? _operand2.variableName : "no variable";
+
+            _facade.Label.SetText($"{operand1Label} {operatorTypeLabel} {operand2Label}");
         }
 
         public void Dispose()

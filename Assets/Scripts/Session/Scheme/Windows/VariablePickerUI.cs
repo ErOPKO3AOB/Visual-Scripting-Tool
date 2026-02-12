@@ -1,5 +1,4 @@
 using Session.Scheme.Windows;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -9,14 +8,8 @@ namespace Session.Scheme.Variables
 {
     public class VariablePickerUI : BaseWindow
     {
-        public enum VariablePickType
-        {
-            Single, Multiple
-        }
-
         [Header("Configs")]
         [SerializeField] private VariableListWindow _variableListPrefab;
-        [SerializeField] private VariablePickType _pickType;
         [SerializeField] private ChoosedVariableItem _choosedVariablePrefab;
 
         [Header("UI")]
@@ -30,8 +23,7 @@ namespace Session.Scheme.Variables
         public UnityAction<SchemeVariableBase> OnVariableChoosed;
         public UnityAction<SchemeVariableBase> OnVariableDeleted;
 
-        public List<ChoosedVariableItem> VariableItems { get; private set; } = new List<ChoosedVariableItem>();
-        public VariablePickType PickType { get { return _pickType; } set { _pickType = value; } }
+        public ChoosedVariableItem VariableItem { get; private set; }
 
         [Inject]
         public void Construct(WindowFactory windowService)
@@ -62,34 +54,18 @@ namespace Session.Scheme.Variables
             variableItem.Initialize(this, variable);
             _addNewButton.transform.SetParent(_content.transform);
 
-            if (!VariableItems.Contains(variableItem))
-            {
-                if ((_pickType == VariablePickType.Single && VariableItems.Count == 0)
-                    || _pickType == VariablePickType.Multiple)
-                {
-                    VariableItems.Add(variableItem);
-                    OnVariableChoosed?.Invoke(variable);
-                    
-                    switch (_pickType)
-                    {
-                        case VariablePickType.Single:
-                            _addNewButton.gameObject.SetActive(false);
-                            break;
-                        case VariablePickType.Multiple:
-                            _addNewButton.gameObject.SetActive(true);
-                            break;
-                    }
-                }
-            }
+            VariableItem = variableItem;
+            _addNewButton.gameObject.SetActive(false);
 
+            OnVariableChoosed?.Invoke(variable);
         }
 
-        public void OnVariableDelete(ChoosedVariableItem variableItem)
-        {
-            OnVariableDeleted?.Invoke(variableItem.SchemeVariable);
 
-            VariableItems.Remove(variableItem);
-            Destroy(variableItem.gameObject);
+        public void OnVariableDelete()
+        {
+            OnVariableDeleted?.Invoke(VariableItem.SchemeVariable);
+            Destroy(VariableItem.gameObject);
+            VariableItem = null;
 
             _addNewButton.gameObject.SetActive(true);
         }

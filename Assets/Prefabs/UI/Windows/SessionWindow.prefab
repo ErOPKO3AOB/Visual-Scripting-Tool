@@ -661,5 +661,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _windowName: SESSION_WINDOW
+  _interruptsWorldInteractionUI: 0
   _content: {fileID: 1612058176139515160}
   _essentialWindowIndecies: 01000000

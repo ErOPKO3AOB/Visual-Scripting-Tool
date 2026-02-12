@@ -38,20 +38,20 @@ namespace Session.Scheme.Windows
         private void Start()
         {
             _closeButton.onClick.AddListener(() => { _windowService.CloseWindow(WindowName); });
+            _variablePicker.OnVariableChoosed += OnVariableChoose;
         }
 
         private void OnVariableChoose(SchemeVariableBase variable)
         {
             _outputBlock.SchemeVariables.Clear();
-            for (int i = 0; i < _variablePicker.VariableItems.Count; i++)
-            {
-                _outputBlock.SchemeVariables.Add(_variablePicker.VariableItems[i].SchemeVariable);
-            }
+
+            _outputBlock.SchemeVariables.Add(_variablePicker.VariableItem.SchemeVariable);
         }
 
         private void OnDestroy()
         {
             _closeButton.onClick.RemoveAllListeners();
+            _variablePicker.OnVariableChoosed -= OnVariableChoose;
         }
     }
 }

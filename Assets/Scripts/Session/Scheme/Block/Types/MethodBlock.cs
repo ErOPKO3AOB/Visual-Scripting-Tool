@@ -25,7 +25,7 @@ namespace Session.Scheme.Block.Types
 
         public SchemeBlockFacade Facade => _facade;
         public IBlock Next { get; set; }
-        public bool SingleInstance { get => _facade.SingleInstance; }
+        public bool SingleInstance => _facade.SingleInstance;
 
         public void ProvideAction()
         {

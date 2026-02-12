@@ -12,7 +12,7 @@ namespace Session.Scheme.Windows
         [Inject]
         public void Construct(WindowFactory windowFactory)
         {
-            _windowFactory= windowFactory;
+            _windowFactory = windowFactory;
         }
 
         private ConditionBlock _conditionBlock;
@@ -34,6 +34,7 @@ namespace Session.Scheme.Windows
             try
             {
                 _conditionBlock = (ConditionBlock)sender;
+                RebuildUI();
             }
 
             catch (Exception e)
@@ -44,8 +45,6 @@ namespace Session.Scheme.Windows
 
         private void Start()
         {
-            _operationItem.OperatorType = OperationItem.OperationType.Condition;
-         
             _closeButton.onClick.AddListener(() =>
             {
                 _windowFactory.CloseWindow(WindowName);
@@ -55,6 +54,16 @@ namespace Session.Scheme.Windows
             _varPicker1.OnVariableChoosed += OnOperand1Choosed;
             _operationItem.OnOperationTypeChoosed += OnOperationTypeChoosed;
             _varPicker2.OnVariableChoosed += OnOperand2Choosed;
+        }
+
+        private void RebuildUI()
+        {
+            _operationItem.OperatorType = OperationItem.OperationType.Condition;
+            _operationItem.OperationDropDown.value = (int)_conditionBlock.OperatorType;
+            if (_conditionBlock.Operand1 != null)
+                _varPicker1.OnVariableChoose(_conditionBlock.Operand1);
+            if (_conditionBlock.Operand2 != null)
+                _varPicker2.OnVariableChoose(_conditionBlock.Operand2);
         }
 
         private void OnOperand1Choosed(SchemeVariableBase variable)
@@ -80,8 +89,7 @@ namespace Session.Scheme.Windows
 
         private void SendOperationToConditionBlock()
         {
-            if (_operand1 != null && _operand2 != null)
-                _conditionBlock.SetOperation(_operand1, _operatorType, _operand2);
+            _conditionBlock.SetOperation(_operand1, _operatorType, _operand2);
         }
 
         private void OnDestroy()

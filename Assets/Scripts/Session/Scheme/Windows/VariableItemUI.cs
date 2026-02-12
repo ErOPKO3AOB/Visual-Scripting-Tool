@@ -28,7 +28,7 @@ namespace Session.Scheme.Windows
         [SerializeField] private BoolValidator _boolValidator;
 
         private VariableListWindow _masterList;
-        private Type _variableType;
+        private Type _variableType = typeof(int);
         private string _variableName;
         private object _variableValue = null;
 
@@ -53,22 +53,13 @@ namespace Session.Scheme.Windows
             _nameInputField.onEndEdit.AddListener((string text) => { _variableName = text; OnEndEdit(); });
             _typeDropdown.onValueChanged.AddListener((int value) => { InitializeValuePlaceHolder(value); OnEndEdit(); });
             _valueInputField.onEndEdit.AddListener((string value) => { _variableValue = value; OnEndEdit(); });
-            _chooseButton.onClick.AddListener(() => { _masterList.ChooseVariable(_variableName); });
+            _chooseButton.onClick.AddListener(() => { OnEndEdit(); _masterList.ChooseVariable(_variableName); });
             _deleteButton.onClick.AddListener(() =>
             {
                 _masterList.RemoveVariable(this);
             });
 
             InitializeValuePlaceHolder(_typeDropdown.value);
-        }
-
-        public void OnDestroy()
-        {
-            _nameInputField.onEndEdit.RemoveAllListeners();
-            _typeDropdown.onValueChanged.RemoveAllListeners();
-            _valueInputField.onEndEdit.RemoveAllListeners();
-            _chooseButton.onClick.RemoveAllListeners();
-            _deleteButton.onClick.RemoveAllListeners();
         }
 
         public void RebuildUI(int typeValue, string name, object value)
@@ -116,10 +107,16 @@ namespace Session.Scheme.Windows
 
         public void OnEndEdit()
         {
-            if (_variableName != null)
-            {
-                _masterList.AddVariable(_variableName, _variableType, _variableValue);
-            }
+            _masterList.AddVariable(_variableName, _variableType, _variableValue);
+        }
+
+        public void OnDestroy()
+        {
+            _nameInputField.onEndEdit.RemoveAllListeners();
+            _typeDropdown.onValueChanged.RemoveAllListeners();
+            _valueInputField.onEndEdit.RemoveAllListeners();
+            _chooseButton.onClick.RemoveAllListeners();
+            _deleteButton.onClick.RemoveAllListeners();
         }
     }
 }
