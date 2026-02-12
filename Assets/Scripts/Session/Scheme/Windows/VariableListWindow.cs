@@ -46,6 +46,21 @@ namespace Session.Scheme.Windows
 
         private void Start()
         {
+            RebuildUI();
+
+            _addNewVariableButton.onClick.AddListener(() =>
+            {
+                VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_blockConfigs.WindowPrefabsUI[11].WindowName, _content.transform);
+                window.MasterList = this;
+                _activeVariableItems.Add(window);
+            });
+
+            if (_windowService == null) Debug.Log("Window service is null");
+            _closeButton.onClick.AddListener(() => { _windowService.CloseWindow(WindowName); });
+        }
+
+        private void RebuildUI()
+        {
             for (int i = 0; i < _variableService.Variables.Count; i++)
             {
                 SchemeVariableBase schemeVariable = _variableService.Variables[i];
@@ -57,16 +72,6 @@ namespace Session.Scheme.Windows
 
                 _activeVariableItems.Add(window);
             }
-
-            _addNewVariableButton.onClick.AddListener(() =>
-            {
-                VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_blockConfigs.WindowPrefabsUI[11].WindowName, _content.transform);
-                window.MasterList = this;
-                _activeVariableItems.Add(window);
-            });
-
-            if (_windowService == null) Debug.Log("Window service is null");
-            _closeButton.onClick.AddListener(() => { _windowService.CloseWindow(WindowName); });
         }
 
         private void OnDestroy()
@@ -113,7 +118,7 @@ namespace Session.Scheme.Windows
         public void RemoveVariable(VariableItemUI variableItem)
         {
             SchemeVariableBase variable = _variableService.Variables.Find(v => v.variableName == variableItem.VariableName);
-            _variableService.RemoveVariable(variable.variableName);
+            _variableService.RemoveVariable(variableItem.VariableName);
 
             _activeVariableItems.Remove(variableItem);
             Destroy(variableItem.gameObject);

@@ -30,7 +30,7 @@ namespace Session.Scheme.Variables
         public UnityAction<SchemeVariableBase> OnVariableChoosed;
         public UnityAction<SchemeVariableBase> OnVariableDeleted;
 
-        public List<ChoosedVariableItem> VariableItems { get; private set; } = new List<ChoosedVariableItem>(1);
+        public List<ChoosedVariableItem> VariableItems { get; private set; } = new List<ChoosedVariableItem>();
         public VariablePickType PickType { get { return _pickType; } set { _pickType = value; } }
 
         [Inject]

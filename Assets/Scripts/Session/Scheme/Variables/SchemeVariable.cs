@@ -9,27 +9,37 @@ namespace Session.Scheme.Variables
     {
         public T Value { get; private set; }
 
-        public SchemeVariable(string name) : base(name)
-        {
-
-        }
+        public SchemeVariable(string name) : base(name) { }
 
         public override Type ValueType => typeof(T);
 
-        public override void SetValue(object value) // Пофиксить проблему с разными типами
+        public override void SetValue(object value)
         {
-            if (value == null || string.IsNullOrEmpty(value.ToString()))
+            if (value == null)
             {
                 Value = default;
-                //Debug.Log($"value {value} is defaul");
             }
 
             else
             {
-                //Debug.Log($"{Value.GetType()} + {value.GetType()}");
+                try
+                {
+                    if (typeof(T) == typeof(int))
+                        Value = (T)(object)Convert.ToInt32(value);
+                    if (typeof(T) == typeof(float))
+                        Value = (T)(object)Convert.ToSingle(value);
+                    if (typeof(T) == typeof(bool))
+                        Value = (T)(object)Convert.ToBoolean(value);
+                    if (typeof(T) == typeof(string))
+                        Value = (T)(object)Convert.ToString(value);
+                    else
+                        Value = (T)Convert.ChangeType(value, typeof(T));
+                }
 
-                if (Value.GetType() == value.GetType())
-                    Value = (T)value;
+                catch (Exception e)
+                {
+                    Debug.LogError($"Error setting value: attempted to assign {value} ({value?.GetType()}), but failed. Exception: {e}");
+                }
             }
         }
 

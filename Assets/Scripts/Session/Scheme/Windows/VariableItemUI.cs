@@ -1,5 +1,4 @@
 using Extensions;
-using Session.Scheme.Variables;
 using System;
 using TMPro;
 using UnityEngine;
@@ -32,7 +31,7 @@ namespace Session.Scheme.Windows
         private Type _variableType;
         private string _variableName;
         private object _variableValue = null;
-        
+
         public string VariableName => _variableName;
 
         public VariableListWindow MasterList

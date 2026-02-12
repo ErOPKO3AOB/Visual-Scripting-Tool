@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace Session.Scheme.Variables
 {
@@ -56,9 +58,10 @@ namespace Session.Scheme.Variables
 
             if (index < 0)
             {
+                Debug.Log($"Building int {varName} vairalble with value:{startValue}");
                 SchemeVariableBase schemeVariable = new SchemeVariable<T>(varName);
-                Variables.Add(schemeVariable);
                 schemeVariable.SetValue(startValue);
+                Variables.Add(schemeVariable);
             }
 
             else

@@ -60,7 +60,7 @@ namespace Session.Scheme.Windows
 
         private void RebuildUI()
         {
-            Debug.Log($"Current value is {(int)_methodBlock.OperatorType}");
+            //Debug.Log($"Current value is {(int)_methodBlock.OperatorType}");
 
             _operationItem.OperatorType = OperationItem.OperationType.Method;
             _operationItem.OperationDropDown.value = (int)_methodBlock.OperatorType;
