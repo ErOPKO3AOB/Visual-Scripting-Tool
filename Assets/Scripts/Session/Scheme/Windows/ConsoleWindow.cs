@@ -10,46 +10,55 @@ namespace Session.Scheme.Windows
     public class ConsoleWindow : BaseWindow
     {
         [Inject]
-        public void Construct(WindowFactory windowService, BlockConfigs blockConfigs)
+        public void Construct(WindowFactory windowService, BlockConfigs blockConfigs, SchemeConsoleService consoleService)
         {
             _windowService = windowService;
             _blockConfigs = blockConfigs;
+            _consoleService = consoleService;
         }
 
         private WindowFactory _windowService;
         private BlockConfigs _blockConfigs;
+        private SchemeConsoleService _consoleService;
 
+        [SerializeField] private MessageItem _messageItemPrefab;
         [SerializeField] private Transform _content;
         [SerializeField] private Button _closeButton;
 
         private void Start()
         {
+            for (int i = 0; i < _consoleService.Messages.Count; i++)
+            {
+                OnMessageSpawn(_consoleService.Messages[i]);
+            }
+
             _closeButton.onClick.AddListener(() =>
             {
                 _windowService.CloseWindow(WindowName);
             });
+
+            _consoleService.OnMessageSpawn += OnMessageSpawn;
+            _consoleService.OnInputRequest += OnInputRequest;
         }
 
-        public void SpawnOutuptMessage(string message)
+        private void OnMessageSpawn(string message)
         {
-            MessageItem messageItem = BuildMessageItem();
+            MessageItem messageItem = (MessageItem)_windowService.OpenWindow(_messageItemPrefab.WindowName, _content.transform);
             messageItem.BuildOutputMessage(message);
         }
 
-        public void GetInput(string variableName, InputBlock inputBlock)
+        private void OnInputRequest(string variableName, InputBlock inputBlock)
         {
-            MessageItem messageItem = BuildMessageItem();
+            MessageItem messageItem = (MessageItem)_windowService.OpenWindow(_messageItemPrefab.WindowName, _content.transform);
             messageItem.BuildInputMessage(variableName, inputBlock);
-        }
-
-        private MessageItem BuildMessageItem()
-        {
-            return (MessageItem)_windowService.OpenWindow(_blockConfigs.WindowPrefabsUI[5].WindowName, _content.transform);
         }
 
         private void OnDestroy()
         {
             _closeButton.onClick.RemoveAllListeners();
+
+            _consoleService.OnMessageSpawn -= OnMessageSpawn;
+            _consoleService.OnInputRequest -= OnInputRequest;
         }
     }
 }

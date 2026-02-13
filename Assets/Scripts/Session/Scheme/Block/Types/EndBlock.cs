@@ -21,6 +21,16 @@ namespace Session.Scheme.Block.Types
             Next?.ProvideAction();
         }
 
+        public bool CheckForCorrectRelationships()
+        {
+            return true;
+        }
+
+        public bool CheckForCorrectValues()
+        {
+            return (Next == null || Next.CheckForCorrectValues());
+        }
+
         public void Dispose()
         {
             GameObject.Destroy(_facade.gameObject);

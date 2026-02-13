@@ -29,7 +29,7 @@ namespace Session.Scheme.Block.Button
 
         public UnityAction OnFullyHolded;
 
-        private bool _hasConnector = false;
+        [SerializeField] private bool _hasConnector = false;
         public bool HasConnector => _hasConnector;
 
         private ActionConnecorFacade _actionConnecorFacade;
@@ -72,7 +72,6 @@ namespace Session.Scheme.Block.Button
                 if (_hasConnector && _actionConnecorFacade != null)
                 {
                     _actionConnecorFacade.OnDisconnected();
-                    Destroy(_actionConnecorFacade.gameObject);
                     _hasConnector = false;
                 }
 

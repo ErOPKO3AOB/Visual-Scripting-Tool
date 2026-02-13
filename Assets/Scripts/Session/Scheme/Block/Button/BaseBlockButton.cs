@@ -15,8 +15,5 @@ namespace Session.Scheme.Block.Button
         }
 
         public abstract void Use();
-
-        // TODO: Implement transform updating
-        //public abstract void UpdateTransform();
     }
 }

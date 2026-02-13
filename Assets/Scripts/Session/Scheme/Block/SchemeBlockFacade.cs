@@ -87,7 +87,7 @@ namespace Session.Scheme.Block
 
                 // Delete button
                 BlockDeleteButton = Instantiate(_blockConfigs.DeleteButtonPrefab, _menuPoint);
-                BlockDeleteButton.ConstructManualy(_schemeBlockFactory, Model);
+                BlockDeleteButton.ConstructManualy(_schemeBlockFactory, Model, _worldUIControllerService);
             }
 
             // Input point
@@ -117,7 +117,7 @@ namespace Session.Scheme.Block
         {
             SpriteRenderer.size = size;
             Collider.size = size;
-            
+
             if (_inputPoint != null)
                 _inputPoint.transform.localPosition = new Vector2(_inputPoint.transform.localPosition.x, size.y / 2);
             if (_menuPoint != null)
@@ -164,8 +164,10 @@ namespace Session.Scheme.Block
 
         private void OnDestroy()
         {
-            Destroy(_menuPoint.gameObject);
-            Destroy(_inputPoint.gameObject);
+            if (_menuPoint != null)
+                Destroy(_menuPoint.gameObject);
+            if (_inputPoint != null)
+                Destroy(_inputPoint.gameObject);
             foreach (Transform t in _outputPoints) Destroy(t.gameObject);
 
             _label.OnChanged -= OnLabelChanged;

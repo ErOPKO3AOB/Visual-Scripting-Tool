@@ -507,8 +507,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4054124960416337449}
   m_HandleRect: {fileID: 1125436167248822792}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1111,6 +1111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _windowName: CONSOLE_WINDOW
+  _messageItemPrefab: {fileID: 1809556050422955096, guid: f4ace67ef892b684c86bc67c398efd38, type: 3}
   _content: {fileID: 1783731824997435097}
   _closeButton: {fileID: 7007380501313556091}
 --- !u!1 &7771526523460288373
@@ -1233,7 +1234,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2112256809595724019}
   m_HandleRect: {fileID: 6774853835930863865}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

@@ -8,16 +8,16 @@ namespace Session.Scheme.Block.Types
 {
     public class OutputBlock : IBlock, IDisposable
     {
-        public OutputBlock(SchemeBlockFacade facade)
+        public OutputBlock(SchemeBlockFacade facade, SchemeConsoleService consoleService)
         {
             _facade = facade;
-            _consoleWindow = GameObject.FindAnyObjectByType<ConsoleWindow>();
+            _consoleService = consoleService;
         }
 
         private readonly SchemeBlockFacade _facade;
         public SchemeBlockFacade Facade => _facade;
 
-        private readonly ConsoleWindow _consoleWindow;
+        private readonly SchemeConsoleService _consoleService;
 
         public IBlock Next { get; set; }
         public bool SingleInstance { get => _facade.SingleInstance; }
@@ -34,9 +34,20 @@ namespace Session.Scheme.Block.Types
                 message += SchemeVariables[i].GetValue().ToString();
             }
 
-            _consoleWindow.SpawnOutuptMessage(message);
+            _consoleService.SpawnMessage(message);
             Next?.ProvideAction();
         }
+
+        public bool CheckForCorrectRelationships()
+        {
+            return Next != null && Next.CheckForCorrectRelationships();
+        }
+
+        public bool CheckForCorrectValues()
+        {
+            return (Next == null || Next.CheckForCorrectValues());
+        }
+
 
         public void Dispose()
         {

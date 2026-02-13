@@ -46,6 +46,16 @@ namespace Session.Scheme.Block.Types
             _facade.Label.SetText(displayName);
         }
 
+        public bool CheckForCorrectRelationships()
+        {
+            return Next != null && Next.CheckForCorrectRelationships();
+        }
+
+        public bool CheckForCorrectValues()
+        {
+            return _operand1 != null && _operand2 != null && (Next == null || Next.CheckForCorrectValues());
+        }
+
         public void Dispose()
         {
             GameObject.Destroy(_facade.gameObject);

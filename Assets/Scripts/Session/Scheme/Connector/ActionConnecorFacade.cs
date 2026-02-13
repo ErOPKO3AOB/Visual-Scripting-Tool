@@ -20,11 +20,11 @@ namespace Session.Scheme.Connector
         private ActionConnector _connector;
         private BlockConfigs _blockConfigs;
         private Vector3 _startOffset;
-
-        private LineRenderer _lineRenderer;
-        public LineRenderer LineRenderer => _lineRenderer;
-
         private DraggableConnectorPoint _draggableConnectorPoint;
+        private LineRenderer _lineRenderer;
+
+        public LineRenderer LineRenderer => _lineRenderer;
+        public ActionConnector Connector => _connector;
 
         private void Start()
         {
@@ -51,6 +51,7 @@ namespace Session.Scheme.Connector
         public void OnDisconnected()
         {
             _connector.Disconnect();
+            Destroy(gameObject);
         }
     }
 }

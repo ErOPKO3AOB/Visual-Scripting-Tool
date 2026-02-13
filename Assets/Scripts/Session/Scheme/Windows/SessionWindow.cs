@@ -1,24 +1,114 @@
+using GlobalServices.ProjectLifetime;
+using Session.Scheme.Block.Types;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using VContainer;
+using Session.Scheme;
 
 namespace Session.Scheme.Windows
 {
     public class SessionWindow : BaseWindow
     {
         [Inject]
-        public void Construct(WindowFactory windowService)
+        public void Construct(SchemeBlockFactory schemeBuilderService, BlockConfigs blockConfigs, WindowFactory windowFactory, SchemeExecutionService schemeExecutionService, SchemeConsoleService consoleService)
         {
-            _windowService = windowService;
+            _schemeBuilderService = schemeBuilderService;
+            _windowFactory = windowFactory;
+            _blockConfigs = blockConfigs;
+            _schemeExecutionService = schemeExecutionService;
+            _consoleService = consoleService;
         }
 
-        [SerializeField] private Transform _content;
-        [SerializeField] private DownMenuItem _downMenuPrefab;
+        private SchemeBlockFactory _schemeBuilderService;
+        private BlockConfigs _blockConfigs;
+        private WindowFactory _windowFactory;
+        private SchemeExecutionService _schemeExecutionService;
+        // TODO: Implement notifications on button
+        private SchemeConsoleService _consoleService;
 
-        private WindowFactory _windowService;
+        [Header("UI")]
+        [SerializeField] private ConsoleWindow _consoleWindowPrefab;
+
+        [Header("Inventory")]
+        [SerializeField] private List<InventoryBlockItem> _inventoryItems = new();
+        [SerializeField] private Transform _inventoryContent;
+
+        [Header("Buttons")]
+        [SerializeField] private Button _startProgrammButton;
+        [SerializeField] private Button _consoleButton;
+        [SerializeField] private Toggle _deleteToggle;
 
         private void Start()
         {
-            _windowService.OpenWindow(_downMenuPrefab.WindowName, _content);
+            _startProgrammButton.onClick.AddListener(() => 
+            {
+                _windowFactory.OpenWindow(_consoleWindowPrefab.WindowName);
+                _schemeExecutionService.StartProgramm();
+            });
+
+            _consoleButton.onClick.AddListener(() =>
+            {
+                _windowFactory.OpenWindow("CONSOLE_WINDOW");
+            });
+
+            _deleteToggle.onValueChanged.AddListener((value) =>
+            {
+                _schemeBuilderService.MakeAllBlocksWaitForDestroying(value);
+            });
+
+            for (int i = 0; i < _blockConfigs.BlockFacades.Count; i++)
+            {
+                if (!_blockConfigs.BlockFacades[i].SingleInstance)
+                {
+                    InventoryBlockItem inventoryItem = (InventoryBlockItem)_windowFactory.OpenWindow("INVENTORY_BLOCK_ITEM", _inventoryContent, this);
+
+                    Type type;
+                    switch (i)
+                    {
+                        case 1:
+                            type = typeof(InputBlock);
+                            break;
+                        case 2:
+                            type = typeof(OutputBlock);
+                            break;
+                        case 3:
+                            type = typeof(ConditionBlock);
+                            break;
+                        default:
+                            type = typeof(MethodBlock);
+                            break;
+                    }
+
+                    inventoryItem.ConstructManualy(type,
+                        _blockConfigs.BlockFacades[i].BlockName,
+                        _blockConfigs.BlockFacades[i].Label.GetText(),
+                        _blockConfigs.BlockFacades[i].SpriteRenderer.color);
+                    inventoryItem.OnPressed += SpawnBlockFromInventory;
+
+                    _inventoryItems.Add(inventoryItem);
+                }
+            }
+        }
+
+        private void SpawnBlockFromInventory(string blockName)
+        {
+            _schemeBuilderService.SpawnBlock(blockName);
+        }
+
+        private void OnDestroy()
+        {
+            foreach (var item in _inventoryItems)
+            {
+                item.OnPressed -= SpawnBlockFromInventory;
+            }
+
+            _startProgrammButton.onClick.RemoveAllListeners();
+
+            _consoleButton.onClick.RemoveAllListeners();
+
+            _deleteToggle.onValueChanged.RemoveAllListeners();
         }
     }
 }

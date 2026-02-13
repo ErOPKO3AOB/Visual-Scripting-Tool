@@ -22,6 +22,7 @@ namespace Session
             ConfigurePlayerInput(builder);
             ConfigureCameraSystem(builder);
             ConfigureSchemeEssentials(builder);
+            ConfigureExecutingEssentials(builder);
         }
 
         private void ConfigurePlayerInput(IContainerBuilder builder)
@@ -64,12 +65,23 @@ namespace Session
                 .AsImplementedInterfaces()
                 .AsSelf();
 
+            // Service for opening windows
+            builder.RegisterEntryPoint<WindowFactory>(Lifetime.Scoped)
+                .AsSelf();
+        }
+
+        private void ConfigureExecutingEssentials(IContainerBuilder builder)
+        {
             // Service for variable building
             builder.Register<VariableService>(Lifetime.Scoped)
                 .AsSelf();
 
-            // Service for opening windows
-            builder.RegisterEntryPoint<WindowFactory>(Lifetime.Scoped)
+            // Service for execution
+            builder.Register<SchemeExecutionService>(Lifetime.Scoped)
+                .AsSelf();
+
+            // Service for console
+            builder.Register<SchemeConsoleService>(Lifetime.Scoped)
                 .AsSelf();
         }
     }

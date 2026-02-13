@@ -24,21 +24,23 @@ namespace Session.Scheme.Variables
             {
                 try
                 {
-                    if (typeof(T) == typeof(int))
-                        Value = (T)(object)Convert.ToInt32(value);
-                    if (typeof(T) == typeof(float))
-                        Value = (T)(object)Convert.ToSingle(value);
-                    if (typeof(T) == typeof(bool))
-                        Value = (T)(object)Convert.ToBoolean(value);
-                    if (typeof(T) == typeof(string))
-                        Value = (T)(object)Convert.ToString(value);
-                    else
-                        Value = (T)Convert.ChangeType(value, typeof(T));
+                    //if (typeof(T) == typeof(int))
+                    //    Value = (T)(object)Convert.ToInt32(value);
+                    //if (typeof(T) == typeof(float))
+                    //    Value = (T)(object)Convert.ToSingle(value);
+                    //if (typeof(T) == typeof(bool))
+                    //    Value = (T)(object)Convert.ToBoolean(value);
+                    //if (typeof(T) == typeof(string))
+                    //    Value = (T)(object)Convert.ToString(value);
+                    //else
+                    //    Value = (T)Convert.ChangeType(value, typeof(T));
+                
+                    Value = (T)value;
                 }
 
                 catch (Exception e)
                 {
-                    Debug.LogError($"Error setting value: attempted to assign {value} ({value?.GetType()}), but failed. Exception: {e}");
+                    Debug.LogError($"Error setting value: attempted to assign {value} to variable with name {variableName} ({value?.GetType()}), but failed. Exception: {e}");
                 }
             }
         }

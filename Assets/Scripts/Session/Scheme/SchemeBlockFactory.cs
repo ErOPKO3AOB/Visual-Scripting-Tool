@@ -2,7 +2,6 @@ using GlobalServices.ProjectLifetime;
 using Session.Scheme.Block;
 using Session.Scheme.Block.Types;
 using Session.Scheme.Variables;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using User;
@@ -13,22 +12,18 @@ namespace Session.Scheme
 {
     public class SchemeBlockFactory
     {
-        public SchemeBlockFactory(IObjectResolver objectResolver, BlockConfigs blockConfigs, VariableService variableService, CameraControllerFacade cameraControllerFacade)
+        public SchemeBlockFactory(IObjectResolver objectResolver, BlockConfigs blockConfigs)
         {
             _objectResolver = objectResolver;
             _blockConfigs = blockConfigs;
-            _variableService = variableService;
-            _cameraControllerFacade = cameraControllerFacade;
         }
 
         private readonly IObjectResolver _objectResolver;
         private readonly BlockConfigs _blockConfigs;
-        private readonly VariableService _variableService;
-        private readonly CameraControllerFacade _cameraControllerFacade;
 
-        private List<IBlock> _blocks = new();
+        public List<IBlock> Blocks { get; private set; } = new();
 
-        public bool DestroyWaiting {  get; private set; }
+        public bool DestroyWaiting { get; private set; }
 
         public SchemeBlockFacade SpawnBlock(string blockName)
         {
@@ -36,29 +31,36 @@ namespace Session.Scheme
             var schemeBlockFacade = _objectResolver.Instantiate(
                 // Finding prefab by name
                 _blockConfigs.BlockFacades.Find(b => b.BlockName == blockName)
-                .gameObject, 
+                .gameObject,
                 null,
                 worldPositionStays: true)
                 // Getting component
                 .GetComponent<SchemeBlockFacade>();
 
-            schemeBlockFacade.Rigidbody.position = _cameraControllerFacade.transform.position;
-            
+            schemeBlockFacade.Rigidbody.position = _objectResolver.Resolve<CameraControllerFacade>().transform.position;
+
             // Searching for block type
             IBlock block = null;
 
+            var variableService = _objectResolver.Resolve<VariableService>();
+            var consoleService = _objectResolver.Resolve<SchemeConsoleService>();
+
             if (blockName == _blockConfigs.BlockFacades[0].BlockName)
-                block = new MethodBlock(schemeBlockFacade, _variableService);
+                block = new MethodBlock(schemeBlockFacade, variableService);
             else if (blockName == _blockConfigs.BlockFacades[1].BlockName)
-                block = new InputBlock(schemeBlockFacade, _variableService);
+                block = new InputBlock(schemeBlockFacade, variableService, consoleService);
             else if (blockName == _blockConfigs.BlockFacades[2].BlockName)
-                block = new OutputBlock(schemeBlockFacade/*, _variableService*/);
+                block = new OutputBlock(schemeBlockFacade, consoleService);
             else if (blockName == _blockConfigs.BlockFacades[3].BlockName)
-                block = new ConditionBlock(schemeBlockFacade, _variableService);
+                block = new ConditionBlock(schemeBlockFacade, variableService);
+            else if (blockName == _blockConfigs.BlockFacades[4].BlockName)
+                block = new StartBlock(schemeBlockFacade);
+            else if (blockName == _blockConfigs.BlockFacades[5].BlockName)
+                block = new EndBlock(schemeBlockFacade);
 
             schemeBlockFacade.Model = block;
 
-            _blocks.Add(block);
+            Blocks.Add(block);
 
             return schemeBlockFacade;
         }
@@ -67,7 +69,7 @@ namespace Session.Scheme
         {
             DestroyWaiting = value;
 
-            _blocks.ForEach((block) => 
+            Blocks.ForEach((block) =>
             {
                 block.Facade.SetDestroyWaiting(DestroyWaiting);
             });
@@ -75,8 +77,18 @@ namespace Session.Scheme
 
         public void DestroyBlock(SchemeBlockFacade schemeBlockFacade)
         {
-            IBlock block = _blocks.Find(b => b.Facade.BlockName == schemeBlockFacade.BlockName && b.Facade == schemeBlockFacade);
-            _blocks.Remove(block);
+            IBlock block = Blocks.Find(b => b.Facade.BlockName == schemeBlockFacade.BlockName && b.Facade == schemeBlockFacade);
+
+            if (block.Facade.BlockInputTrigger.ConnectedActionConnectorFacade != null)
+                block.Facade.BlockInputTrigger.ConnectedActionConnectorFacade.OnDisconnected();
+
+            for (int i = 0; i < block.Facade.BlockOutputButtons.Length; i++)
+            {
+                if (block.Facade.BlockOutputButtons[i].ActionConnecorFacade != null)
+                    block.Facade.BlockOutputButtons[i].ActionConnecorFacade.OnDisconnected();
+            }
+
+            Blocks.Remove(block);
             GameObject.Destroy(block.Facade.gameObject);
         }
     }

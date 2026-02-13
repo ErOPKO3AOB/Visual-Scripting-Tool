@@ -9,5 +9,9 @@ namespace Session.Scheme.Block
         public SchemeBlockFacade Facade { get; }
 
         void ProvideAction();
+
+        bool CheckForCorrectRelationships();
+
+        bool CheckForCorrectValues();
     }
 }

@@ -39,7 +39,6 @@ MonoBehaviour:
     _deleteButtonPrefab: {fileID: 4821818397051145339, guid: fbcdf6d2bffd8674080d1819177ec476, type: 3}
     _windowPrefabsUI:
     - {fileID: 4933336775592735967, guid: c61d77aafcab0a448924e3303b765627, type: 3}
-    - {fileID: 4182976255418826037, guid: 66cd6c65825fe8d4bb2bef485a0eec63, type: 3}
     - {fileID: 7995604321963408251, guid: 0dbdb33c1530f684ebda73768cdfcc96, type: 3}
     - {fileID: 2354169089373327394, guid: 6232d2d5c49f10347a994aceee791cef, type: 3}
     - {fileID: 1241162653714162332, guid: a74121947062de048861836482b90279, type: 3}

@@ -1,3 +1,5 @@
+using Session.Scheme.Connector;
+using System.Linq;
 using UnityEngine;
 using User;
 
@@ -14,6 +16,8 @@ namespace Session.Scheme.Block.Button
         private IBlock _block;
         private WorldUIControllerService _worldUIControllerService;
 
+        public ActionConnecorFacade ConnectedActionConnectorFacade { get; private set; }
+
         protected override void Start()
         {
             base.Start();
@@ -23,25 +27,44 @@ namespace Session.Scheme.Block.Button
 
         private void OnStopWorldUIInteraction(BaseBlockButton baseBlockButton)
         {
-            if (baseBlockButton is DraggableConnectorPoint draggableConnectorPoint 
-                && this != draggableConnectorPoint.Block.Facade.BlockInputTrigger)
+            if (baseBlockButton == null && baseBlockButton is not DraggableConnectorPoint) return;
+
+            if (baseBlockButton is DraggableConnectorPoint draggableConnectorPoint)
             {
-                RaycastHit2D hitInfo = Physics2D.CircleCast(transform.position, 0.25f, Vector3.forward);
-                
-                if (hitInfo.collider.gameObject.GetComponent<DraggableConnectorPoint>() == draggableConnectorPoint)
+                if (draggableConnectorPoint == null)
+                    Debug.Log("draggableConnectorPoint is null");
+                if (draggableConnectorPoint.Block == null)
+                    Debug.Log("draggableConnectorPoint.Block is null");
+                if (draggableConnectorPoint.Block.Facade == null)
+                    Debug.Log("draggableConnectorPoint.Block.Facade is null");
+                if (draggableConnectorPoint.Block.Facade.BlockInputTrigger == null)
+                    Debug.Log("draggableConnectorPoint.Block.Facade.BlockInputTrigger is null");
+
+                if (draggableConnectorPoint.Block.Facade.BlockInputTrigger == null
+                    || this != draggableConnectorPoint.Block.Facade.BlockInputTrigger)
                 {
-                    SchemeBlockFacade facade = draggableConnectorPoint.Block.Facade;
+                    Collider2D[] hitInfo = Physics2D.OverlapCircleAll(transform.position, 0.25f);
 
-                    int outputBlockIndex = 0;
-                    for (int i = 0; i < draggableConnectorPoint.Block.Facade.BlockOutputButtons.Length; i++)
+                    Debug.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y + 0.25f, transform.position.z), Color.red);
+
+                    Collider2D correctCollider = hitInfo.ToList().Find(c => c.TryGetComponent<DraggableConnectorPoint>(out var connector) == draggableConnectorPoint);
+
+                    if (correctCollider != null)
                     {
-                        if (draggableConnectorPoint.Block.Facade.BlockOutputButtons[i] == facade.BlockOutputButtons[i])
-                        {
-                            outputBlockIndex = i;
-                        }
-                    }
+                        SchemeBlockFacade facade = draggableConnectorPoint.Block.Facade;
 
-                    facade.BlockOutputButtons[outputBlockIndex].ActionConnecorFacade.OnConnected(_block);
+                        int outputBlockIndex = 0;
+                        for (int i = 0; i < draggableConnectorPoint.Block.Facade.BlockOutputButtons.Length; i++)
+                        {
+                            if (draggableConnectorPoint.Block.Facade.BlockOutputButtons[i] == facade.BlockOutputButtons[i])
+                            {
+                                outputBlockIndex = i;
+                            }
+                        }
+
+                        facade.BlockOutputButtons[outputBlockIndex].ActionConnecorFacade.OnConnected(_block);
+                        ConnectedActionConnectorFacade = facade.BlockOutputButtons[outputBlockIndex].ActionConnecorFacade;
+                    }
                 }
             }
         }
@@ -51,14 +74,11 @@ namespace Session.Scheme.Block.Button
 
         }
 
-        public void StopUsage()
-        {
-
-        }
-
         private void OnDestroy()
         {
             _worldUIControllerService.OnStopInteractCallback -= OnStopWorldUIInteraction;
+
+            ConnectedActionConnectorFacade = null;
         }
     }
 }

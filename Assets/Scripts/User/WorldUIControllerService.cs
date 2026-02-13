@@ -1,5 +1,4 @@
 using Session.Scheme.Block.Button;
-using Session.Scheme.Windows;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
@@ -64,6 +63,7 @@ namespace User
             if (hit.collider != null && hit.collider.gameObject.TryGetComponent(out _currentObject))
             {
                 _currentObject.Use();
+
                 OnInteractCallback?.Invoke(_currentObject);
             }
         }
@@ -93,8 +93,6 @@ namespace User
                     draggableBlockButton.StopUsage();
                 else if (_currentObject is BlockOutputButton blockOutputButton)
                     blockOutputButton.StopUsage();
-                else if (_currentObject is BlockInputTrigger blockInputTrigger)
-                    blockInputTrigger.StopUsage();
 
                 OnStopInteractCallback?.Invoke(_currentObject);
 

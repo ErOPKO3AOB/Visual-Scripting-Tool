@@ -8,12 +8,11 @@ namespace Session.Scheme.Block.Types
 {
     public class InputBlock : IBlock, IDisposable
     {
-        public InputBlock(SchemeBlockFacade facade, VariableService variableService)
+        public InputBlock(SchemeBlockFacade facade, VariableService variableService, SchemeConsoleService consoleService)
         {
             _facade = facade;
-            
-            _consoleWindow = GameObject.FindAnyObjectByType<ConsoleWindow>();
             _variableService = variableService;
+            _consoleService = consoleService;
         }
 
         private readonly SchemeBlockFacade _facade;
@@ -21,6 +20,7 @@ namespace Session.Scheme.Block.Types
 
         private readonly ConsoleWindow _consoleWindow;
         private readonly VariableService _variableService;
+        private readonly SchemeConsoleService _consoleService;
 
         public IBlock Next { get; set; }
         public bool SingleInstance { get => _facade.SingleInstance; }
@@ -39,7 +39,7 @@ namespace Session.Scheme.Block.Types
 
         private IEnumerator WaitInput()
         {
-            _consoleWindow.GetInput(VariableName, this);
+            _consoleService.SpawnInputRequest(VariableName, this);
 
             while (!_used)
             {
@@ -54,6 +54,16 @@ namespace Session.Scheme.Block.Types
             _variableService.SetValueToVariable(VariableName, value);
 
             _used = true;
+        }
+
+        public bool CheckForCorrectRelationships()
+        {
+            return Next != null && Next.CheckForCorrectRelationships();
+        }
+
+        public bool CheckForCorrectValues()
+        {
+            return (Next == null || Next.CheckForCorrectValues());
         }
 
         public void Dispose()
