@@ -10,7 +10,6 @@ namespace Session.Scheme.Windows
         [Header("UI")]
         [SerializeField] private TMP_Text _typeText;
         [SerializeField] private TMP_Text _nameText;
-        [SerializeField] private TMP_Text _valueText;
         [SerializeField] private Button _deleteButton;
 
         public SchemeVariableBase SchemeVariable { get; private set; }
@@ -23,7 +22,6 @@ namespace Session.Scheme.Windows
 
             _typeText.text = SchemeVariable.ValueType.ToString();
             _nameText.text = SchemeVariable.variableName.ToString();
-            _valueText.text = SchemeVariable.GetValue().ToString();
         }
 
         private void OnDestroy()

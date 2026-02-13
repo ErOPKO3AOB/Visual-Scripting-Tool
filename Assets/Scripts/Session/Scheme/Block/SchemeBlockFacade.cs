@@ -66,6 +66,7 @@ namespace Session.Scheme.Block
 
         private void Start()
         {
+            // Components
             _label.OnChanged += OnLabelChanged;
 
             Collider = GetComponent<BoxCollider2D>();
@@ -73,29 +74,40 @@ namespace Session.Scheme.Block
             DraggableBlockButton = gameObject.AddComponent<DraggableBlockButton>();
             DraggableBlockButton.ConstructManually(_blockConfigs);
 
+            // Menu point
             if (_settingsWindowPrefab != null && _menuPoint != null)
             {
+                // Settings button
                 BlockSettingsButton = Instantiate(
                     _blockConfigs.SettingsButtonPrefab,
                     _menuPoint)
                     .GetComponent<BlockSettingsButton>();
 
                 BlockSettingsButton.ConstructManualy(_windowService, _settingsWindowPrefab, Model);
+
+                // Delete button
+                BlockDeleteButton = Instantiate(_blockConfigs.DeleteButtonPrefab, _menuPoint);
+                BlockDeleteButton.ConstructManualy(_schemeBlockFactory, Model);
             }
 
-            BlockInputTrigger = Instantiate(_blockConfigs.InputTriggerPrefab, _inputPoint);
-            BlockInputTrigger.ConstructManualy(Model, _worldUIControllerService);
-
-            BlockOutputButtons = new BlockOutputButton[_outputPoints.Length];
-
-            for (int i = 0; i < _outputPoints.Length; i++)
+            // Input point
+            if (_inputPoint != null)
             {
-                BlockOutputButtons[i] = Instantiate(_blockConfigs.OutputButtonPrefab, _outputPoints[i]);
-                BlockOutputButtons[i].ConstructManually(_blockConfigs, Model, _connectorOffsets[i]);
+                BlockInputTrigger = Instantiate(_blockConfigs.InputTriggerPrefab, _inputPoint);
+                BlockInputTrigger.ConstructManualy(Model, _worldUIControllerService);
             }
 
-            BlockDeleteButton = Instantiate(_blockConfigs.DeleteButtonPrefab, _menuPoint);
-            BlockDeleteButton.ConstructManualy(_schemeBlockFactory, Model);
+            // Output points
+            if (_outputPoints != null && _outputPoints.Length > 0)
+            {
+                BlockOutputButtons = new BlockOutputButton[_outputPoints.Length];
+
+                for (int i = 0; i < _outputPoints.Length; i++)
+                {
+                    BlockOutputButtons[i] = Instantiate(_blockConfigs.OutputButtonPrefab, _outputPoints[i]);
+                    BlockOutputButtons[i].ConstructManually(_blockConfigs, Model, _connectorOffsets[i]);
+                }
+            }
 
             _label.SetText(_label.GetText());
             SetDestroyWaiting(_schemeBlockFactory.DestroyWaiting);
@@ -105,8 +117,11 @@ namespace Session.Scheme.Block
         {
             SpriteRenderer.size = size;
             Collider.size = size;
-            _inputPoint.transform.localPosition = new Vector2(_inputPoint.transform.localPosition.x, size.y / 2);
-            _menuPoint.transform.localPosition = new Vector2(size.x / 2, size.y / 2);
+            
+            if (_inputPoint != null)
+                _inputPoint.transform.localPosition = new Vector2(_inputPoint.transform.localPosition.x, size.y / 2);
+            if (_menuPoint != null)
+                _menuPoint.transform.localPosition = new Vector2(size.x / 2, size.y / 2);
 
             for (int i = 0; i < _outputPoints.Length; i++)
             {
@@ -144,7 +159,7 @@ namespace Session.Scheme.Block
             if (BlockSettingsButton != null)
                 BlockSettingsButton.gameObject.SetActive(!value);
             if (BlockDeleteButton != null)
-            BlockDeleteButton.gameObject.SetActive(value);
+                BlockDeleteButton.gameObject.SetActive(value);
         }
 
         private void OnDestroy()

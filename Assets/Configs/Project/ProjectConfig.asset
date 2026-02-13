@@ -21,6 +21,8 @@ MonoBehaviour:
     - {fileID: 4949882448197242693, guid: 6b26df2680e3a53489a8a8a15711b72c, type: 3}
     - {fileID: -8355040922653192364, guid: a9a83cfb7bcd6744690363cc6aea56b7, type: 3}
     - {fileID: 927488780316880342, guid: 5f1188a6fd6aa5c4ba27778d9520ffe0, type: 3}
+    - {fileID: 6773180056389733881, guid: 08e1eb50e3dbc2143baf058fc439233a, type: 3}
+    - {fileID: 6773180056389733881, guid: a2b3a02bc16147a45afaac1a30483875, type: 3}
     _actionConnecorFacadePrefab: {fileID: -6835166333610952189, guid: a092fdec5d2ccee40988b1f0bfa508ad, type: 3}
     _boxSprite: {fileID: -9013346659134127101, guid: cfdfedad55a5fa042bc862078cc72962, type: 3}
     _circleSprite: {fileID: -9013346659134127101, guid: ce60f96181e41674bba43dc7b22e8f49, type: 3}

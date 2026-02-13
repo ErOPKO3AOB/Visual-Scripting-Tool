@@ -28,7 +28,7 @@ namespace Session.Scheme.Windows
             _inputField.gameObject.SetActive(true);
             _inputField.onSubmit.AddListener((string value) =>
             {
-                int varIndex = _variableService.CheckExistance(variableName);
+                int varIndex = _variableService.CheckVariableExistance(variableName);
                 if (varIndex > -1) _variableService.Variables[varIndex].SetValue(value);
                 inputBlock.SetInput(value);
                 _inputField.interactable = false;

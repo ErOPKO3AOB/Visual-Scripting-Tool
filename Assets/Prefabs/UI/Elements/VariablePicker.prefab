@@ -380,7 +380,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6646292603638578105
 RectTransform:
   m_ObjectHideFlags: 0
@@ -506,7 +506,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3562836302936818248
 RectTransform:
   m_ObjectHideFlags: 0
@@ -647,7 +647,7 @@ RectTransform:
   m_Father: {fileID: 7141418151105342925}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -824,7 +824,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 12
+  m_ScrollSensitivity: -12
   m_Viewport: {fileID: 7670310392705936763}
   m_HorizontalScrollbar: {fileID: 8463837741591595064}
   m_VerticalScrollbar: {fileID: 1180785293164227257}
@@ -849,7 +849,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _windowName: VARIABLE_PICKER_ITEM
   _variableListPrefab: {fileID: 6888468730971742389, guid: 330475c9cd810504fa959badd474dce2, type: 3}
-  _pickType: 1
   _choosedVariablePrefab: {fileID: 5616262377345924842, guid: 91c86913363a7484b8e5a43b68f45d03, type: 3}
   _content: {fileID: 2424261569769455841}
   _addNewButton: {fileID: 6754069450094760389}
@@ -886,7 +885,7 @@ RectTransform:
   m_Father: {fileID: 4779271542737510162}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}

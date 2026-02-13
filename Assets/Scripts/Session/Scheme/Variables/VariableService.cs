@@ -48,42 +48,37 @@ namespace Session.Scheme.Variables
         public List<SchemeVariableBase> Variables { get; private set; } = new List<SchemeVariableBase>();
 
         #region Variable Creating
-        public void BuildVariable<T>(string varName, object startValue = null)
+        public void BuildVariable<T>(string varName, T startValue = default)
         {
             if (string.IsNullOrEmpty(varName)) return;
 
-            int index = CheckExistance(varName);
+            int index = CheckVariableExistance(varName);
 
             if (index < 0)
             {
-                Debug.Log($"Building int {varName} vairalble with value:{startValue}");
                 SchemeVariableBase schemeVariable = new SchemeVariable<T>(varName);
-                schemeVariable.SetValue(startValue);
                 Variables.Add(schemeVariable);
             }
+            Debug.Log($"int {varName} vairalble with value:{startValue}");
 
-            else
-            {
-                SetValueToVariable(varName, startValue);
-                //Debug.Log($"Setting value to variable: name {varName} value {startValue}");
-            }
+            SetValueToVariable(varName, startValue);
         }
 
         public void SetTypeToVariable<T>(string varName)
         {
-            int index = CheckExistance(varName);
+            int index = CheckVariableExistance(varName);
 
             if (index > -1)
             {
                 SchemeVariableBase schemeVariable = Variables[index];
                 RemoveVariable(schemeVariable.variableName);
-                BuildVariable<T>(schemeVariable.variableName, schemeVariable.GetValue());
+                BuildVariable<T>(schemeVariable.variableName);
             }
         }
 
         public void SetValueToVariable(string varName, object value)
         {
-            int index = CheckExistance(varName);
+            int index = CheckVariableExistance(varName);
 
             if (index > -1)
             {
@@ -93,7 +88,7 @@ namespace Session.Scheme.Variables
 
         public void RemoveVariable(string varName)
         {
-            int index = CheckExistance(varName);
+            int index = CheckVariableExistance(varName);
 
             if (index > -1)
             {
@@ -101,7 +96,7 @@ namespace Session.Scheme.Variables
             }
         }
 
-        public int CheckExistance(string varName)
+        public int CheckVariableExistance(string varName)
         {
             if (Variables.Count > 0)
                 for (int i = 0; i < Variables.Count; i++)
@@ -138,8 +133,8 @@ namespace Session.Scheme.Variables
         #region Variable Operating
         public void UseOperation(string operand1Name, MethodOperatorType opType, string operand2Name)
         {
-            SchemeVariableBase operand1 = Variables[CheckExistance(operand1Name)];
-            SchemeVariableBase operand2 = Variables[CheckExistance(operand2Name)];
+            SchemeVariableBase operand1 = Variables[CheckVariableExistance(operand1Name)];
+            SchemeVariableBase operand2 = Variables[CheckVariableExistance(operand2Name)];
 
             if ((operand1.ValueType != operand2.ValueType) || (operand1 == null || operand2 == null))
             {
@@ -247,15 +242,15 @@ namespace Session.Scheme.Variables
                 }
             }
 
-            Variables[CheckExistance(operand1Name)].SetValue(operand1);
+            Variables[CheckVariableExistance(operand1Name)].SetValue(operand1);
         }
         #endregion
 
         #region Variable Comparsion
         public bool UseComparsion(string operand1Name, ConditionOperatorType opType, string operand2Name)
         {
-            SchemeVariableBase operand1 = Variables[CheckExistance(operand1Name)];
-            SchemeVariableBase operand2 = Variables[CheckExistance(operand2Name)];
+            SchemeVariableBase operand1 = Variables[CheckVariableExistance(operand1Name)];
+            SchemeVariableBase operand2 = Variables[CheckVariableExistance(operand2Name)];
 
             if ((operand1.ValueType != operand2.ValueType) || (operand1 == null || operand2 == null))
             {

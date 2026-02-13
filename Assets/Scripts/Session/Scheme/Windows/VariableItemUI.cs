@@ -64,8 +64,10 @@ namespace Session.Scheme.Windows
 
         public void RebuildUI(int typeValue, string name, object value)
         {
+            _variableName = name;
+
             _typeDropdown.value = typeValue;
-            _nameInputField.text = name;
+            _nameInputField.text = _variableName;
             _valueInputField.text = value?.ToString();
         }
 
@@ -107,7 +109,7 @@ namespace Session.Scheme.Windows
 
         public void OnEndEdit()
         {
-            _masterList.AddVariable(_variableName, _variableType, _variableValue);
+            _masterList.AddOrModifyVariable(_variableName, _variableType, _variableValue);
         }
 
         public void OnDestroy()

@@ -39,14 +39,11 @@ namespace Session.Scheme.Block.Types
             _operatorType = operatorType;
             _operand2 = operand2;
 
-            var attribute = (InspectorNameAttribute)Attribute.GetCustomAttribute(
-               typeof(VariableService.MethodOperatorType), typeof(InspectorNameAttribute));
+            string displayName = operand1 != null && operand2 != null ?
+                $"{_operand1.variableName} {_operatorType} {_operand2.variableName}" 
+                : "Значения не установлены!";
 
-            string displayName = attribute != null ? attribute.displayName : operatorType.ToString();
-
-            Debug.Log($"Trying set operation: {_operand1.variableName} {displayName} {_operand2.variableName}");
-
-            _facade.Label.SetText($"{_operand1.variableName} {displayName} {_operand2.variableName}");
+            _facade.Label.SetText(displayName);
         }
 
         public void Dispose()

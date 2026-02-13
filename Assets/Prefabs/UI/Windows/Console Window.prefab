@@ -1111,7 +1111,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _windowName: CONSOLE_WINDOW
-  _interruptsWorldInteractionUI: 1
   _content: {fileID: 1783731824997435097}
   _closeButton: {fileID: 7007380501313556091}
 --- !u!1 &7771526523460288373
@@ -1386,7 +1385,7 @@ GameObject:
   - component: {fileID: 2117811577979654427}
   - component: {fileID: 2350008856688623693}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: UpPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

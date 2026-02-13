@@ -1,4 +1,3 @@
-using GlobalServices.ProjectLifetime;
 using UnityEngine;
 using VContainer;
 
@@ -7,24 +6,19 @@ namespace Session.Scheme.Windows
     public class SessionWindow : BaseWindow
     {
         [Inject]
-        public void Construct(WindowFactory windowService, BlockConfigs blockConfigs)
+        public void Construct(WindowFactory windowService)
         {
             _windowService = windowService;
-            _blockConfigs = blockConfigs;
         }
 
         [SerializeField] private Transform _content;
-        [SerializeField] private int[] _essentialWindowIndecies;
+        [SerializeField] private DownMenuItem _downMenuPrefab;
 
         private WindowFactory _windowService;
-        private BlockConfigs _blockConfigs;
 
         private void Start()
         {
-            foreach (int item in _essentialWindowIndecies)
-            {
-                _windowService.OpenWindow(_blockConfigs.WindowPrefabsUI[item].WindowName, _content);
-            }
+            _windowService.OpenWindow(_downMenuPrefab.WindowName, _content);
         }
     }
 }

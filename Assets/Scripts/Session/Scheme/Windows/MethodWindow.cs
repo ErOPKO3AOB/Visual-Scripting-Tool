@@ -90,8 +90,7 @@ namespace Session.Scheme.Windows
 
         private void SendOperationToMethodBlock()
         {
-            if (_operand1 != null && _operand2 != null)
-                _methodBlock.SetOperation(_operand1, _operatorType, _operand2);
+            _methodBlock.SetOperation(_operand1, _operatorType, _operand2);
         }
 
         private void OnDestroy()

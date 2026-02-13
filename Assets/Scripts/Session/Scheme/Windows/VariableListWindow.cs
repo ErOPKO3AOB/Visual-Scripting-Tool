@@ -11,18 +11,17 @@ namespace Session.Scheme.Windows
     public class VariableListWindow : BaseWindow
     {
         [Inject]
-        public void Construct(BlockConfigs blockConfigs, WindowFactory windowService, VariableService variableService)
+        public void Construct(WindowFactory windowService, VariableService variableService)
         {
-            _blockConfigs = blockConfigs;
             _windowService = windowService;
             _variableService = variableService;
         }
 
-        private BlockConfigs _blockConfigs;
         private WindowFactory _windowService;
         private VariableService _variableService;
 
         [Header("UI")]
+        [SerializeField] private VariableItemUI _variableItemPrefab;
         [SerializeField] private Button _addNewVariableButton;
         [SerializeField] private LayoutElement _content;
         [SerializeField] private Button _closeButton;
@@ -36,6 +35,7 @@ namespace Session.Scheme.Windows
             try
             {
                 _variablePicker = (VariablePickerUI)sender;
+                RebuildUI();
             }
 
             catch (Exception e)
@@ -46,11 +46,9 @@ namespace Session.Scheme.Windows
 
         private void Start()
         {
-            RebuildUI();
-
             _addNewVariableButton.onClick.AddListener(() =>
             {
-                VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_blockConfigs.WindowPrefabsUI[11].WindowName, _content.transform);
+                VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_variableItemPrefab.WindowName, _content.transform);
                 window.MasterList = this;
                 _activeVariableItems.Add(window);
             });
@@ -65,7 +63,7 @@ namespace Session.Scheme.Windows
             {
                 SchemeVariableBase schemeVariable = _variableService.Variables[i];
 
-                VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_blockConfigs.WindowPrefabsUI[11].WindowName, _content.transform);
+                VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_variableItemPrefab.WindowName, _content.transform);
 
                 window.MasterList = this;
                 window.RebuildUI(_variableService.GetTypeIntegerValue(schemeVariable.ValueType), schemeVariable.variableName, schemeVariable.GetValue());
@@ -80,56 +78,60 @@ namespace Session.Scheme.Windows
             _closeButton.onClick.RemoveAllListeners();
         }
 
-        public void AddVariable(string name, Type type, object value = null)
+        public void AddOrModifyVariable(string name, Type type, object value = null)
         {
-            if (name != null && type != null)
+            if (type != null && name != null)
             {
                 switch (_variableService.GetTypeIntegerValue(type))
                 {
                     case 0:
-                        if (value != null) int.Parse(value.ToString());
-                        else value = 0;
-                        _variableService.BuildVariable<int>(name, value);
+                        int intValue = 0;
+                        if (value != null)
+                            intValue = int.Parse(value.ToString());
+                        _variableService.BuildVariable(name, intValue);
                         break;
+
                     case 1:
-                        if (value != null) float.Parse(value.ToString());
-                        else value = 0;
-                        _variableService.BuildVariable<float>(name, value);
+                        float floatValue = 0;
+                        if (value != null)
+                            floatValue = float.Parse(value.ToString());
+                        _variableService.BuildVariable(name, floatValue);
                         break;
+
                     case 2:
-                        if (value != null) value.ToString();
-                        else value = "";
-                        _variableService.BuildVariable<string>(name, value);
+                        string stringValue = "";
+                        if (value != null)
+                            stringValue = value.ToString();
+                        _variableService.BuildVariable(name, stringValue);
                         break;
+
                     case 3:
+                        bool boolValue = false;
                         if (value != null) bool.Parse(value.ToString());
-                        else value = false;
-                        _variableService.BuildVariable<bool>(name, value);
+                        else boolValue = false;
+                        _variableService.BuildVariable(name, boolValue);
                         break;
                 }
-            }
-
-            else
-            {
-                Debug.LogWarning("Не указан один из важных параметров для создания переменной!");
             }
         }
 
         public void RemoveVariable(VariableItemUI variableItem)
         {
             SchemeVariableBase variable = _variableService.Variables.Find(v => v.variableName == variableItem.VariableName);
-            _variableService.RemoveVariable(variableItem.VariableName);
 
             _activeVariableItems.Remove(variableItem);
+            _variableService.RemoveVariable(variableItem.VariableName);
             Destroy(variableItem.gameObject);
         }
 
         public void ChooseVariable(string variableName)
         {
-            int variableIndex = _variableService.CheckExistance(variableName);
+            int variableIndex = _variableService.CheckVariableExistance(variableName);
             Debug.Log($"Var index: {variableIndex} and var name: {variableName}");
             if (variableIndex > -1)
                 _variablePicker.OnVariableChoose(_variableService.Variables[variableIndex]);
+
+            _windowService.CloseWindow(WindowName);
         }
     }
 }

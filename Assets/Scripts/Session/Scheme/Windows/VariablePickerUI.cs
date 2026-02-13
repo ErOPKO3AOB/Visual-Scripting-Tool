@@ -17,8 +17,6 @@ namespace Session.Scheme.Variables
         [SerializeField] private Button _addNewButton;
 
         private WindowFactory _windowService;
-        public VariableListWindow VariableList { get; private set; }
-
 
         public UnityAction<SchemeVariableBase> OnVariableChoosed;
         public UnityAction<SchemeVariableBase> OnVariableDeleted;
@@ -35,16 +33,8 @@ namespace Session.Scheme.Variables
         {
             _addNewButton.onClick.AddListener(() =>
             {
-                VariableList = (VariableListWindow)_windowService.OpenWindow(_variableListPrefab.WindowName, sender: this);
+                _windowService.OpenWindow(_variableListPrefab.WindowName, sender: this);
             });
-
-            //_windowService.OnCloseWindow += (BaseWindow window) =>
-            //{
-            //    if (window.GetType() == typeof(VariableListWindow))
-            //    {
-            //        VariableList.OnVariableChoose -= OnVariableChoose;
-            //    }
-            //};
         }
 
         public void OnVariableChoose(SchemeVariableBase variable)
@@ -60,7 +50,6 @@ namespace Session.Scheme.Variables
             OnVariableChoosed?.Invoke(variable);
         }
 
-
         public void OnVariableDelete()
         {
             OnVariableDeleted?.Invoke(VariableItem.SchemeVariable);
@@ -68,6 +57,11 @@ namespace Session.Scheme.Variables
             VariableItem = null;
 
             _addNewButton.gameObject.SetActive(true);
+        }
+
+        private void OnDestroy()
+        {
+            _addNewButton.onClick.RemoveAllListeners();
         }
     }
 }
