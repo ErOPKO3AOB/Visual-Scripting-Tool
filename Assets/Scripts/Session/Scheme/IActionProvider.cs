@@ -1,16 +1,11 @@
 using UnityEngine;
 
-public class IActionProvider : MonoBehaviour
+namespace Session.Scheme
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public interface IActionProvider
     {
-        
-    }
+        public IActionProvider Next { get; set; }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        void ProvideAction();
     }
 }

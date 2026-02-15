@@ -23,7 +23,9 @@ namespace Session.Scheme.Block.Types
         private IBlock _trueOutput;
         private IBlock _falseOutput;
 
-        public IBlock Next { get; set; }
+        private IBlock _nextBlock;
+
+        public IActionProvider Next { get => _nextBlock; set => _nextBlock = (IBlock)value; }
         public bool SingleInstance { get => _facade.SingleInstance; }
 
         public VariableService.ConditionOperatorType OperatorType => _conditionalOperatorType;
@@ -64,12 +66,12 @@ namespace Session.Scheme.Block.Types
 
         public bool CheckForCorrectRelationships()
         {
-            return Next != null && Next.CheckForCorrectRelationships();
+            return Next != null && _nextBlock.CheckForCorrectRelationships();
         }
 
         public bool CheckForCorrectValues()
         {
-            return _operand1 != null && _operand2 != null && (Next == null || Next.CheckForCorrectValues());
+            return _operand1 != null && _operand2 != null && (Next == null || _nextBlock.CheckForCorrectValues());
         }
 
         public void Dispose()

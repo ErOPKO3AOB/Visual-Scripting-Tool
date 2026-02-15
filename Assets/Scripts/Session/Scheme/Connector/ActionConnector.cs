@@ -16,7 +16,7 @@ namespace Session.Scheme.Connector
         {
             _firstProvider.Next = secondProvider;
             
-            var childFacade = _firstProvider.Next.Facade;
+            var childFacade = ((IBlock)_firstProvider.Next).Facade;
             childFacade.DraggableBlockButton.SetDragUsage(false);
             childFacade.transform.SetParent(_firstProvider.Facade.transform);
             childFacade.Collider.enabled = false;
@@ -27,7 +27,7 @@ namespace Session.Scheme.Connector
         {
             if (_firstProvider.Next == null) return;
 
-            var childFacade = _firstProvider.Next.Facade;
+            var childFacade = ((IBlock)_firstProvider.Next).Facade;
             childFacade.transform.SetParent(null);
             childFacade.DraggableBlockButton.SetDragUsage(true);
             childFacade.Collider.enabled = true;

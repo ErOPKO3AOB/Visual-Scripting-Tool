@@ -15,6 +15,8 @@ namespace Session.Scheme.Block.Types
         private readonly SchemeBlockFacade _facade;
         private readonly VariableService _variableService;
 
+        private IBlock _nextBlock;
+
         private VariableService.MethodOperatorType _operatorType;
         private SchemeVariableBase _operand1;
         private SchemeVariableBase _operand2;
@@ -24,7 +26,7 @@ namespace Session.Scheme.Block.Types
         public SchemeVariableBase Operand2 => _operand2;
 
         public SchemeBlockFacade Facade => _facade;
-        public IBlock Next { get; set; }
+        public IActionProvider Next { get => _nextBlock; set => _nextBlock = (IBlock)value; }
         public bool SingleInstance => _facade.SingleInstance;
 
         public void ProvideAction()
@@ -48,12 +50,12 @@ namespace Session.Scheme.Block.Types
 
         public bool CheckForCorrectRelationships()
         {
-            return Next != null && Next.CheckForCorrectRelationships();
+            return Next != null && _nextBlock.CheckForCorrectRelationships();
         }
 
         public bool CheckForCorrectValues()
         {
-            return _operand1 != null && _operand2 != null && (Next == null || Next.CheckForCorrectValues());
+            return _operand1 != null && _operand2 != null && (Next == null || _nextBlock.CheckForCorrectValues());
         }
 
         public void Dispose()

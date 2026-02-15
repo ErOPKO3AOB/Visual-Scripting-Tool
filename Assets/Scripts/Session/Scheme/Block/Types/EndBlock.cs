@@ -13,7 +13,7 @@ namespace Session.Scheme.Block.Types
         private readonly SchemeBlockFacade _facade;
         public SchemeBlockFacade Facade => _facade;
 
-        public IBlock Next { get; set; }
+        public IActionProvider Next { get; set; }
         public bool SingleInstance { get => _facade.SingleInstance; }
 
         public void ProvideAction()
@@ -28,7 +28,7 @@ namespace Session.Scheme.Block.Types
 
         public bool CheckForCorrectValues()
         {
-            return (Next == null || Next.CheckForCorrectValues());
+            return true;
         }
 
         public void Dispose()

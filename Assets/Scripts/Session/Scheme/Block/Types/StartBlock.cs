@@ -13,7 +13,9 @@ namespace Session.Scheme.Block.Types
         private readonly SchemeBlockFacade _facade;
         public SchemeBlockFacade Facade => _facade;
 
-        public IBlock Next { get; set; }
+        private IBlock _nextBlock;
+
+        public IActionProvider Next { get => _nextBlock; set => _nextBlock = (IBlock)value; }
         public bool SingleInstance { get => _facade.SingleInstance; }
 
 
@@ -24,12 +26,12 @@ namespace Session.Scheme.Block.Types
 
         public bool CheckForCorrectRelationships()
         {
-            return Next != null && Next.CheckForCorrectRelationships();
+            return Next != null && _nextBlock.CheckForCorrectRelationships();
         }
 
         public bool CheckForCorrectValues()
         {
-            return (Next == null || Next.CheckForCorrectValues());
+            return (Next == null || _nextBlock.CheckForCorrectValues());
         }
 
         public void Dispose()

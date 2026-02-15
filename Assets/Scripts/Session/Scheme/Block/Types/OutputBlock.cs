@@ -13,15 +13,15 @@ namespace Session.Scheme.Block.Types
         }
 
         private readonly SchemeBlockFacade _facade;
-        public SchemeBlockFacade Facade => _facade;
-
         private readonly SchemeConsoleService _consoleService;
-
-        public IBlock Next { get; set; }
-        public bool SingleInstance => _facade.SingleInstance;
 
         private SchemeVariableBase _schemeVariable;
 
+        private IBlock _nextBlock;
+
+        public IActionProvider Next { get => _nextBlock; set => _nextBlock = (IBlock)value; }
+        public bool SingleInstance => _facade.SingleInstance;
+        public SchemeBlockFacade Facade => _facade;
         public SchemeVariableBase SchemeVariable => _schemeVariable;
 
         public void SetOperation(SchemeVariableBase variableToOutputRequest)
@@ -48,12 +48,12 @@ namespace Session.Scheme.Block.Types
 
         public bool CheckForCorrectRelationships()
         {
-            return Next != null && Next.CheckForCorrectRelationships();
+            return Next != null && _nextBlock.CheckForCorrectRelationships();
         }
 
         public bool CheckForCorrectValues()
         {
-            return (Next == null || Next.CheckForCorrectValues());
+            return (Next == null || _nextBlock.CheckForCorrectValues());
         }
 
 
