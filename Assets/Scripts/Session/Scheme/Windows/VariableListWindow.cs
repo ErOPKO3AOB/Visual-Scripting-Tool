@@ -1,4 +1,3 @@
-using GlobalServices.ProjectLifetime;
 using Session.Scheme.Variables;
 using System;
 using System.Collections.Generic;
@@ -34,7 +33,11 @@ namespace Session.Scheme.Windows
         {
             try
             {
-                _variablePicker = (VariablePickerUI)sender;
+                if (sender is VariablePickerUI variablePicker)
+                    _variablePicker = variablePicker;
+                else
+                    _variablePicker = null;
+
                 RebuildUI();
             }
 
@@ -48,12 +51,10 @@ namespace Session.Scheme.Windows
         {
             _addNewVariableButton.onClick.AddListener(() =>
             {
-                VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_variableItemPrefab, _content.transform);
-                window.MasterList = this;
+                VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_variableItemPrefab, _content.transform, this);
                 _activeVariableItems.Add(window);
             });
 
-            if (_windowService == null) Debug.Log("Window service is null");
             _closeButton.onClick.AddListener(() => { _windowService.CloseWindow(this); });
         }
 
@@ -65,9 +66,6 @@ namespace Session.Scheme.Windows
 
                 VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_variableItemPrefab, _content.transform);
 
-                window.MasterList = this;
-                window.RebuildUI(_variableService.GetTypeIntegerValue(schemeVariable.ValueType), schemeVariable.variableName, schemeVariable.GetValue());
-
                 _activeVariableItems.Add(window);
             }
         }
@@ -78,56 +76,36 @@ namespace Session.Scheme.Windows
             _closeButton.onClick.RemoveAllListeners();
         }
 
-        public void AddOrModifyVariable(string name, Type type, object value = null)
+        public void AddOrModifyVariable(SchemeVariableBase schemeVariable)
         {
-            if (type != null && name != null)
+            if (schemeVariable != null)
             {
-                switch (_variableService.GetTypeIntegerValue(type))
-                {
-                    case 0:
-                        int intValue = 0;
-                        if (value != null)
-                            intValue = int.Parse(value.ToString());
-                        _variableService.BuildVariable(name, intValue);
-                        break;
-
-                    case 1:
-                        float floatValue = 0;
-                        if (value != null)
-                            floatValue = float.Parse(value.ToString());
-                        _variableService.BuildVariable(name, floatValue);
-                        break;
-
-                    case 2:
-                        string stringValue = "";
-                        if (value != null)
-                            stringValue = value.ToString();
-                        _variableService.BuildVariable(name, stringValue);
-                        break;
-
-                    case 3:
-                        bool boolValue = false;
-                        if (value != null) bool.Parse(value.ToString());
-                        else boolValue = false;
-                        _variableService.BuildVariable(name, boolValue);
-                        break;
-                }
+                if (schemeVariable.GetValue().GetType() == typeof(int))
+                    _variableService.BuildVariable<int>(schemeVariable.variableName, int.Parse(schemeVariable.GetValue().ToString()));
+                else if (schemeVariable.GetValue().GetType() == typeof(float))
+                    _variableService.BuildVariable<float>(schemeVariable.variableName, float.Parse(schemeVariable.GetValue().ToString()));
+                else if (schemeVariable.GetValue().GetType() == typeof(string))
+                    _variableService.BuildVariable<string>(schemeVariable.variableName, schemeVariable.GetValue().ToString());
+                else if (schemeVariable.GetValue().GetType() == typeof(bool))
+                        _variableService.BuildVariable<bool>(schemeVariable.variableName, bool.Parse(schemeVariable.GetValue().ToString()));
             }
         }
 
         public void RemoveVariable(VariableItemUI variableItem)
         {
-            SchemeVariableBase variable = _variableService.Variables.Find(v => v.variableName == variableItem.VariableName);
+            SchemeVariableBase variable = _variableService.Variables.Find(v => v.variableName == variableItem.SchemeVariable.variableName);
 
             _activeVariableItems.Remove(variableItem);
-            _variableService.RemoveVariable(variableItem.VariableName);
+            _variableService.RemoveVariable(variableItem.SchemeVariable.variableName);
             Destroy(variableItem.gameObject);
         }
 
         public void ChooseVariable(string variableName)
         {
+            if (_variablePicker == null) return;
+
             int variableIndex = _variableService.CheckVariableExistance(variableName);
-            Debug.Log($"Var index: {variableIndex} and var name: {variableName}");
+            //Debug.Log($"Var index: {variableIndex} and var name: {variableName}");
             if (variableIndex > -1)
                 _variablePicker.ChooseVariable(_variableService.Variables[variableIndex]);
 

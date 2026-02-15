@@ -31,14 +31,14 @@ namespace Session.Scheme.Block.Button
 
             if (baseBlockButton is DraggableConnectorPoint draggableConnectorPoint)
             {
-                if (draggableConnectorPoint == null)
-                    Debug.Log("draggableConnectorPoint is null");
-                if (draggableConnectorPoint.Block == null)
-                    Debug.Log("draggableConnectorPoint.Block is null");
-                if (draggableConnectorPoint.Block.Facade == null)
-                    Debug.Log("draggableConnectorPoint.Block.Facade is null");
-                if (draggableConnectorPoint.Block.Facade.BlockInputTrigger == null)
-                    Debug.Log("draggableConnectorPoint.Block.Facade.BlockInputTrigger is null");
+                //if (draggableConnectorPoint == null)
+                //    Debug.Log("draggableConnectorPoint is null");
+                //if (draggableConnectorPoint.Block == null)
+                //    Debug.Log("draggableConnectorPoint.Block is null");
+                //if (draggableConnectorPoint.Block.Facade == null)
+                //    Debug.Log("draggableConnectorPoint.Block.Facade is null");
+                //if (draggableConnectorPoint.Block.Facade.BlockInputTrigger == null)
+                //    Debug.Log("draggableConnectorPoint.Block.Facade.BlockInputTrigger is null");
 
                 if (draggableConnectorPoint.Block.Facade.BlockInputTrigger == null
                     || this != draggableConnectorPoint.Block.Facade.BlockInputTrigger)
@@ -47,23 +47,19 @@ namespace Session.Scheme.Block.Button
 
                     Debug.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y + 0.25f, transform.position.z), Color.red);
 
-                    Collider2D correctCollider = hitInfo.ToList().Find(c => c.TryGetComponent<DraggableConnectorPoint>(out var connector) == draggableConnectorPoint);
+                    DraggableConnectorPoint connectorPoint = null;
+                    Collider2D correctCollider = hitInfo.ToList().Find(c => c.TryGetComponent(out connectorPoint) == draggableConnectorPoint);
 
-                    if (correctCollider != null)
+                    if (correctCollider != null && connectorPoint != null)
                     {
-                        SchemeBlockFacade facade = draggableConnectorPoint.Block.Facade;
+                        SchemeBlockFacade facadeOfConnectorPoint = draggableConnectorPoint.Block.Facade;
 
-                        int outputBlockIndex = 0;
-                        for (int i = 0; i < draggableConnectorPoint.Block.Facade.BlockOutputButtons.Length; i++)
-                        {
-                            if (draggableConnectorPoint.Block.Facade.BlockOutputButtons[i] == facade.BlockOutputButtons[i])
-                            {
-                                outputBlockIndex = i;
-                            }
-                        }
+                        int outputBlockIndex = connectorPoint.Block.Facade.BlockOutputButtons.ToList().IndexOf(connectorPoint.BlockOutputButton);
 
-                        facade.BlockOutputButtons[outputBlockIndex].ActionConnecorFacade.OnConnected(_block);
-                        ConnectedActionConnectorFacade = facade.BlockOutputButtons[outputBlockIndex].ActionConnecorFacade;
+                        Debug.Log($"facade.BlockOutputButtons[{outputBlockIndex}].ActionConnecorFacade.OnConnected({_block.Facade.BlockName})");
+
+                        facadeOfConnectorPoint.BlockOutputButtons[outputBlockIndex].ActionConnecorFacade.OnConnected(_block, outputBlockIndex);
+                        ConnectedActionConnectorFacade = facadeOfConnectorPoint.BlockOutputButtons[outputBlockIndex].ActionConnecorFacade;
                     }
                 }
             }
@@ -76,7 +72,8 @@ namespace Session.Scheme.Block.Button
 
         private void OnDestroy()
         {
-            _worldUIControllerService.OnStopInteractCallback -= OnStopWorldUIInteraction;
+            if (_worldUIControllerService != null)
+                _worldUIControllerService.OnStopInteractCallback -= OnStopWorldUIInteraction;
 
             ConnectedActionConnectorFacade = null;
         }

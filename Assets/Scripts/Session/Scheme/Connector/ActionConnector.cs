@@ -5,20 +5,23 @@ namespace Session.Scheme.Connector
 {
     public class ActionConnector
     {
-        public ActionConnector(IBlock firstProvider)
+        public ActionConnector(IActionProvider firstProvider)
         {
             _firstProvider = firstProvider;
         }
 
-        private readonly IBlock _firstProvider;
+        private readonly IActionProvider _firstProvider;
 
-        public void Connect(IBlock secondProvider)
+        public void Connect(IActionProvider secondProvider, int outputIndex)
         {
+            if (_firstProvider is IBlock block)
+                block.CurrentOutputIndex = outputIndex;
+
             _firstProvider.Next = secondProvider;
-            
+
             var childFacade = ((IBlock)_firstProvider.Next).Facade;
             childFacade.DraggableBlockButton.SetDragUsage(false);
-            childFacade.transform.SetParent(_firstProvider.Facade.transform);
+            childFacade.transform.SetParent(((IBlock)_firstProvider).Facade.transform);
             childFacade.Collider.enabled = false;
             childFacade.Rigidbody.bodyType = RigidbodyType2D.Kinematic;
         }

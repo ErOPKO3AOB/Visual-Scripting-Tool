@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace GlobalServices.CodeGeneration
 {
     public class CppCodeGenerator : ICodeGenerator
@@ -7,9 +9,34 @@ namespace GlobalServices.CodeGeneration
             throw new System.NotImplementedException();
         }
 
-        public string Generate()
+        public Task MakeStringConditionCodeParts()
         {
-            return null;
+            throw new System.NotImplementedException();
+        }
+
+        public Task MakeStringInitializedVariables()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task MakeStringInputCodeParts()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task MakeStringMethodCodeParts()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task MakeStringOutputCodeParts()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        Task<string> ICodeGenerator.Generate()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

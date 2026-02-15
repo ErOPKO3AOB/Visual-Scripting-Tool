@@ -16,11 +16,16 @@ namespace Session.Scheme.Block.Types
         }
 
         private readonly SchemeBlockFacade _facade;
-        public SchemeBlockFacade Facade => _facade;
 
         private readonly ConsoleWindow _consoleWindow;
         private readonly VariableService _variableService;
         private readonly SchemeConsoleService _consoleService;
+
+        private int _currentOutputIndex;
+
+        public IBlock.BlockType ConcreteType { get => IBlock.BlockType.Input; }
+        public SchemeBlockFacade Facade => _facade;
+        public int CurrentOutputIndex { get { return _currentOutputIndex; } set { _currentOutputIndex = 0; } }
 
         private IBlock _nextBlock;
 
@@ -36,12 +41,15 @@ namespace Session.Scheme.Block.Types
         {
             _schemeVariable = variableToInputRequest;
 
-            Facade.Label.SetText($"¬вод: {SchemeVariable.variableName}");
+            string displayName = variableToInputRequest != null ?
+                $"¬вод: {_schemeVariable.variableName}"
+                : "«начени€ не установлены!";
+
+            _facade.Label.SetText(displayName);
         }
 
         public void ProvideAction()
         {
-
             _used = false;
 
             _facade.StartCoroutine(WaitInput());
@@ -61,8 +69,6 @@ namespace Session.Scheme.Block.Types
 
         public void SetInput(object value)
         {
-            Debug.Log("GOT INPUT!!!");
-
             _variableService.SetValueToVariable(SchemeVariable.variableName, value);
 
             _used = true;
@@ -70,6 +76,8 @@ namespace Session.Scheme.Block.Types
 
         public bool CheckForCorrectRelationships()
         {
+            //Debug.Log($"{Facade.BlockName} => {Next}");
+
             return Next != null && _nextBlock.CheckForCorrectRelationships();
         }
 

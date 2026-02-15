@@ -13,6 +13,11 @@ namespace Session.Scheme.Block.Types
         private readonly SchemeBlockFacade _facade;
         public SchemeBlockFacade Facade => _facade;
 
+        private int _currentOutputIndex;
+
+        public IBlock.BlockType ConcreteType { get => IBlock.BlockType.End; }
+
+        public int CurrentOutputIndex { get { return _currentOutputIndex; }  set { _currentOutputIndex = 0; } }
         public IActionProvider Next { get; set; }
         public bool SingleInstance { get => _facade.SingleInstance; }
 
@@ -23,6 +28,8 @@ namespace Session.Scheme.Block.Types
 
         public bool CheckForCorrectRelationships()
         {
+            //Debug.Log($"{Facade.BlockName} => {Next}");
+
             return true;
         }
 

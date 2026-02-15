@@ -27,7 +27,8 @@ namespace Session.Scheme.Block.Button
 
         private void OnDestroy()
         {
-            _worldUIControllerService.OnStopInteractCallback -= InteractionStopped;
+            if (_worldUIControllerService != null)
+                _worldUIControllerService.OnStopInteractCallback -= InteractionStopped;
         }
     }
 }

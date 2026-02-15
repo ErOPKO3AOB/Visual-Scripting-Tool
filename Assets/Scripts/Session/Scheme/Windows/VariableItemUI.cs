@@ -1,13 +1,21 @@
 using Extensions;
+using Session.Scheme.Variables;
 using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 namespace Session.Scheme.Windows
 {
     public class VariableItemUI : BaseWindow
     {
+        [Inject]
+        public void Construct(VariableService variableService)
+        {
+            _variableService = variableService;
+        }
+
         [Header("UI")]
         [SerializeField] private TMP_InputField _nameInputField;
         [SerializeField] private TMP_Dropdown _typeDropdown;
@@ -27,23 +35,29 @@ namespace Session.Scheme.Windows
         [SerializeField] private string _boolPlaceHolder = "¬ведите булевое значение true/false";
         [SerializeField] private BoolValidator _boolValidator;
 
-        private VariableListWindow _masterList;
-        private Type _variableType = typeof(int);
+        private VariableService _variableService;
+
+        private Type _variableType;
         private string _variableName;
-        private object _variableValue = null;
+        private object _variableValue;
 
-        public string VariableName => _variableName;
+        private VariableListWindow _variableList;
+        private SchemeVariableBase _schemeVariable;
 
-        public VariableListWindow MasterList
+        public SchemeVariableBase SchemeVariable => _schemeVariable;
+
+        public override void SetSender(object sender)
         {
-            get
+            try
             {
-                return _masterList;
-            }
-            set
-            {
-                _masterList = value;
+                _variableList = (VariableListWindow)sender;
                 Initialize();
+                RebuildUI();
+            }
+
+            catch (Exception e)
+            {
+                Debug.LogError(e);
             }
         }
 
@@ -53,22 +67,22 @@ namespace Session.Scheme.Windows
             _nameInputField.onEndEdit.AddListener((string text) => { _variableName = text; OnEndEdit(); });
             _typeDropdown.onValueChanged.AddListener((int value) => { InitializeValuePlaceHolder(value); OnEndEdit(); });
             _valueInputField.onEndEdit.AddListener((string value) => { _variableValue = value; OnEndEdit(); });
-            _chooseButton.onClick.AddListener(() => { OnEndEdit(); _masterList.ChooseVariable(_variableName); });
+            _chooseButton.onClick.AddListener(() => { OnEndEdit(); _variableList.ChooseVariable(_variableName); });
             _deleteButton.onClick.AddListener(() =>
             {
-                _masterList.RemoveVariable(this);
+                _variableList.RemoveVariable(this);
             });
 
-            InitializeValuePlaceHolder(_typeDropdown.value);
         }
 
-        public void RebuildUI(int typeValue, string name, object value)
+        private void RebuildUI()
         {
-            _variableName = name;
+            if (_schemeVariable == null || _schemeVariable.variableName == null || _schemeVariable.ValueType == null || _schemeVariable.GetValue() == null) return;
 
-            _typeDropdown.value = typeValue;
-            _nameInputField.text = _variableName;
-            _valueInputField.text = value?.ToString();
+            _nameInputField.SetTextWithoutNotify(_schemeVariable.variableName);
+            InitializeValuePlaceHolder(_variableService.GetTypeIntegerValue(_schemeVariable.ValueType));
+            _valueInputField.SetTextWithoutNotify(_schemeVariable.GetValue().ToString());
+            _typeDropdown.value = _variableService.GetTypeIntegerValue(_schemeVariable.ValueType);
         }
 
         private void InitializeValuePlaceHolder(int value)
@@ -79,25 +93,21 @@ namespace Session.Scheme.Windows
             switch (value)
             {
                 case 0:
-                    _variableType = typeof(int);
                     _valueInputField.characterValidation = TMP_InputField.CharacterValidation.Digit;
                     _valueInputField.text = "0";
                     _valueInputFieldPlaceHolder.text = _intPlaceHolder;
                     break;
                 case 1:
-                    _variableType = typeof(float);
                     _valueInputField.characterValidation = TMP_InputField.CharacterValidation.Decimal;
                     _valueInputField.text = "0";
                     _valueInputFieldPlaceHolder.text = _floatPlaceHolder;
                     break;
                 case 2:
-                    _variableType = typeof(string);
                     _valueInputField.characterValidation = TMP_InputField.CharacterValidation.None;
                     _valueInputField.text = " ";
                     _valueInputFieldPlaceHolder.text = _stringPlaceHolder;
                     break;
                 case 3:
-                    _variableType = typeof(bool);
                     _valueInputField.characterValidation = TMP_InputField.CharacterValidation.CustomValidator;
                     _valueInputField.inputValidator = _boolValidator;
                     _valueInputField.text = "false";
@@ -109,7 +119,7 @@ namespace Session.Scheme.Windows
 
         public void OnEndEdit()
         {
-            _masterList.AddOrModifyVariable(_variableName, _variableType, _variableValue);
+            _variableList.AddOrModifyVariable(_schemeVariable);
         }
 
         public void OnDestroy()

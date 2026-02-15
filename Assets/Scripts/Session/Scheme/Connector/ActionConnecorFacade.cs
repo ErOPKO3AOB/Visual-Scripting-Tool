@@ -8,18 +8,21 @@ namespace Session.Scheme.Connector
     [RequireComponent(typeof(LineRenderer))]
     public class ActionConnecorFacade : MonoBehaviour
     {
-        public void ConstructManually(IBlock block, BlockConfigs blockConfigs, Vector3 startOffset)
+        public void ConstructManually(IBlock block, BlockConfigs blockConfigs, Vector3 startOffset, BlockOutputButton blockOutputButton)
         {
             _block = block;
             _connector = new ActionConnector(_block);
             _blockConfigs = blockConfigs;
             _startOffset = startOffset;
+            _blockOutputButton = blockOutputButton;
         }
 
         private IBlock _block;
         private ActionConnector _connector;
         private BlockConfigs _blockConfigs;
         private Vector3 _startOffset;
+        private BlockOutputButton _blockOutputButton;
+
         private DraggableConnectorPoint _draggableConnectorPoint;
         private LineRenderer _lineRenderer;
 
@@ -36,16 +39,16 @@ namespace Session.Scheme.Connector
             _lineRenderer.SetPosition(1, _startOffset);
 
             _draggableConnectorPoint = Instantiate(_blockConfigs.DraggableConnectorPointPrefab, transform);
-            _draggableConnectorPoint.ConstructManually(this, _block);
+            _draggableConnectorPoint.ConstructManually(this, _block, _blockOutputButton);
 
             _draggableConnectorPoint.transform.SetParent(transform, false);
         }
 
-        public void OnConnected(IBlock secondProvider)
+        public void OnConnected(IBlock secondProvider, int outputIndex)
         {
             _draggableConnectorPoint.gameObject.SetActive(false);
 
-            _connector.Connect(secondProvider);
+            _connector.Connect(secondProvider, outputIndex);
         }
 
         public void OnDisconnected()

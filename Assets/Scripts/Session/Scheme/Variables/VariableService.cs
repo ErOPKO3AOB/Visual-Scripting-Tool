@@ -59,22 +59,22 @@ namespace Session.Scheme.Variables
                 SchemeVariableBase schemeVariable = new SchemeVariable<T>(varName);
                 Variables.Add(schemeVariable);
             }
-            Debug.Log($"int {varName} vairalble with value:{startValue}");
+            //Debug.Log($"int {varName} vairalble with value:{startValue}");
 
             SetValueToVariable(varName, startValue);
         }
 
-        public void SetTypeToVariable<T>(string varName)
-        {
-            int index = CheckVariableExistance(varName);
+        //public void SetTypeToVariable<T>(string varName)
+        //{
+        //    int index = CheckVariableExistance(varName);
 
-            if (index > -1)
-            {
-                SchemeVariableBase schemeVariable = Variables[index];
-                RemoveVariable(schemeVariable.variableName);
-                BuildVariable<T>(schemeVariable.variableName);
-            }
-        }
+        //    if (index > -1)
+        //    {
+        //        SchemeVariableBase schemeVariable = Variables[index];
+        //        RemoveVariable(schemeVariable.variableName);
+        //        BuildVariable<T>(schemeVariable.variableName);
+        //    }
+        //}
 
         public void SetValueToVariable(string varName, object value)
         {
@@ -105,6 +105,20 @@ namespace Session.Scheme.Variables
 
             return -1;
         }
+
+        //public void ClearDirtyVariables()
+        //{
+        //    for (int i = 0; i < Variables.Count; i++)
+        //    {
+        //        for (int j = 0; j < Variables.Count; j++)
+        //        {
+        //            if (Variables[i].variableName == Variables[j].variableName)
+        //            {
+        //                Variables.RemoveAt(i);
+        //            }
+        //        }
+        //    }
+        //}
 
         public int GetTypeIntegerValue(Type type)
         {

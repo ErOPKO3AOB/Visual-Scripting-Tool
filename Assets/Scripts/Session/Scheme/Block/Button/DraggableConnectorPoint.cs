@@ -6,17 +6,16 @@ namespace Session.Scheme.Block.Button
 {
     public class DraggableConnectorPoint : BaseBlockButton
     {
-        public void ConstructManually(ActionConnecorFacade connecorFacade, IBlock block)
+        public void ConstructManually(ActionConnecorFacade connecorFacade, IBlock block, BlockOutputButton blockOutputButton)
         {
             _connecorFacade = connecorFacade;
             _block = block;
+            _blockOutputButton = blockOutputButton;
         }
 
         private ActionConnecorFacade _connecorFacade;
         private IBlock _block;
-        public IBlock Block => _block;
-
-        public ActionConnecorFacade ConnecorFacade => _connecorFacade;
+        private BlockOutputButton _blockOutputButton;
 
         private Vector3 _localPointerPosition;
         private bool _dragging;
@@ -24,6 +23,10 @@ namespace Session.Scheme.Block.Button
 
         private Vector3 _dragStartLocalPosition;
         private Vector3 _wireDirection;
+
+        public ActionConnecorFacade ConnecorFacade => _connecorFacade;
+        public IBlock Block => _block;
+        public BlockOutputButton BlockOutputButton => _blockOutputButton;
 
         protected override void Start()
         {

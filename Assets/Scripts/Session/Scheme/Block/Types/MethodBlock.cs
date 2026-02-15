@@ -15,12 +15,16 @@ namespace Session.Scheme.Block.Types
         private readonly SchemeBlockFacade _facade;
         private readonly VariableService _variableService;
 
+        private int _currentOutputIndex;
+        public int CurrentOutputIndex { get { return _currentOutputIndex; } set { _currentOutputIndex = 0; } }
+
         private IBlock _nextBlock;
 
         private VariableService.MethodOperatorType _operatorType;
         private SchemeVariableBase _operand1;
         private SchemeVariableBase _operand2;
 
+        public IBlock.BlockType ConcreteType { get => IBlock.BlockType.Method; }
         public VariableService.MethodOperatorType OperatorType => _operatorType;
         public SchemeVariableBase Operand1 => _operand1;
         public SchemeVariableBase Operand2 => _operand2;
@@ -42,7 +46,7 @@ namespace Session.Scheme.Block.Types
             _operand2 = operand2;
 
             string displayName = operand1 != null && operand2 != null ?
-                $"{_operand1.variableName} {_operatorType} {_operand2.variableName}" 
+                $"{_operand1.variableName} {_operatorType} {_operand2.variableName}"
                 : "Значения не установлены!";
 
             _facade.Label.SetText(displayName);
@@ -50,6 +54,8 @@ namespace Session.Scheme.Block.Types
 
         public bool CheckForCorrectRelationships()
         {
+            //Debug.Log($"{Facade.BlockName} => {Next}");
+
             return Next != null && _nextBlock.CheckForCorrectRelationships();
         }
 

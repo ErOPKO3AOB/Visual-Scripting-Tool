@@ -1,9 +1,19 @@
+using System.Threading.Tasks;
+
 namespace GlobalServices.CodeGeneration
 {
     public interface ICodeGenerator
     {
-        void GatherBlocks();
+        Task<string> Generate();
 
-        string Generate();
+        Task MakeStringInitializedVariables();
+
+        Task MakeStringMethodCodeParts();
+
+        Task MakeStringConditionCodeParts();
+
+        Task MakeStringInputCodeParts();
+
+        Task MakeStringOutputCodeParts();
     }
 }

@@ -78,7 +78,7 @@ namespace Session.Scheme.Block.Button
                 else
                 {
                     _actionConnecorFacade = Instantiate(_blockConfigs.ActionConnecorFacadePrefab, transform);
-                    _actionConnecorFacade.ConstructManually(_block, _blockConfigs, _startConnectorOffset);
+                    _actionConnecorFacade.ConstructManually(_block, _blockConfigs, _startConnectorOffset, this);
                     _hasConnector = true;
                 }
             }

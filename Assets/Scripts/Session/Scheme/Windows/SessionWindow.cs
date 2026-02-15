@@ -29,20 +29,29 @@ namespace Session.Scheme.Windows
         private SchemeConsoleService _consoleService;
 
         [Header("UI")]
+        [SerializeField] private VariableListWindow _variableListWindowPrefab;
         [SerializeField] private ConsoleWindow _consoleWindowPrefab;
         [SerializeField] private InventoryBlockItem _inventoryBlockItemPrefab;
+        [SerializeField] private CodeGenerationWindow _codeGenerationWindowPrefab;
 
         [Header("Inventory")]
         [SerializeField] private List<InventoryBlockItem> _inventoryItems = new();
         [SerializeField] private Transform _inventoryContent;
 
         [Header("Buttons")]
+        [SerializeField] private Button _variableListButton;
         [SerializeField] private Button _startProgrammButton;
         [SerializeField] private Button _consoleButton;
         [SerializeField] private Toggle _deleteToggle;
+        [SerializeField] private Button _codeGenerationButton;
 
         private void Start()
         {
+            _variableListButton.onClick.AddListener(() =>
+            {
+                _windowFactory.OpenWindow(_variableListWindowPrefab);
+            });
+
             _startProgrammButton.onClick.AddListener(() => 
             {
                 _windowFactory.OpenWindow(_consoleWindowPrefab);
@@ -57,6 +66,11 @@ namespace Session.Scheme.Windows
             _deleteToggle.onValueChanged.AddListener((value) =>
             {
                 _schemeBuilderService.MakeAllBlocksWaitForDestroying(value);
+            });
+
+            _codeGenerationButton.onClick.AddListener(() =>
+            {
+                _windowFactory.OpenWindow(_codeGenerationWindowPrefab);
             });
 
             for (int i = 0; i < _blockConfigs.BlockFacades.Count; i++)
@@ -110,6 +124,8 @@ namespace Session.Scheme.Windows
             _consoleButton.onClick.RemoveAllListeners();
 
             _deleteToggle.onValueChanged.RemoveAllListeners();
+        
+            _codeGenerationButton.onClick.RemoveAllListeners();
         }
     }
 }

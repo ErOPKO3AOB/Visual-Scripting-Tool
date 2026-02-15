@@ -35,10 +35,10 @@ namespace Session.Scheme
                 _consoleService.SpawnMessage("У схемы не обнаружен конец! Корректно подключите все провода!");
             }
 
-            else if (!_startBlock.CheckForCorrectValues())
-            {
-                _consoleService.SpawnMessage("У не указаны важные параметры!");
-            }
+            //else if (!_startBlock.CheckForCorrectValues())
+            //{
+            //    _consoleService.SpawnMessage("У не указаны важные параметры!");
+            //}
 
             else
             {

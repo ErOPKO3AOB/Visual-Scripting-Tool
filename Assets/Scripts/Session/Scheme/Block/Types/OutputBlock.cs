@@ -17,8 +17,12 @@ namespace Session.Scheme.Block.Types
 
         private SchemeVariableBase _schemeVariable;
 
+        private int _currentOutputIndex;
+        public int CurrentOutputIndex { get { return _currentOutputIndex; } set { _currentOutputIndex = 0; } }
+
         private IBlock _nextBlock;
 
+        public IBlock.BlockType ConcreteType { get => IBlock.BlockType.Output; }
         public IActionProvider Next { get => _nextBlock; set => _nextBlock = (IBlock)value; }
         public bool SingleInstance => _facade.SingleInstance;
         public SchemeBlockFacade Facade => _facade;
@@ -28,7 +32,11 @@ namespace Session.Scheme.Block.Types
         {
             _schemeVariable = variableToOutputRequest;
 
-            Facade.Label.SetText($"Вывод: {_schemeVariable.variableName}");
+            string displayName = variableToOutputRequest != null ?
+                $"Вывод: {_schemeVariable.variableName}"
+                : "Значения не установлены!";
+
+            _facade.Label.SetText(displayName);
         }
 
         public void ProvideAction()
@@ -48,6 +56,8 @@ namespace Session.Scheme.Block.Types
 
         public bool CheckForCorrectRelationships()
         {
+            //Debug.Log($"{Facade.BlockName} => {Next}");
+
             return Next != null && _nextBlock.CheckForCorrectRelationships();
         }
 
