@@ -7,7 +7,7 @@ using VContainer;
 
 namespace Session.Scheme.Windows
 {
-    public class MethodWindow : BaseWindow
+    public class ActionWindow : BaseWindow
     {
         [Inject]
         public void Construct(WindowFactory windowService)
@@ -15,26 +15,24 @@ namespace Session.Scheme.Windows
             _windowService = windowService;
         }
 
-        [TextArea] public string DEBUG_VARIABLES;
-
         [Header("UI")]
         [SerializeField] private Button _closeButton;
-        [SerializeField] private VariablePickerUI _varPicker1;
+        [SerializeField] private VariablePickerItem _varPicker1;
         [SerializeField] private OperationItem _operationItem;
-        [SerializeField] private VariablePickerUI _varPicker2;
+        [SerializeField] private VariablePickerItem _varPicker2;
 
         private SchemeVariableBase _operand1;
         private VariableService.MethodOperatorType _operatorType;
         private SchemeVariableBase _operand2;
 
         private WindowFactory _windowService;
-        private MethodBlock _methodBlock;
+        private ActionBlock _methodBlock;
 
         public override void SetSender(object sender)
         {
             try
             {
-                _methodBlock = (MethodBlock)sender;
+                _methodBlock = (ActionBlock)sender;
                 RebuildUI();
             }
 
@@ -42,14 +40,6 @@ namespace Session.Scheme.Windows
             {
                 Debug.LogError(e);
             }
-        }
-
-        private void Update()
-        {
-            DEBUG_VARIABLES = $"Current operation: " +
-                $"\nOP1: {(_operand1 != null ? _operand1.variableName : "NULL")} " +
-                $"\nOP TYPE: {_operatorType}" +
-                $"\n OP2: {(_operand2 != null ? _operand2.variableName : "NULL")}";
         }
 
         private void Start()

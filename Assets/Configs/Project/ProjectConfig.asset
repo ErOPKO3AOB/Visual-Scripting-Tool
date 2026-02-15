@@ -38,20 +38,20 @@ MonoBehaviour:
     _draggableConnectorPointPrefab: {fileID: 9166515427336357614, guid: ce228776bca552441b3d13938c8363ca, type: 3}
     _deleteButtonPrefab: {fileID: 4821818397051145339, guid: fbcdf6d2bffd8674080d1819177ec476, type: 3}
     _windowPrefabsUI:
-    - {fileID: 4933336775592735967, guid: c61d77aafcab0a448924e3303b765627, type: 3}
-    - {fileID: 7995604321963408251, guid: 0dbdb33c1530f684ebda73768cdfcc96, type: 3}
-    - {fileID: 2354169089373327394, guid: 6232d2d5c49f10347a994aceee791cef, type: 3}
-    - {fileID: 1241162653714162332, guid: a74121947062de048861836482b90279, type: 3}
-    - {fileID: 5748957065808567917, guid: fbceafbe318f05749bec70c039824f70, type: 3}
-    - {fileID: 5196163020083046144, guid: eeef526a83f5d664e9e9d539d4ca84f5, type: 3}
-    - {fileID: 6888468730971742389, guid: 330475c9cd810504fa959badd474dce2, type: 3}
     - {fileID: 5616262377345924842, guid: 91c86913363a7484b8e5a43b68f45d03, type: 3}
+    - {fileID: 7995604321963408251, guid: 0dbdb33c1530f684ebda73768cdfcc96, type: 3}
     - {fileID: 1809556050422955096, guid: f4ace67ef892b684c86bc67c398efd38, type: 3}
     - {fileID: 4916509032277850859, guid: b0770e07a3c97d94092f15fc1f83c1fc, type: 3}
     - {fileID: 921730477965453695, guid: 59d9a92bab69eab4c9ec67941b3fd9a5, type: 3}
-    - {fileID: 8870349133641350771, guid: 8330f748990d7054fa434e1c8b8cf73f, type: 3}
-    - {fileID: 5625429448162583138, guid: 449d256c835b7b4488acea92e81be676, type: 3}
+    - {fileID: 7955667764748393880, guid: 8330f748990d7054fa434e1c8b8cf73f, type: 3}
+    - {fileID: 5748957065808567917, guid: fbceafbe318f05749bec70c039824f70, type: 3}
     - {fileID: 2415995883651005541, guid: c2e8ab08eb76f5e41a3c574e520dc4af, type: 3}
+    - {fileID: 5625429448162583138, guid: 449d256c835b7b4488acea92e81be676, type: 3}
+    - {fileID: 2354169089373327394, guid: 6232d2d5c49f10347a994aceee791cef, type: 3}
+    - {fileID: 1241162653714162332, guid: a74121947062de048861836482b90279, type: 3}
+    - {fileID: 5196163020083046144, guid: eeef526a83f5d664e9e9d539d4ca84f5, type: 3}
+    - {fileID: 4933336775592735967, guid: c61d77aafcab0a448924e3303b765627, type: 3}
+    - {fileID: 6888468730971742389, guid: 330475c9cd810504fa959badd474dce2, type: 3}
   _cameraSettings:
     _camPrefab: {fileID: 5530218843876562416, guid: 1d3c82136d7828346976c8f7c37f89fa, type: 3}
     _moveSensitivity: 6

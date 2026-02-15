@@ -4,7 +4,7 @@ namespace Session.Scheme.Block
     {
         public enum BlockType
         {
-            Start, Method, Output, Input, Condition, End
+            Start, Action, Output, Input, Condition, End
         }
 
         public BlockType ConcreteType { get; }

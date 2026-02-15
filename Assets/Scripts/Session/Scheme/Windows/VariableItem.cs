@@ -8,7 +8,7 @@ using VContainer;
 
 namespace Session.Scheme.Windows
 {
-    public class VariableItemUI : BaseWindow
+    public class VariableItem : BaseWindow
     {
         [Inject]
         public void Construct(VariableService variableService)
@@ -72,7 +72,6 @@ namespace Session.Scheme.Windows
             {
                 _variableList.RemoveVariable(this);
             });
-
         }
 
         private void RebuildUI()
@@ -96,22 +95,26 @@ namespace Session.Scheme.Windows
                     _valueInputField.characterValidation = TMP_InputField.CharacterValidation.Digit;
                     _valueInputField.text = "0";
                     _valueInputFieldPlaceHolder.text = _intPlaceHolder;
+                    _variableType = typeof(int);
                     break;
                 case 1:
                     _valueInputField.characterValidation = TMP_InputField.CharacterValidation.Decimal;
                     _valueInputField.text = "0";
                     _valueInputFieldPlaceHolder.text = _floatPlaceHolder;
+                    _variableType = typeof(float);
                     break;
                 case 2:
                     _valueInputField.characterValidation = TMP_InputField.CharacterValidation.None;
                     _valueInputField.text = " ";
                     _valueInputFieldPlaceHolder.text = _stringPlaceHolder;
+                    _variableType = typeof(string);
                     break;
                 case 3:
                     _valueInputField.characterValidation = TMP_InputField.CharacterValidation.CustomValidator;
                     _valueInputField.inputValidator = _boolValidator;
                     _valueInputField.text = "false";
                     _valueInputFieldPlaceHolder.text = _boolPlaceHolder;
+                    _variableType = typeof(bool);
                     break;
             }
         }
@@ -119,6 +122,23 @@ namespace Session.Scheme.Windows
 
         public void OnEndEdit()
         {
+            if (_variableType == null || _variableName == null || _variableValue == null) return;
+            Debug.Log($"{_variableType} {_variableName} {_variableValue}");
+
+
+            _schemeVariable = null;
+
+            if (_variableType == typeof(int))
+                _schemeVariable = new SchemeVariable<int>(_variableName);
+            else if (_variableType == typeof(float))
+                _schemeVariable = new SchemeVariable<float>(_variableName);
+            else if (_variableType == typeof(string))
+                _schemeVariable = new SchemeVariable<string>(_variableName);
+            else if (_variableType == typeof(bool))
+                _schemeVariable = new SchemeVariable<bool>(_variableName);
+
+            _schemeVariable.SetValue(_variableValue);
+
             _variableList.AddOrModifyVariable(_schemeVariable);
         }
 

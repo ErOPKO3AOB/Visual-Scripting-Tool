@@ -92,7 +92,7 @@ namespace Session.Scheme.Windows
                             type = typeof(ConditionBlock);
                             break;
                         default:
-                            type = typeof(MethodBlock);
+                            type = typeof(ActionBlock);
                             break;
                     }
 

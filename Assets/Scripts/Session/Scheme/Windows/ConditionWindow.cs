@@ -20,9 +20,9 @@ namespace Session.Scheme.Windows
 
         [Header("UI")]
         [SerializeField] private Button _closeButton;
-        [SerializeField] private VariablePickerUI _varPicker1;
+        [SerializeField] private VariablePickerItem _varPicker1;
         [SerializeField] private OperationItem _operationItem;
-        [SerializeField] private VariablePickerUI _varPicker2;
+        [SerializeField] private VariablePickerItem _varPicker2;
 
         private SchemeVariableBase _operand1;
         private VariableService.ConditionOperatorType _operatorType;

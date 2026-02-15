@@ -6,7 +6,7 @@ using VContainer;
 
 namespace Session.Scheme.Variables
 {
-    public class VariablePickerUI : BaseWindow
+    public class VariablePickerItem : BaseWindow
     {
         [Header("Configs")]
         [SerializeField] private VariableListWindow _variableListPrefab;

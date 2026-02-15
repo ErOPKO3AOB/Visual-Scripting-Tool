@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace Session.Scheme.Block.Types
 {
-    public class MethodBlock : IBlock, IDisposable
+    public class ActionBlock : IBlock, IDisposable
     {
-        public MethodBlock(SchemeBlockFacade facade, VariableService variableService)
+        public ActionBlock(SchemeBlockFacade facade, VariableService variableService)
         {
             _facade = facade;
             _variableService = variableService;
@@ -24,7 +24,7 @@ namespace Session.Scheme.Block.Types
         private SchemeVariableBase _operand1;
         private SchemeVariableBase _operand2;
 
-        public IBlock.BlockType ConcreteType { get => IBlock.BlockType.Method; }
+        public IBlock.BlockType ConcreteType { get => IBlock.BlockType.Action; }
         public VariableService.MethodOperatorType OperatorType => _operatorType;
         public SchemeVariableBase Operand1 => _operand1;
         public SchemeVariableBase Operand2 => _operand2;

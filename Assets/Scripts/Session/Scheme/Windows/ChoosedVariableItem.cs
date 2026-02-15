@@ -14,7 +14,7 @@ namespace Session.Scheme.Windows
 
         public SchemeVariableBase SchemeVariable { get; private set; }
 
-        public void Initialize(VariablePickerUI variablePickerUI, SchemeVariableBase schemeVariable)
+        public void Initialize(VariablePickerItem variablePickerUI, SchemeVariableBase schemeVariable)
         {
             SchemeVariable = schemeVariable;
 

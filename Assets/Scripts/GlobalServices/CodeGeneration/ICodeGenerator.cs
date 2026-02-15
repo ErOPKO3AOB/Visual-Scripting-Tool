@@ -6,14 +6,5 @@ namespace GlobalServices.CodeGeneration
     {
         Task<string> Generate();
 
-        Task MakeStringInitializedVariables();
-
-        Task MakeStringMethodCodeParts();
-
-        Task MakeStringConditionCodeParts();
-
-        Task MakeStringInputCodeParts();
-
-        Task MakeStringOutputCodeParts();
     }
 }

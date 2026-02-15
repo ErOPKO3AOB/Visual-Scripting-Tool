@@ -46,7 +46,7 @@ namespace Session.Scheme
             var consoleService = _objectResolver.Resolve<SchemeConsoleService>();
 
             if (blockName == _blockConfigs.BlockFacades[0].BlockName)
-                block = new MethodBlock(schemeBlockFacade, variableService);
+                block = new ActionBlock(schemeBlockFacade, variableService);
             else if (blockName == _blockConfigs.BlockFacades[1].BlockName)
                 block = new InputBlock(schemeBlockFacade, variableService, consoleService);
             else if (blockName == _blockConfigs.BlockFacades[2].BlockName)

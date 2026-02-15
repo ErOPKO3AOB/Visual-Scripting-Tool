@@ -859,4 +859,5 @@ MonoBehaviour:
   _singleInstance: 0
   _outputText: {fileID: 5828448750152543822}
   _placeholderText: {fileID: 9200089420556347917}
+  _boolValidator: {fileID: 11400000, guid: f51e3ac504765344c81ffafe6a46a68a, type: 2}
   _inputField: {fileID: 4857509751300815347}

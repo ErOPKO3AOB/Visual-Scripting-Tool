@@ -28,10 +28,21 @@ namespace GlobalServices
 
         public StartBlock StartBlock { get; private set; }
         public EndBlock EndBlock { get; private set; }
-        public List<MethodBlock> MethodBlocks { get; private set; } = new();
+        public List<ActionBlock> MethodBlocks { get; private set; } = new();
         public List<ConditionBlock> ConditionBlocks { get; private set; } = new();
         public List<OutputBlock> OutputBlocks { get; private set; } = new();
         public List<InputBlock> InputBlocks { get; private set; } = new();
+
+        public int AllMultipleInstancesBlocksCount
+        {
+            get
+            {
+                return MethodBlocks.Count +
+                    ConditionBlocks.Count +
+                    OutputBlocks.Count +
+                    InputBlocks.Count;
+            }
+        }
 
         private async Task GatherBlocks()
         {

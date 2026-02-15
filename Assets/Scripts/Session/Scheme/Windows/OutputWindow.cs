@@ -7,7 +7,7 @@ using VContainer;
 
 namespace Session.Scheme.Windows
 {
-    public class OutputWindowUI : BaseWindow
+    public class OutputWindow : BaseWindow
     {
         [Inject]
         public void Construct(WindowFactory windowService)
@@ -17,7 +17,7 @@ namespace Session.Scheme.Windows
 
         [Header("UI")]
         [SerializeField] private Button _closeButton;
-        [SerializeField] private VariablePickerUI _variablePicker;
+        [SerializeField] private VariablePickerItem _variablePicker;
 
         private OutputBlock _outputBlock;
         private WindowFactory _windowService;

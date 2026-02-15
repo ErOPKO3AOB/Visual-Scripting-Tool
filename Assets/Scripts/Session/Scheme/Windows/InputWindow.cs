@@ -17,7 +17,7 @@ namespace Session.Scheme.Windows
 
         [Header("UI")]
         [SerializeField] private Button _closeButton;
-        [SerializeField] private VariablePickerUI _variablePicker;
+        [SerializeField] private VariablePickerItem _variablePicker;
 
         private InputBlock _inputBlock;
 

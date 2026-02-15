@@ -380,7 +380,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6646292603638578105
 RectTransform:
   m_ObjectHideFlags: 0
@@ -506,7 +506,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3562836302936818248
 RectTransform:
   m_ObjectHideFlags: 0
@@ -647,7 +647,7 @@ RectTransform:
   m_Father: {fileID: 7141418151105342925}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -737,7 +737,7 @@ GameObject:
   - component: {fileID: 4820229360195991355}
   - component: {fileID: 7868334666323942387}
   - component: {fileID: 4001298639784757547}
-  - component: {fileID: 8870349133641350771}
+  - component: {fileID: 7955667764748393880}
   m_Layer: 5
   m_Name: VariablePicker
   m_TagString: Untagged
@@ -835,7 +835,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &8870349133641350771
+--- !u!114 &7955667764748393880
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -844,10 +844,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6713584340049496344}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cb32ca775d8dd14893d88d7a8f400c8, type: 3}
+  m_Script: {fileID: 11500000, guid: 685904ae1507e1144b8119980a77c705, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _windowName: VARIABLE_PICKER_ITEM
+  _singleInstance: 0
   _variableListPrefab: {fileID: 6888468730971742389, guid: 330475c9cd810504fa959badd474dce2, type: 3}
   _choosedVariablePrefab: {fileID: 5616262377345924842, guid: 91c86913363a7484b8e5a43b68f45d03, type: 3}
   _content: {fileID: 2424261569769455841}
@@ -885,7 +886,7 @@ RectTransform:
   m_Father: {fileID: 4779271542737510162}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}

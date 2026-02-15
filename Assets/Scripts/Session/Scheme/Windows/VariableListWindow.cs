@@ -20,20 +20,20 @@ namespace Session.Scheme.Windows
         private VariableService _variableService;
 
         [Header("UI")]
-        [SerializeField] private VariableItemUI _variableItemPrefab;
+        [SerializeField] private VariableItem _variableItemPrefab;
         [SerializeField] private Button _addNewVariableButton;
         [SerializeField] private LayoutElement _content;
         [SerializeField] private Button _closeButton;
 
-        private List<VariableItemUI> _activeVariableItems = new List<VariableItemUI>();
+        private List<VariableItem> _activeVariableItems = new List<VariableItem>();
 
-        private VariablePickerUI _variablePicker;
+        private VariablePickerItem _variablePicker;
 
         public override void SetSender(object sender)
         {
             try
             {
-                if (sender is VariablePickerUI variablePicker)
+                if (sender is VariablePickerItem variablePicker)
                     _variablePicker = variablePicker;
                 else
                     _variablePicker = null;
@@ -51,7 +51,7 @@ namespace Session.Scheme.Windows
         {
             _addNewVariableButton.onClick.AddListener(() =>
             {
-                VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_variableItemPrefab, _content.transform, this);
+                VariableItem window = (VariableItem)_windowService.OpenWindow(_variableItemPrefab, _content.transform, this);
                 _activeVariableItems.Add(window);
             });
 
@@ -64,7 +64,7 @@ namespace Session.Scheme.Windows
             {
                 SchemeVariableBase schemeVariable = _variableService.Variables[i];
 
-                VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_variableItemPrefab, _content.transform);
+                VariableItem window = (VariableItem)_windowService.OpenWindow(_variableItemPrefab, _content.transform);
 
                 _activeVariableItems.Add(window);
             }
@@ -91,7 +91,7 @@ namespace Session.Scheme.Windows
             }
         }
 
-        public void RemoveVariable(VariableItemUI variableItem)
+        public void RemoveVariable(VariableItem variableItem)
         {
             SchemeVariableBase variable = _variableService.Variables.Find(v => v.variableName == variableItem.SchemeVariable.variableName);
 

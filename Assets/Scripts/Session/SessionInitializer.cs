@@ -1,7 +1,6 @@
 using GlobalServices.ProjectLifetime;
 using Session.Scheme;
 using Session.Scheme.Windows;
-using UnityEngine;
 using VContainer.Unity;
 
 namespace Session
@@ -21,7 +20,7 @@ namespace Session
 
         public void Initialize()
         {
-            _windowService.OpenWindow(_blockConfigs.WindowPrefabsUI[0]);
+            _windowService.OpenWindow(_blockConfigs.WindowPrefabsUI.Find(w => w.GetType() == typeof(SessionWindow)));
 
             _schemeBlockFactory.SpawnBlock("START_BLOCK");
             _schemeBlockFactory.SpawnBlock("END_BLOCK");

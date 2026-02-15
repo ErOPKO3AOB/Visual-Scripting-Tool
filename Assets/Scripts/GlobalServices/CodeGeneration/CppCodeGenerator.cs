@@ -14,7 +14,7 @@ namespace GlobalServices.CodeGeneration
             throw new System.NotImplementedException();
         }
 
-        public Task MakeStringInitializedVariables()
+        public Task MakeStringInitializedVariable()
         {
             throw new System.NotImplementedException();
         }
@@ -24,7 +24,7 @@ namespace GlobalServices.CodeGeneration
             throw new System.NotImplementedException();
         }
 
-        public Task MakeStringMethodCodeParts()
+        public Task MakeStringActionCodeParts()
         {
             throw new System.NotImplementedException();
         }

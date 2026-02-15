@@ -1,7 +1,7 @@
 using Extensions;
 using Session.Scheme.Block;
 using Session.Scheme.Block.Types;
-using System.Collections.Generic;
+using Session.Scheme.Variables;
 using System.Threading.Tasks;
 
 namespace GlobalServices.CodeGeneration
@@ -18,136 +18,91 @@ namespace GlobalServices.CodeGeneration
         private const string START_PROGRAMM_TEXT =
             "class Program\r\n{\r\n    static void Main(string[] args)\r\n    {\r\n        \r\n    }\r\n}";
 
-        private readonly List<string> _variablesCodeParts = new();
-        private readonly List<string> _methodCodeParts = new();
-        private readonly List<string> _conditionCodeParts = new();
-        private readonly List<string> _inputCodeParts = new();
-        private readonly List<string> _outputCodeParts = new();
-
         private string _programmCode;
 
         public async Task<string> Generate()
         {
             _programmCode = START_PROGRAMM_TEXT;
 
-            await MakeStringInitializedVariables();
-            await MakeStringMethodCodeParts();
-            await MakeStringConditionCodeParts();
-            await MakeStringInputCodeParts();
-            await MakeStringOutputCodeParts();
-
             await GenerateVariables();
 
-            for (int i = 0; i < _codeGenerationFactory.; i++)
-            {
-                
-            }
-            if (((IBlock)_codeGenerationFactory.StartBlock.Next).ConcreteType == IBlock.BlockType.Method)
-            {
+            IBlock nextBlock = _codeGenerationFactory.StartBlock;
 
+            for (int i = 0; i < _codeGenerationFactory.AllMultipleInstancesBlocksCount; i++)
+            {
+                if (((IBlock)nextBlock.Next).ConcreteType == IBlock.BlockType.Action)
+                {
+                    _programmCode = await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", MakeStringActionCodeParts((ActionBlock)nextBlock.Next));
+                }
+                else if (((IBlock)nextBlock.Next).ConcreteType == IBlock.BlockType.Output)
+                {
+                    _programmCode = await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", MakeStringOutputCodeParts((OutputBlock)nextBlock.Next));
+                }
+                else if (((IBlock)nextBlock.Next).ConcreteType == IBlock.BlockType.Input)
+                {
+                    _programmCode = await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", MakeStringInputCodeParts((InputBlock)nextBlock.Next));
+                }
+                // Сырая концепция
+                else if (((IBlock)nextBlock.Next).ConcreteType == IBlock.BlockType.Condition)
+                {
+                    _programmCode = await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", MakeStringConditionCodeParts((ConditionBlock)nextBlock.Next));
+                }
             }
 
             return _programmCode;
         }
 
         #region String Generation
-        public async Task MakeStringInitializedVariables()
+        public string MakeStringInitializedVariable(SchemeVariableBase schemeVariable)
         {
-            if (_codeGenerationFactory.SchemeVariables.Count == 0) return;
-
-            _variablesCodeParts.Clear();
-            await Task.Delay(CodeGenerationFactory.SMALL_OPERATION_DELAY_MS);
-
-            for (int i = 0; i < _codeGenerationFactory.SchemeVariables.Count; i++)
-            {
-                _variablesCodeParts.Add($"{TypeExtensions.GetFriendlyName(_codeGenerationFactory.SchemeVariables[i].ValueType)} {_codeGenerationFactory.SchemeVariables[i].variableName} = {_codeGenerationFactory.SchemeVariables[i].GetValue() ?? ""};");
-            }
+            return $"{TypeExtensions.GetFriendlyName(schemeVariable.ValueType)} {schemeVariable.variableName} = {schemeVariable.GetValue() ?? ""};";
         }
 
-        public async Task MakeStringMethodCodeParts()
+        public string MakeStringActionCodeParts(ActionBlock block)
         {
-            if (_codeGenerationFactory.MethodBlocks.Count == 0) return;
-
-            _methodCodeParts.Clear();
-            await Task.Delay(CodeGenerationFactory.SMALL_OPERATION_DELAY_MS);
-
-            for (int i = 0; i < _codeGenerationFactory.MethodBlocks.Count; i++)
-            {
-                MethodBlock block = _codeGenerationFactory.MethodBlocks[i];
-                _methodCodeParts.Add($"{block.Operand1.variableName} {block.OperatorType} {block.Operand2.variableName};");
-
-                await Task.Delay(CodeGenerationFactory.SMALL_OPERATION_DELAY_MS);
-            }
+            return $"{block.Operand1.variableName} {block.OperatorType} {block.Operand2.variableName};";
         }
 
-        public async Task MakeStringConditionCodeParts()
+        public string MakeStringConditionCodeParts(ConditionBlock block)
         {
-            if (_codeGenerationFactory.ConditionBlocks.Count == 0) return;
-
-            _conditionCodeParts.Clear();
-            await Task.Delay(CodeGenerationFactory.SMALL_OPERATION_DELAY_MS);
-
-            for (int i = 0; i < _codeGenerationFactory.ConditionBlocks.Count; i++)
-            {
-                ConditionBlock block = _codeGenerationFactory.ConditionBlocks[i];
-                _conditionCodeParts.Add($"if ({block.Operand1.variableName} {block.OperatorType} {block.Operand2.variableName}))" +
-                    "\n{" +
-                    "\n" +
-                    "\n}");
-
-                await Task.Delay(CodeGenerationFactory.SMALL_OPERATION_DELAY_MS);
-            }
+            return $"if ({block.Operand1.variableName} {block.OperatorType} {block.Operand2.variableName}))" +
+                "\n{" +
+                "\n" +
+                "\n}" +
+                "\n" +
+                "\nelse" +
+                "\n{" +
+                "\n" +
+                "\n}";
         }
 
-        public async Task MakeStringInputCodeParts()
+        public string MakeStringInputCodeParts(InputBlock block)
         {
-            if (_codeGenerationFactory.InputBlocks.Count == 0) return;
+            string code;
 
-            _inputCodeParts.Clear();
-            await Task.Delay(CodeGenerationFactory.SMALL_OPERATION_DELAY_MS);
+            if (block.SchemeVariable.ValueType == typeof(string))
+                code = $"{block.SchemeVariable.variableName} = Console.ReadLine();";
+            else
+                code = $"{TypeExtensions.GetFriendlyName(block.SchemeVariable.ValueType)}.TryParse(Console.ReadLine(), out {TypeExtensions.GetFriendlyName(block.SchemeVariable.ValueType)} {block.SchemeVariable.variableName});";
 
-            for (int i = 0; i < _codeGenerationFactory.InputBlocks.Count; i++)
-            {
-                InputBlock block = _codeGenerationFactory.InputBlocks[i];
-
-                string finalExpression;
-
-                if (block.SchemeVariable.ValueType == typeof(string))
-                    finalExpression = $"{block.SchemeVariable.variableName} = Console.ReadLine();";
-                else
-                    finalExpression = $"{TypeExtensions.GetFriendlyName(block.SchemeVariable.ValueType)}.TryParse(Console.ReadLine(), out {TypeExtensions.GetFriendlyName(block.SchemeVariable.ValueType)} {block.SchemeVariable.variableName});";
-
-                _inputCodeParts.Add(finalExpression);
-                await Task.Delay(CodeGenerationFactory.SMALL_OPERATION_DELAY_MS);
-            }
+            return code;
         }
 
-        public async Task MakeStringOutputCodeParts()
+        public string MakeStringOutputCodeParts(OutputBlock block)
         {
-            if (_codeGenerationFactory.OutputBlocks.Count == 0) return;
-
-            _outputCodeParts.Clear();
-            await Task.Delay(CodeGenerationFactory.SMALL_OPERATION_DELAY_MS);
-
-            for (int i = 0; i < _codeGenerationFactory.OutputBlocks.Count; i++)
-            {
-                OutputBlock block = _codeGenerationFactory.OutputBlocks[i];
-                _outputCodeParts.Add($"Console.Write({block.SchemeVariable.variableName});");
-            }
+            return $"Console.Write({block.SchemeVariable.variableName});";
         }
         #endregion
 
-        #region AlgorythmGeneration
+        #region Algorythm Generation
         public async Task GenerateVariables()
         {
-            foreach (var variable in _variablesCodeParts)
+            foreach (var variable in _codeGenerationFactory.SchemeVariables)
             {
-                _programmCode = await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", variable);
+                _programmCode = await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", MakeStringInitializedVariable(variable));
                 await Task.Delay(10);
             }
         }
-
-
         #endregion
     }
 }

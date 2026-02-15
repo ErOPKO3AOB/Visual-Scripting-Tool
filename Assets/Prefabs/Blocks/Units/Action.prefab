@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5623167279218212824}
   - component: {fileID: 7494691911212051630}
   m_Layer: 0
-  m_Name: Method
+  m_Name: Action
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f99dd4c4f2fbee48915856db143a71d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _blockName: METHOD_BLOCK
+  _blockName: ACTION_BLOCK
   _singleInstance: 0
   _settingsWindowPrefab: {fileID: 5748957065808567917, guid: fbceafbe318f05749bec70c039824f70, type: 3}
   _rigidbody: {fileID: -7874309186564023456}
