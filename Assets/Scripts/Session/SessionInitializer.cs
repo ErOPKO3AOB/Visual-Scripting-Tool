@@ -21,7 +21,7 @@ namespace Session
 
         public void Initialize()
         {
-            _windowService.OpenWindow(_blockConfigs.WindowPrefabsUI[0].WindowName);
+            _windowService.OpenWindow(_blockConfigs.WindowPrefabsUI[0]);
 
             _schemeBlockFactory.SpawnBlock("START_BLOCK");
             _schemeBlockFactory.SpawnBlock("END_BLOCK");

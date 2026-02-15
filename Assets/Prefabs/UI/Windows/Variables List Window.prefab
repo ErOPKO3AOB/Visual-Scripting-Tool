@@ -937,6 +937,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _windowName: VARIABLES_LIST
+  _singleInstance: 1
   _variableItemPrefab: {fileID: 921730477965453695, guid: 59d9a92bab69eab4c9ec67941b3fd9a5, type: 3}
   _addNewVariableButton: {fileID: 102255643684584603}
   _content: {fileID: 7426348529580619162}

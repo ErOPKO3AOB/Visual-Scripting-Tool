@@ -18,7 +18,7 @@ namespace Session.Scheme.Windows
         {
             SchemeVariable = schemeVariable;
 
-            _deleteButton.onClick.AddListener(() => { variablePickerUI.OnVariableDelete(); });
+            _deleteButton.onClick.AddListener(() => { variablePickerUI.DeleteVariable(); });
 
             _typeText.text = SchemeVariable.ValueType.ToString();
             _nameText.text = SchemeVariable.variableName.ToString();

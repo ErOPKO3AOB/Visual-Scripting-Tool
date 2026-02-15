@@ -1156,6 +1156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _windowName: DOWN_MENU_ITEM
+  _singleInstance: 0
 --- !u!1 &8785610740894825135
 GameObject:
   m_ObjectHideFlags: 0
@@ -1274,7 +1275,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _windowName: SESSION_WINDOW
+  _singleInstance: 1
   _consoleWindowPrefab: {fileID: 2354169089373327394, guid: 6232d2d5c49f10347a994aceee791cef, type: 3}
+  _inventoryBlockItemPrefab: {fileID: 7995604321963408251, guid: 0dbdb33c1530f684ebda73768cdfcc96, type: 3}
   _inventoryItems: []
   _inventoryContent: {fileID: 6912352717961175684}
   _startProgrammButton: {fileID: 8931035793174211636}

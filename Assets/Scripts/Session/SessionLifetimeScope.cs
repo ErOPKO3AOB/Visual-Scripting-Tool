@@ -1,3 +1,4 @@
+using GlobalServices;
 using GlobalServices.ProjectLifetime;
 using Session.Scheme;
 using Session.Scheme.Block;
@@ -82,6 +83,10 @@ namespace Session
 
             // Service for console
             builder.Register<SchemeConsoleService>(Lifetime.Scoped)
+                .AsSelf();
+
+            // Service for code generation
+            builder.Register<CodeGenerationFactory>(Lifetime.Singleton)
                 .AsSelf();
         }
     }

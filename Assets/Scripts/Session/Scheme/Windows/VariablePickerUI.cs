@@ -18,8 +18,8 @@ namespace Session.Scheme.Variables
 
         private WindowFactory _windowService;
 
-        public UnityAction<SchemeVariableBase> OnVariableChoosed;
-        public UnityAction<SchemeVariableBase> OnVariableDeleted;
+        public UnityAction<SchemeVariableBase> OnVariableChoose;
+        public UnityAction<SchemeVariableBase> OnVariableDelete;
 
         public ChoosedVariableItem VariableItem { get; private set; }
 
@@ -33,11 +33,11 @@ namespace Session.Scheme.Variables
         {
             _addNewButton.onClick.AddListener(() =>
             {
-                _windowService.OpenWindow(_variableListPrefab.WindowName, sender: this);
+                _windowService.OpenWindow(_variableListPrefab, sender: this);
             });
         }
 
-        public void OnVariableChoose(SchemeVariableBase variable)
+        public void ChooseVariable(SchemeVariableBase variable)
         {
             _addNewButton.transform.SetParent(null);
             ChoosedVariableItem variableItem = Instantiate(_choosedVariablePrefab, _content.transform).GetComponent<ChoosedVariableItem>();
@@ -47,12 +47,12 @@ namespace Session.Scheme.Variables
             VariableItem = variableItem;
             _addNewButton.gameObject.SetActive(false);
 
-            OnVariableChoosed?.Invoke(variable);
+            OnVariableChoose?.Invoke(variable);
         }
 
-        public void OnVariableDelete()
+        public void DeleteVariable()
         {
-            OnVariableDeleted?.Invoke(VariableItem.SchemeVariable);
+            OnVariableDelete?.Invoke(VariableItem.SchemeVariable);
             Destroy(VariableItem.gameObject);
             VariableItem = null;
 

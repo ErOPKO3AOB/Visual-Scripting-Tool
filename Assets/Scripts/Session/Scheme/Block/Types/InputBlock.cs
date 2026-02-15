@@ -24,14 +24,22 @@ namespace Session.Scheme.Block.Types
 
         public IBlock Next { get; set; }
         public bool SingleInstance { get => _facade.SingleInstance; }
+        private SchemeVariableBase _schemeVariable;
 
-
-        public string VariableName { get; set; }
+        public SchemeVariableBase SchemeVariable => _schemeVariable;
 
         private bool _used = false;
 
+        public void SetOperation(SchemeVariableBase variableToInputRequest)
+        {
+            _schemeVariable = variableToInputRequest;
+
+            Facade.Label.SetText($"¬вод: {SchemeVariable.variableName}");
+        }
+
         public void ProvideAction()
         {
+
             _used = false;
 
             _facade.StartCoroutine(WaitInput());
@@ -39,7 +47,7 @@ namespace Session.Scheme.Block.Types
 
         private IEnumerator WaitInput()
         {
-            _consoleService.SpawnInputRequest(VariableName, this);
+            _consoleService.SpawnInputRequest(SchemeVariable.variableName, this);
 
             while (!_used)
             {
@@ -51,7 +59,9 @@ namespace Session.Scheme.Block.Types
 
         public void SetInput(object value)
         {
-            _variableService.SetValueToVariable(VariableName, value);
+            Debug.Log("GOT INPUT!!!");
+
+            _variableService.SetValueToVariable(SchemeVariable.variableName, value);
 
             _used = true;
         }

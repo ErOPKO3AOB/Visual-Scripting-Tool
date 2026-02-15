@@ -30,6 +30,7 @@ namespace Session.Scheme.Windows
 
         [Header("UI")]
         [SerializeField] private ConsoleWindow _consoleWindowPrefab;
+        [SerializeField] private InventoryBlockItem _inventoryBlockItemPrefab;
 
         [Header("Inventory")]
         [SerializeField] private List<InventoryBlockItem> _inventoryItems = new();
@@ -44,13 +45,13 @@ namespace Session.Scheme.Windows
         {
             _startProgrammButton.onClick.AddListener(() => 
             {
-                _windowFactory.OpenWindow(_consoleWindowPrefab.WindowName);
+                _windowFactory.OpenWindow(_consoleWindowPrefab);
                 _schemeExecutionService.StartProgramm();
             });
 
             _consoleButton.onClick.AddListener(() =>
             {
-                _windowFactory.OpenWindow("CONSOLE_WINDOW");
+                _windowFactory.OpenWindow(_consoleWindowPrefab);
             });
 
             _deleteToggle.onValueChanged.AddListener((value) =>
@@ -62,7 +63,7 @@ namespace Session.Scheme.Windows
             {
                 if (!_blockConfigs.BlockFacades[i].SingleInstance)
                 {
-                    InventoryBlockItem inventoryItem = (InventoryBlockItem)_windowFactory.OpenWindow("INVENTORY_BLOCK_ITEM", _inventoryContent, this);
+                    InventoryBlockItem inventoryItem = (InventoryBlockItem)_windowFactory.OpenWindow(_inventoryBlockItemPrefab, _inventoryContent, this);
 
                     Type type;
                     switch (i)

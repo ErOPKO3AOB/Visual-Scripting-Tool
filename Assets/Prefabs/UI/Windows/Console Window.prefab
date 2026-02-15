@@ -1111,6 +1111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _windowName: CONSOLE_WINDOW
+  _singleInstance: 1
   _messageItemPrefab: {fileID: 1809556050422955096, guid: f4ace67ef892b684c86bc67c398efd38, type: 3}
   _content: {fileID: 1783731824997435097}
   _closeButton: {fileID: 7007380501313556091}

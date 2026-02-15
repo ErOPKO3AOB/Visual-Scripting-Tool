@@ -48,13 +48,13 @@ namespace Session.Scheme.Windows
         {
             _addNewVariableButton.onClick.AddListener(() =>
             {
-                VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_variableItemPrefab.WindowName, _content.transform);
+                VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_variableItemPrefab, _content.transform);
                 window.MasterList = this;
                 _activeVariableItems.Add(window);
             });
 
             if (_windowService == null) Debug.Log("Window service is null");
-            _closeButton.onClick.AddListener(() => { _windowService.CloseWindow(WindowName); });
+            _closeButton.onClick.AddListener(() => { _windowService.CloseWindow(this); });
         }
 
         private void RebuildUI()
@@ -63,7 +63,7 @@ namespace Session.Scheme.Windows
             {
                 SchemeVariableBase schemeVariable = _variableService.Variables[i];
 
-                VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_variableItemPrefab.WindowName, _content.transform);
+                VariableItemUI window = (VariableItemUI)_windowService.OpenWindow(_variableItemPrefab, _content.transform);
 
                 window.MasterList = this;
                 window.RebuildUI(_variableService.GetTypeIntegerValue(schemeVariable.ValueType), schemeVariable.variableName, schemeVariable.GetValue());
@@ -129,9 +129,9 @@ namespace Session.Scheme.Windows
             int variableIndex = _variableService.CheckVariableExistance(variableName);
             Debug.Log($"Var index: {variableIndex} and var name: {variableName}");
             if (variableIndex > -1)
-                _variablePicker.OnVariableChoose(_variableService.Variables[variableIndex]);
+                _variablePicker.ChooseVariable(_variableService.Variables[variableIndex]);
 
-            _windowService.CloseWindow(WindowName);
+            _windowService.CloseWindow(this);
         }
     }
 }

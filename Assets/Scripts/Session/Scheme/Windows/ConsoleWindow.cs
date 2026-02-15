@@ -25,7 +25,14 @@ namespace Session.Scheme.Windows
         [SerializeField] private Transform _content;
         [SerializeField] private Button _closeButton;
 
-        private void Start()
+        public override void SetSender(object sender)
+        {
+            base.SetSender(sender);
+
+            Initialize();
+        }
+
+        private void Initialize()
         {
             for (int i = 0; i < _consoleService.Messages.Count; i++)
             {
@@ -34,7 +41,7 @@ namespace Session.Scheme.Windows
 
             _closeButton.onClick.AddListener(() =>
             {
-                _windowService.CloseWindow(WindowName);
+                _windowService.CloseWindow(this);
             });
 
             _consoleService.OnMessageSpawn += OnMessageSpawn;
@@ -43,13 +50,13 @@ namespace Session.Scheme.Windows
 
         private void OnMessageSpawn(string message)
         {
-            MessageItem messageItem = (MessageItem)_windowService.OpenWindow(_messageItemPrefab.WindowName, _content.transform);
+            MessageItem messageItem = (MessageItem)_windowService.OpenWindow(_messageItemPrefab, _content);
             messageItem.BuildOutputMessage(message);
         }
 
         private void OnInputRequest(string variableName, InputBlock inputBlock)
         {
-            MessageItem messageItem = (MessageItem)_windowService.OpenWindow(_messageItemPrefab.WindowName, _content.transform);
+            MessageItem messageItem = (MessageItem)_windowService.OpenWindow(_messageItemPrefab, _content);
             messageItem.BuildInputMessage(variableName, inputBlock);
         }
 

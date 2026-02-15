@@ -944,7 +944,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _windowName: CONDITION_WINDOW
-  _interruptsWorldInteractionUI: 1
+  _singleInstance: 1
   _closeButton: {fileID: 4920952843414628680}
   _varPicker1: {fileID: 8396479550575896058}
   _operationItem: {fileID: 7278417990933320105}

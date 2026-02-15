@@ -17,7 +17,7 @@ namespace Session.Scheme.Block.Button
 
         public override void Use()
         {
-            _windowService.OpenWindow(_windowToOpen.WindowName, sender: _block);
+            _windowService.OpenWindow(_windowToOpen, sender: _block);
         }
     }
 }

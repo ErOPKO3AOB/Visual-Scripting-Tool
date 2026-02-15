@@ -46,25 +46,23 @@ namespace Session.Scheme.Windows
         {
             _closeButton.onClick.AddListener(() =>
             {
-                _windowService.CloseWindow(WindowName);
+                _windowService.CloseWindow(this);
                 SendOperationToMethodBlock();
             });
 
-            _varPicker1.OnVariableChoosed += OnOperand1Choosed;
+            _varPicker1.OnVariableChoose += OnOperand1Choosed;
             _operationItem.OnOperationTypeChoosed += OnOperationTypeChoosed;
-            _varPicker2.OnVariableChoosed += OnOperand2Choosed;
+            _varPicker2.OnVariableChoose += OnOperand2Choosed;
         }
 
         private void RebuildUI()
         {
-            //Debug.Log($"Current value is {(int)_methodBlock.OperatorType}");
-
             _operationItem.OperatorType = OperationItem.OperationType.Method;
             _operationItem.OperationDropDown.value = (int)_methodBlock.OperatorType;
             if (_methodBlock.Operand1 != null)
-                _varPicker1.OnVariableChoose(_methodBlock.Operand1);
+                _varPicker1.ChooseVariable(_methodBlock.Operand1);
             if (_methodBlock.Operand2 != null)
-                _varPicker2.OnVariableChoose(_methodBlock.Operand2);
+                _varPicker2.ChooseVariable(_methodBlock.Operand2);
         }
 
         private void OnOperand1Choosed(SchemeVariableBase variable)
@@ -97,9 +95,9 @@ namespace Session.Scheme.Windows
         {
             _closeButton.onClick.RemoveAllListeners();
 
-            _varPicker1.OnVariableChoosed -= OnOperand1Choosed;
+            _varPicker1.OnVariableChoose -= OnOperand1Choosed;
             _operationItem.OnOperationTypeChoosed -= OnOperationTypeChoosed;
-            _varPicker2.OnVariableChoosed -= OnOperand2Choosed;
+            _varPicker2.OnVariableChoose -= OnOperand2Choosed;
         }
     }
 }

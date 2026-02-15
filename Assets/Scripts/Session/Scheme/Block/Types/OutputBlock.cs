@@ -1,7 +1,5 @@
 using Session.Scheme.Variables;
-using Session.Scheme.Windows;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Session.Scheme.Block.Types
@@ -20,19 +18,29 @@ namespace Session.Scheme.Block.Types
         private readonly SchemeConsoleService _consoleService;
 
         public IBlock Next { get; set; }
-        public bool SingleInstance { get => _facade.SingleInstance; }
+        public bool SingleInstance => _facade.SingleInstance;
 
+        private SchemeVariableBase _schemeVariable;
 
-        public List<SchemeVariableBase> SchemeVariables { get; set; }
+        public SchemeVariableBase SchemeVariable => _schemeVariable;
+
+        public void SetOperation(SchemeVariableBase variableToOutputRequest)
+        {
+            _schemeVariable = variableToOutputRequest;
+
+            Facade.Label.SetText($"Вывод: {_schemeVariable.variableName}");
+        }
 
         public void ProvideAction()
         {
             string message = "";
 
-            for (int i = 0; i < SchemeVariables.Count; i++)
-            {
-                message += SchemeVariables[i].GetValue().ToString();
-            }
+            //for (int i = 0; i < SchemeVariable.Count; i++)
+            //{
+            //    message += SchemeVariable[i].GetValue().ToString();
+            //}
+
+            message = SchemeVariable.GetValue().ToString();
 
             _consoleService.SpawnMessage(message);
             Next?.ProvideAction();

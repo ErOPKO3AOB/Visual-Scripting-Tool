@@ -24,11 +24,19 @@ namespace Session.Scheme.Windows
         public UnityAction<BaseWindow> OnOpenWindow;
         public UnityAction<BaseWindow> OnCloseWindow;
 
-        public BaseWindow OpenWindow(string windowName, Transform spawnParent = null, object sender = null)
+        //public BaseWindow FindWindowByName(string windowName)
+        //{
+        //    return _blockConfigs.WindowPrefabsUI.Find(w => w.WindowName == windowName);
+        //}
+
+        public BaseWindow OpenWindow(BaseWindow windowToOpen, Transform spawnParent = null, object sender = null)
         {
+            if (windowToOpen.SingleInstance && ActiveWindows.Find(w => windowToOpen.WindowName == w.WindowName))
+                return ActiveWindows.Find(w => windowToOpen.WindowName == w.WindowName);
+
             BaseWindow window = _objectResolver.Instantiate(
                 // Finding window by name and spawning
-                _blockConfigs.WindowPrefabsUI.Find(w => w.WindowName == windowName)
+                _blockConfigs.WindowPrefabsUI.Find(w => w.WindowName == windowToOpen.WindowName)
                 .gameObject,
                 spawnParent).
                 // Getting window component
@@ -41,10 +49,12 @@ namespace Session.Scheme.Windows
             return window;
         }
 
-        public void CloseWindow(string windowName)
+        public void CloseWindow(BaseWindow windowToClose)
         {
+            if (!ActiveWindows.Find(w => windowToClose.WindowName == w.WindowName)) return;
+
             // Finding last
-            BaseWindow window = _activeWindows.FindLast(w => w.WindowName == windowName);
+            BaseWindow window = _activeWindows.FindLast(w => w.WindowName == windowToClose.WindowName);
 
             OnCloseWindow?.Invoke(window);
             _activeWindows.Remove(window);

@@ -34,7 +34,7 @@ namespace Session.Scheme
 
             else
             {
-                _consoleService.SpawnMessage("Программа запущена!");
+                _consoleService.SpawnMessage("Программа запущена");
                 startBlock.ProvideAction();
             }
         }

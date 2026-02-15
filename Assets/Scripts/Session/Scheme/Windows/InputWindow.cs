@@ -28,6 +28,7 @@ namespace Session.Scheme.Windows
             try
             {
                 _inputBlock = (InputBlock)sender;
+                RebuildUI();
             }
 
             catch (Exception e)
@@ -38,16 +39,24 @@ namespace Session.Scheme.Windows
 
         private void Start()
         {
-            _closeButton.onClick.AddListener(() => { _windowService.CloseWindow(WindowName); });
+            _variablePicker.OnVariableChoose += OnVariableChoose;
+            _closeButton.onClick.AddListener(() => { _windowService.CloseWindow(this); });
+        }
+
+        private void RebuildUI()
+        {
+            if (_inputBlock.SchemeVariable != null)
+                _variablePicker.ChooseVariable(_inputBlock.SchemeVariable);
         }
 
         private void OnVariableChoose(SchemeVariableBase variable)
         {
-            _inputBlock.VariableName = variable.variableName;
+            _inputBlock.SetOperation(variable);
         }
 
         private void OnDestroy()
         {
+            _variablePicker.OnVariableChoose -= OnVariableChoose;
             _closeButton.onClick.RemoveAllListeners();
         }
     }

@@ -71,13 +71,15 @@ namespace Session.Scheme
 
             Blocks.ForEach((block) =>
             {
-                block.Facade.SetDestroyWaiting(DestroyWaiting);
+                if (!block.Facade.SingleInstance)
+                    block.Facade.SetDestroyWaiting(DestroyWaiting);
             });
         }
 
         public void DestroyBlock(SchemeBlockFacade schemeBlockFacade)
         {
             IBlock block = Blocks.Find(b => b.Facade.BlockName == schemeBlockFacade.BlockName && b.Facade == schemeBlockFacade);
+            if (block.SingleInstance) return;
 
             if (block.Facade.BlockInputTrigger.ConnectedActionConnectorFacade != null)
                 block.Facade.BlockInputTrigger.ConnectedActionConnectorFacade.OnDisconnected();
