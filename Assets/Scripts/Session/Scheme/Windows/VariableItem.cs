@@ -1,6 +1,7 @@
 using Extensions;
 using Session.Scheme.Variables;
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -37,22 +38,20 @@ namespace Session.Scheme.Windows
 
         private VariableService _variableService;
 
-        private Type _variableType;
+        private Type _variableType = typeof(int);
         private string _variableName;
         private object _variableValue;
 
         private VariableListWindow _variableList;
         private SchemeVariableBase _schemeVariable;
 
-        public SchemeVariableBase SchemeVariable => _schemeVariable;
+        public SchemeVariableBase SchemeVariable { get; set; }
 
         public override void SetSender(object sender)
         {
             try
             {
                 _variableList = (VariableListWindow)sender;
-                Initialize();
-                RebuildUI();
             }
 
             catch (Exception e)
@@ -62,11 +61,14 @@ namespace Session.Scheme.Windows
         }
 
         #region Initiallization
-        private void Initialize()
+        private void Start()
         {
+            RebuildUI();
+
             _nameInputField.onEndEdit.AddListener((string text) => { _variableName = text; OnEndEdit(); });
             _typeDropdown.onValueChanged.AddListener((int value) => { InitializeValuePlaceHolder(value); OnEndEdit(); });
             _valueInputField.onEndEdit.AddListener((string value) => { _variableValue = value; OnEndEdit(); });
+
             _chooseButton.onClick.AddListener(() => { OnEndEdit(); _variableList.ChooseVariable(_variableName); });
             _deleteButton.onClick.AddListener(() =>
             {
@@ -76,12 +78,21 @@ namespace Session.Scheme.Windows
 
         private void RebuildUI()
         {
-            if (_schemeVariable == null || _schemeVariable.variableName == null || _schemeVariable.ValueType == null || _schemeVariable.GetValue() == null) return;
+            _typeDropdown.ClearOptions();
+            _typeDropdown.AddOptions(new List<TMP_Dropdown.OptionData>() {
+                new(text: "int"),
+                new(text: "float"),
+                new(text: "string"),
+                new(text: "bool"),
+            });
 
-            _nameInputField.SetTextWithoutNotify(_schemeVariable.variableName);
-            InitializeValuePlaceHolder(_variableService.GetTypeIntegerValue(_schemeVariable.ValueType));
-            _valueInputField.SetTextWithoutNotify(_schemeVariable.GetValue().ToString());
-            _typeDropdown.value = _variableService.GetTypeIntegerValue(_schemeVariable.ValueType);
+            if (_schemeVariable != null && _schemeVariable.variableName != null
+                && _schemeVariable.ValueType != null && _schemeVariable.GetValue() != null)
+            {
+                _nameInputField.SetTextWithoutNotify(_schemeVariable.variableName);
+                _valueInputField.SetTextWithoutNotify(_schemeVariable.GetValue().ToString());
+                _typeDropdown.value = _variableService.GetTypeIntegerValue(_schemeVariable.ValueType);
+            }
         }
 
         private void InitializeValuePlaceHolder(int value)
@@ -125,9 +136,6 @@ namespace Session.Scheme.Windows
             if (_variableType == null || _variableName == null || _variableValue == null) return;
             Debug.Log($"{_variableType} {_variableName} {_variableValue}");
 
-
-            _schemeVariable = null;
-
             if (_variableType == typeof(int))
                 _schemeVariable = new SchemeVariable<int>(_variableName);
             else if (_variableType == typeof(float))
@@ -139,7 +147,7 @@ namespace Session.Scheme.Windows
 
             _schemeVariable.SetValue(_variableValue);
 
-            _variableList.AddOrModifyVariable(_schemeVariable);
+            _variableList.AddOrModifyVariable(this);
         }
 
         public void OnDestroy()

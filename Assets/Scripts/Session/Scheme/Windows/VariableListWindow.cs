@@ -25,7 +25,7 @@ namespace Session.Scheme.Windows
         [SerializeField] private LayoutElement _content;
         [SerializeField] private Button _closeButton;
 
-        private List<VariableItem> _activeVariableItems = new List<VariableItem>();
+        private readonly List<VariableItem> _activeVariableItems = new();
 
         private VariablePickerItem _variablePicker;
 
@@ -51,8 +51,7 @@ namespace Session.Scheme.Windows
         {
             _addNewVariableButton.onClick.AddListener(() =>
             {
-                VariableItem window = (VariableItem)_windowService.OpenWindow(_variableItemPrefab, _content.transform, this);
-                _activeVariableItems.Add(window);
+                _windowService.OpenWindow(_variableItemPrefab, _content.transform, this);
             });
 
             _closeButton.onClick.AddListener(() => { _windowService.CloseWindow(this); });
@@ -62,11 +61,8 @@ namespace Session.Scheme.Windows
         {
             for (int i = 0; i < _variableService.Variables.Count; i++)
             {
-                SchemeVariableBase schemeVariable = _variableService.Variables[i];
-
-                VariableItem window = (VariableItem)_windowService.OpenWindow(_variableItemPrefab, _content.transform);
-
-                _activeVariableItems.Add(window);
+                VariableItem window = (VariableItem)_windowService.OpenWindow(_variableItemPrefab, _content.transform, this);
+                window.SchemeVariable = _variableService.Variables[i];
             }
         }
 
@@ -76,18 +72,20 @@ namespace Session.Scheme.Windows
             _closeButton.onClick.RemoveAllListeners();
         }
 
-        public void AddOrModifyVariable(SchemeVariableBase schemeVariable)
+        public void AddOrModifyVariable(VariableItem item)
         {
-            if (schemeVariable != null)
+            if (item.SchemeVariable != null)
             {
-                if (schemeVariable.GetValue().GetType() == typeof(int))
-                    _variableService.BuildVariable<int>(schemeVariable.variableName, int.Parse(schemeVariable.GetValue().ToString()));
-                else if (schemeVariable.GetValue().GetType() == typeof(float))
-                    _variableService.BuildVariable<float>(schemeVariable.variableName, float.Parse(schemeVariable.GetValue().ToString()));
-                else if (schemeVariable.GetValue().GetType() == typeof(string))
-                    _variableService.BuildVariable<string>(schemeVariable.variableName, schemeVariable.GetValue().ToString());
-                else if (schemeVariable.GetValue().GetType() == typeof(bool))
-                        _variableService.BuildVariable<bool>(schemeVariable.variableName, bool.Parse(schemeVariable.GetValue().ToString()));
+                if (item.SchemeVariable.ValueType == typeof(int))
+                    _variableService.BuildVariable<int>(item.SchemeVariable.variableName, int.Parse(item.SchemeVariable.GetValue().ToString()));
+                else if (item.SchemeVariable.ValueType == typeof(float))
+                    _variableService.BuildVariable<float>(item.SchemeVariable.variableName, float.Parse(item.SchemeVariable.GetValue().ToString()));
+                else if (item.SchemeVariable.ValueType == typeof(string))
+                    _variableService.BuildVariable<string>(item.SchemeVariable.variableName, item.SchemeVariable.GetValue().ToString());
+                else if (item.SchemeVariable.ValueType == typeof(bool))
+                    _variableService.BuildVariable<bool>(item.SchemeVariable.variableName, bool.Parse(item.SchemeVariable.GetValue().ToString()));
+
+                _activeVariableItems.Add(item);
             }
         }
 
@@ -95,8 +93,10 @@ namespace Session.Scheme.Windows
         {
             SchemeVariableBase variable = _variableService.Variables.Find(v => v.variableName == variableItem.SchemeVariable.variableName);
 
+            if (variableItem.SchemeVariable != null && _variableService.CheckVariableExistance(variableItem.SchemeVariable.variableName) > -1)
+                _variableService.RemoveVariable(variableItem.SchemeVariable.variableName);
+            
             _activeVariableItems.Remove(variableItem);
-            _variableService.RemoveVariable(variableItem.SchemeVariable.variableName);
             Destroy(variableItem.gameObject);
         }
 

@@ -18,7 +18,7 @@ namespace Session.Scheme.Block
             if (_textRenderer == null) _textRenderer = _text.GetComponent<Renderer>();
 
             _text.text = text;
-            _text.ForceMeshUpdate();
+            _text.ForceMeshUpdate(true, true);
             Bounds textBounds = _textRenderer.bounds;
 
             float newWidth = Mathf.Max(textBounds.size.x + _padding.x, 1);

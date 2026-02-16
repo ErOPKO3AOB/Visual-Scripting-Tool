@@ -42,11 +42,11 @@ namespace GlobalServices.CodeGeneration
                 {
                     _programmCode = await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", MakeStringInputCodeParts((InputBlock)nextBlock.Next));
                 }
-                // Сырая концепция
-                else if (((IBlock)nextBlock.Next).ConcreteType == IBlock.BlockType.Condition)
-                {
-                    _programmCode = await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", MakeStringConditionCodeParts((ConditionBlock)nextBlock.Next));
-                }
+                //// Сырая концепция
+                //else if (((IBlock)nextBlock.Next).ConcreteType == IBlock.BlockType.Condition)
+                //{
+                //    _programmCode = await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", MakeStringConditionCodeParts((ConditionBlock)nextBlock.Next));
+                //}
             }
 
             return _programmCode;
