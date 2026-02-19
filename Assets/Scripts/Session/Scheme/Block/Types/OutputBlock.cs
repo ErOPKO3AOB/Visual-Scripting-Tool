@@ -41,23 +41,13 @@ namespace Session.Scheme.Block.Types
 
         public void ProvideAction()
         {
-            string message = "";
-
-            //for (int i = 0; i < SchemeVariable.Count; i++)
-            //{
-            //    message += SchemeVariable[i].GetValue().ToString();
-            //}
-
-            message = SchemeVariable.GetValue().ToString();
-
+            string message = SchemeVariable.GetValue().ToString();
             _consoleService.SpawnMessage(message);
             Next?.ProvideAction();
         }
 
         public bool CheckForCorrectRelationships()
         {
-            //Debug.Log($"{Facade.BlockName} => {Next}");
-
             return Next != null && _nextBlock.CheckForCorrectRelationships();
         }
 

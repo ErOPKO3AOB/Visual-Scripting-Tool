@@ -40,7 +40,7 @@ namespace Session.Scheme.Windows
                     switch (_operatorType)
                     {
                         case OperationType.Method:
-                            operatorType = typeof(VariableService.MethodOperatorType);
+                            operatorType = typeof(VariableService.ActionOperatorType);
                             break;
                         case OperationType.Condition:
                             operatorType = typeof(VariableService.ConditionOperatorType);
@@ -61,7 +61,7 @@ namespace Session.Scheme.Windows
             switch (_operatorType)
             {
                 case OperationType.Method:
-                    enumType = typeof(VariableService.MethodOperatorType);
+                    enumType = typeof(VariableService.ActionOperatorType);
                     break;
                 case OperationType.Condition:
                     enumType = typeof(VariableService.ConditionOperatorType);

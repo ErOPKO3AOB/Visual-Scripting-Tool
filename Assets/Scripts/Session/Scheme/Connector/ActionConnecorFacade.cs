@@ -11,14 +11,14 @@ namespace Session.Scheme.Connector
         public void ConstructManually(IBlock block, BlockConfigs blockConfigs, Vector3 startOffset, BlockOutputButton blockOutputButton)
         {
             _block = block;
-            _connector = new ActionConnector(_block);
+            _connector = new BlockConnector(_block);
             _blockConfigs = blockConfigs;
             _startOffset = startOffset;
             _blockOutputButton = blockOutputButton;
         }
 
         private IBlock _block;
-        private ActionConnector _connector;
+        private BlockConnector _connector;
         private BlockConfigs _blockConfigs;
         private Vector3 _startOffset;
         private BlockOutputButton _blockOutputButton;
@@ -27,7 +27,7 @@ namespace Session.Scheme.Connector
         private LineRenderer _lineRenderer;
 
         public LineRenderer LineRenderer => _lineRenderer;
-        public ActionConnector Connector => _connector;
+        public BlockConnector Connector => _connector;
 
         private void Start()
         {
@@ -51,9 +51,9 @@ namespace Session.Scheme.Connector
             _connector.Connect(secondProvider, outputIndex);
         }
 
-        public void OnDisconnected()
+        public void OnDisconnected(int outputIndex)
         {
-            _connector.Disconnect();
+            _connector.Disconnect(outputIndex);
             Destroy(gameObject);
         }
     }

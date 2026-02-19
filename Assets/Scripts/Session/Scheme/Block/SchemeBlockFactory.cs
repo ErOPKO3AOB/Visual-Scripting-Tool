@@ -1,14 +1,15 @@
 using GlobalServices.ProjectLifetime;
-using Session.Scheme.Block;
 using Session.Scheme.Block.Types;
 using Session.Scheme.Variables;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using User;
 using VContainer;
 using VContainer.Unity;
 
-namespace Session.Scheme
+namespace Session.Scheme.Block
 {
     public class SchemeBlockFactory
     {
@@ -76,22 +77,29 @@ namespace Session.Scheme
             });
         }
 
-        public void DestroyBlock(SchemeBlockFacade schemeBlockFacade)
+        public void DestroyBlock(IBlock block)
         {
-            IBlock block = Blocks.Find(b => b.Facade.BlockName == schemeBlockFacade.BlockName && b.Facade == schemeBlockFacade);
-            if (block.SingleInstance) return;
+            IBlock blockToDestroy = Blocks.Find(b => b == block && b.Facade.BlockName == block.Facade.BlockName);
+            if (blockToDestroy.SingleInstance) return;
 
-            if (block.Facade.BlockInputTrigger.ConnectedActionConnectorFacade != null)
-                block.Facade.BlockInputTrigger.ConnectedActionConnectorFacade.OnDisconnected();
-
-            for (int i = 0; i < block.Facade.BlockOutputButtons.Length; i++)
+            // Disconnect input point previous connections
+            if (blockToDestroy.Facade.BlockInputTrigger.ConnectedActionConnectorFacade != null)
             {
-                if (block.Facade.BlockOutputButtons[i].ActionConnecorFacade != null)
-                    block.Facade.BlockOutputButtons[i].ActionConnecorFacade.OnDisconnected();
+                int index = blockToDestroy.Facade.BlockInputTrigger.ConnectedOutputButton != null ?
+                    blockToDestroy.Facade.BlockInputTrigger.ConnectedOutputButton.Block.Facade.BlockOutputButtons.ToList().FindIndex(Ob => Ob == blockToDestroy.Facade.BlockInputTrigger.ConnectedOutputButton) :
+                    0;
+                blockToDestroy.Facade.BlockInputTrigger.ConnectedActionConnectorFacade.OnDisconnected(index);
             }
 
-            Blocks.Remove(block);
-            GameObject.Destroy(block.Facade.gameObject);
+            // Disconnect all output points connections
+            for (int i = 0; i < blockToDestroy.Facade.BlockOutputButtons.Length; i++)
+            {
+                if (blockToDestroy.Facade.BlockOutputButtons[i].ActionConnecorFacade != null)
+                    blockToDestroy.Facade.BlockOutputButtons[i].ActionConnecorFacade.OnDisconnected(i);
+            }
+
+            Blocks.Remove(blockToDestroy);
+            blockToDestroy.Dispose();
         }
     }
 }

@@ -1,6 +1,8 @@
+using System;
+
 namespace Session.Scheme.Block
 {
-    public interface IBlock : IActionProvider
+    public interface IBlock : IActionProvider, IDisposable
     {
         public enum BlockType
         {

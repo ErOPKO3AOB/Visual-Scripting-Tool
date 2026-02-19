@@ -1,3 +1,4 @@
+using Extensions;
 using Session.Scheme.Variables;
 using System;
 using UnityEngine;
@@ -40,14 +41,11 @@ namespace Session.Scheme.Block.Types
             set
             {
                 if (value < 0)
-                {
                     _currentOutputIndex = 0;
-                }
-
                 else if (value > Facade.BlockOutputButtons.Length - 1)
-                {
                     _currentOutputIndex = Facade.BlockOutputButtons.Length - 1;
-                }
+                else
+                    _currentOutputIndex = value;
             }
         }
 
@@ -92,7 +90,7 @@ namespace Session.Scheme.Block.Types
             _operand2 = operand2;
 
             string displayName = operand1 != null && operand2 != null ?
-                $"{_operand1.variableName} {_conditionalOperatorType} {_operand2.variableName}"
+                $"{_operand1.variableName} {TypeExtensions.GetFriendlyConditionOperatorTypeName(_conditionalOperatorType)} {_operand2.variableName}"
                 : "Значения не установлены!";
 
             _facade.Label.SetText(displayName);
@@ -119,9 +117,12 @@ namespace Session.Scheme.Block.Types
 
         public bool CheckForCorrectValues()
         {
-            return _operand1 != null && _operand2 != null
+            bool value = _operand1 != null && _operand2 != null
                 && _trueOutput != null && _trueOutput.CheckForCorrectValues()
                 && _falseOutput != null && _falseOutput.CheckForCorrectValues();
+            if (!value) Debug.LogError($"Condition block has not got enough params: {(_operand1 != null ? _operand1.variableName : "no value")} {(_operand2 != null ? _operand2.variableName : "no value")}");
+
+            return value;
         }
 
         public void Dispose()

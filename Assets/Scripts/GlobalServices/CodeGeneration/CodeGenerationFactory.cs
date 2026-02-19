@@ -1,5 +1,5 @@
 using GlobalServices.CodeGeneration;
-using Session.Scheme;
+using Session.Scheme.Block;
 using Session.Scheme.Block.Types;
 using Session.Scheme.Variables;
 using System;
@@ -21,8 +21,8 @@ namespace GlobalServices
         private readonly VariableService _variableService;
         private readonly SchemeBlockFactory _schemeBlockFactory;
 
-        public const int SMALL_OPERATION_DELAY_MS = 50;
-        public const int MEDIUM_OPERATION_DELAY_MS = 150;
+        public const int SMALL_OPERATION_DELAY_MS = 20;
+        public const int MEDIUM_OPERATION_DELAY_MS = 100;
 
         public List<SchemeVariableBase> SchemeVariables { get; private set; } = new();
 
@@ -58,21 +58,29 @@ namespace GlobalServices
             EndBlock = (EndBlock)_schemeBlockFactory.Blocks.Find(b => b.GetType() == typeof(EndBlock));
             await Task.Delay(SMALL_OPERATION_DELAY_MS);
 
-            //MethodBlocks.Clear();
-            //MethodBlocks = ((MethodBlock[])_schemeBlockFactory.Blocks.FindAll(b => b.GetType() == typeof(MethodBlock)).ToArray()).ToList();
-            //await Task.Delay(MEDIUM_OPERATION_DELAY_MS);
+            MethodBlocks.Clear();
+            var methodBlocks = _schemeBlockFactory.Blocks.FindAll(b => b.GetType() == typeof(ActionBlock));
+            for (int i = 0; i < methodBlocks.Count; i++)
+                MethodBlocks.Add((ActionBlock)methodBlocks[i]);
+            await Task.Delay(MEDIUM_OPERATION_DELAY_MS);
 
-            //ConditionBlocks.Clear();
-            //ConditionBlocks = ((ConditionBlock[])_schemeBlockFactory.Blocks.FindAll(b => b.GetType() == typeof(ConditionBlock)).ToArray()).ToList();
-            //await Task.Delay(MEDIUM_OPERATION_DELAY_MS);
+            ConditionBlocks.Clear();
+            var conditionBlocks = _schemeBlockFactory.Blocks.FindAll(b => b.GetType() == typeof(ConditionBlock));
+            for (int i = 0; i < conditionBlocks.Count; i++)
+                ConditionBlocks.Add((ConditionBlock)conditionBlocks[i]);
+            await Task.Delay(MEDIUM_OPERATION_DELAY_MS);
 
-            //OutputBlocks.Clear();
-            //OutputBlocks = ((OutputBlock[])_schemeBlockFactory.Blocks.FindAll(b => b.GetType() == typeof(OutputBlock)).ToArray()).ToList();
-            //await Task.Delay(MEDIUM_OPERATION_DELAY_MS);
+            OutputBlocks.Clear();
+            var outputBlocks = _schemeBlockFactory.Blocks.FindAll(b => b.GetType() == typeof(OutputBlock));
+            for (int i = 0; i < outputBlocks.Count; i++)
+                OutputBlocks.Add((OutputBlock)outputBlocks[i]);
+            await Task.Delay(MEDIUM_OPERATION_DELAY_MS);
 
-            //InputBlocks.Clear();
-            //InputBlocks = ((InputBlock[])_schemeBlockFactory.Blocks.FindAll(b => b.GetType() == typeof(InputBlock)).ToArray()).ToList();
-            //await Task.Delay(MEDIUM_OPERATION_DELAY_MS);
+            InputBlocks.Clear();
+            var inputBlocks = _schemeBlockFactory.Blocks.FindAll(b => b.GetType() == typeof(InputBlock));
+            for (int i = 0; i < inputBlocks.Count; i++)
+                InputBlocks.Add((InputBlock)inputBlocks[i]);
+            await Task.Delay(MEDIUM_OPERATION_DELAY_MS);
 
             await Task.CompletedTask;
         }
@@ -102,29 +110,43 @@ namespace GlobalServices
         /// <returns>Код с вставленным фрагментом.</returns>
         public async Task<string> PasteCodeIntoBody(string fullCode, string bodyName, string codeToPaste)
         {
-            // Асинхронно выполняем тяжёлую работу, чтобы не блокировать поток
             return await Task.Run(() =>
             {
-                // Экранируем специальные символы имени и строим регулярку: имя + пробелы/переносы + {
+                // Ищем открывающую скобку тела
                 string pattern = $@"{Regex.Escape(bodyName)}\s*{{";
                 var match = Regex.Match(fullCode, pattern);
                 if (!match.Success)
-                    return fullCode; // тело не найдено – ничего не делаем
+                    return fullCode;
 
-                int braceIndex = match.Index + match.Value.Length - 1; // позиция символа '{'
+                int openBraceIndex = match.Index + match.Value.Length - 1; // позиция '{'
 
-                // Определяем отступ строки, в которой стоит '{'
-                int lineStart = fullCode.LastIndexOf('\n', braceIndex) + 1;
+                // Находим парную закрывающую скобку (с учётом вложенности)
+                int depth = 1;
+                int closeBraceIndex = -1;
+                for (int i = openBraceIndex + 1; i < fullCode.Length; i++)
+                {
+                    if (fullCode[i] == '{') depth++;
+                    else if (fullCode[i] == '}') depth--;
+                    if (depth == 0)
+                    {
+                        closeBraceIndex = i;
+                        break;
+                    }
+                }
+                if (closeBraceIndex == -1)
+                    return fullCode; // закрывающая скобка не найдена
+
+                // Определяем отступ для вставляемого кода (как в оригинале)
+                int lineStart = fullCode.LastIndexOf('\n', openBraceIndex) + 1;
                 if (lineStart < 0) lineStart = 0;
-                string beforeBraceOnLine = fullCode.Substring(lineStart, braceIndex - lineStart);
+                string beforeBraceOnLine = fullCode.Substring(lineStart, openBraceIndex - lineStart);
                 string baseIndent = ExtractIndent(beforeBraceOnLine);
-                string extraIndent = "\t"; // можно заменить на 4 пробела, если нужно
+                string extraIndent = "\t"; // или 4 пробела
 
-                // Разбиваем вставляемый код на строки
+                // Разбиваем вставляемый код на строки и добавляем отступ
                 string newLine = DetectNewLine(codeToPaste);
                 string[] lines = codeToPaste.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
-                var indentedLines = new List<string>(lines.Length);
-
+                var indentedLines = new List<string>();
                 foreach (string line in lines)
                 {
                     if (string.IsNullOrEmpty(line))
@@ -134,20 +156,20 @@ namespace GlobalServices
                 }
                 string codeWithIndent = string.Join(newLine, indentedLines);
 
-                // Проверяем, есть ли перевод строки сразу после '{'
-                bool hasNewLineAfterBrace = HasNewLineAt(fullCode, braceIndex + 1, newLine);
+                // Проверяем, нужен ли перевод строки перед закрывающей скобкой
+                int lastNonSpaceBeforeClose = closeBraceIndex - 1;
+                while (lastNonSpaceBeforeClose >= 0 && (fullCode[lastNonSpaceBeforeClose] == ' ' || fullCode[lastNonSpaceBeforeClose] == '\t'))
+                    lastNonSpaceBeforeClose--;
+                bool needNewLineBeforeClose = lastNonSpaceBeforeClose < 0 || fullCode[lastNonSpaceBeforeClose] != '\n';
 
-                string beforeInsert = fullCode.Substring(0, braceIndex + 1);
-                string afterInsert = fullCode.Substring(braceIndex + 1);
+                // Вставляем код перед закрывающей скобкой
+                string beforeInsert = fullCode.Substring(0, closeBraceIndex);
+                string afterInsert = fullCode.Substring(closeBraceIndex);
 
-                if (!hasNewLineAfterBrace)
+                if (needNewLineBeforeClose)
                     beforeInsert += newLine;
 
-                string result = beforeInsert + codeWithIndent;
-                if (!afterInsert.StartsWith(newLine) && !string.IsNullOrEmpty(afterInsert))
-                    result += newLine;
-
-                result += afterInsert;
+                string result = beforeInsert + codeWithIndent + newLine + afterInsert;
                 return result;
             }).ConfigureAwait(false);
         }

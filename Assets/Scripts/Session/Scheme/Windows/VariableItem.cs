@@ -45,7 +45,7 @@ namespace Session.Scheme.Windows
         private VariableListWindow _variableList;
         private SchemeVariableBase _schemeVariable;
 
-        public SchemeVariableBase SchemeVariable { get; set; }
+        public SchemeVariableBase SchemeVariable { get => _schemeVariable; set => _schemeVariable = value; }
 
         public override void SetSender(object sender)
         {
@@ -69,7 +69,14 @@ namespace Session.Scheme.Windows
             _typeDropdown.onValueChanged.AddListener((int value) => { InitializeValuePlaceHolder(value); OnEndEdit(); });
             _valueInputField.onEndEdit.AddListener((string value) => { _variableValue = value; OnEndEdit(); });
 
-            _chooseButton.onClick.AddListener(() => { OnEndEdit(); _variableList.ChooseVariable(_variableName); });
+            _chooseButton.onClick.AddListener(() =>
+            {
+                OnEndEdit();
+
+                if (_schemeVariable != null)
+                    _variableList.ChooseVariable(_schemeVariable.variableName);
+            });
+
             _deleteButton.onClick.AddListener(() =>
             {
                 _variableList.RemoveVariable(this);
@@ -86,13 +93,24 @@ namespace Session.Scheme.Windows
                 new(text: "bool"),
             });
 
-            if (_schemeVariable != null && _schemeVariable.variableName != null
-                && _schemeVariable.ValueType != null && _schemeVariable.GetValue() != null)
+            InitializeValuePlaceHolder(0);
+
+            if (_schemeVariable != null)
             {
-                _nameInputField.SetTextWithoutNotify(_schemeVariable.variableName);
-                _valueInputField.SetTextWithoutNotify(_schemeVariable.GetValue().ToString());
-                _typeDropdown.value = _variableService.GetTypeIntegerValue(_schemeVariable.ValueType);
+                if (_schemeVariable.ValueType != null)
+                {
+                    int value = _variableService.GetTypeIntegerValue(_schemeVariable.ValueType);
+                    _typeDropdown.SetValueWithoutNotify(value);
+                    InitializeValuePlaceHolder(value);
+                }
+
+                if (_schemeVariable.variableName != null)
+                    _nameInputField.SetTextWithoutNotify(_schemeVariable.variableName);
+                if (_schemeVariable.GetStartValue() != null)
+                    _valueInputField.SetTextWithoutNotify(_schemeVariable.GetStartValue().ToString());
             }
+
+            _chooseButton.gameObject.SetActive(_variableList.HasSender);
         }
 
         private void InitializeValuePlaceHolder(int value)
@@ -104,26 +122,22 @@ namespace Session.Scheme.Windows
             {
                 case 0:
                     _valueInputField.characterValidation = TMP_InputField.CharacterValidation.Digit;
-                    _valueInputField.text = "0";
                     _valueInputFieldPlaceHolder.text = _intPlaceHolder;
                     _variableType = typeof(int);
                     break;
                 case 1:
                     _valueInputField.characterValidation = TMP_InputField.CharacterValidation.Decimal;
-                    _valueInputField.text = "0";
                     _valueInputFieldPlaceHolder.text = _floatPlaceHolder;
                     _variableType = typeof(float);
                     break;
                 case 2:
                     _valueInputField.characterValidation = TMP_InputField.CharacterValidation.None;
-                    _valueInputField.text = " ";
                     _valueInputFieldPlaceHolder.text = _stringPlaceHolder;
                     _variableType = typeof(string);
                     break;
                 case 3:
                     _valueInputField.characterValidation = TMP_InputField.CharacterValidation.CustomValidator;
                     _valueInputField.inputValidator = _boolValidator;
-                    _valueInputField.text = "false";
                     _valueInputFieldPlaceHolder.text = _boolPlaceHolder;
                     _variableType = typeof(bool);
                     break;
@@ -134,7 +148,6 @@ namespace Session.Scheme.Windows
         public void OnEndEdit()
         {
             if (_variableType == null || _variableName == null || _variableValue == null) return;
-            Debug.Log($"{_variableType} {_variableName} {_variableValue}");
 
             if (_variableType == typeof(int))
                 _schemeVariable = new SchemeVariable<int>(_variableName);
@@ -145,9 +158,10 @@ namespace Session.Scheme.Windows
             else if (_variableType == typeof(bool))
                 _schemeVariable = new SchemeVariable<bool>(_variableName);
 
-            _schemeVariable.SetValue(_variableValue);
+            _schemeVariable.SetStartValue(_variableValue);
 
-            _variableList.AddOrModifyVariable(this);
+            if (_schemeVariable != null)
+                _variableList.AddOrModifyVariable(this);
         }
 
         public void OnDestroy()

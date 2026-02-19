@@ -1,3 +1,4 @@
+using Extensions;
 using Session.Scheme.Variables;
 using System;
 using UnityEngine;
@@ -20,12 +21,12 @@ namespace Session.Scheme.Block.Types
 
         private IBlock _nextBlock;
 
-        private VariableService.MethodOperatorType _operatorType;
+        private VariableService.ActionOperatorType _operatorType;
         private SchemeVariableBase _operand1;
         private SchemeVariableBase _operand2;
 
         public IBlock.BlockType ConcreteType { get => IBlock.BlockType.Action; }
-        public VariableService.MethodOperatorType OperatorType => _operatorType;
+        public VariableService.ActionOperatorType OperatorType => _operatorType;
         public SchemeVariableBase Operand1 => _operand1;
         public SchemeVariableBase Operand2 => _operand2;
 
@@ -39,14 +40,14 @@ namespace Session.Scheme.Block.Types
             Next?.ProvideAction();
         }
 
-        public void SetOperation(SchemeVariableBase operand1, VariableService.MethodOperatorType operatorType, SchemeVariableBase operand2)
+        public void SetOperation(SchemeVariableBase operand1, VariableService.ActionOperatorType operatorType, SchemeVariableBase operand2)
         {
             _operand1 = operand1;
             _operatorType = operatorType;
             _operand2 = operand2;
 
             string displayName = operand1 != null && operand2 != null ?
-                $"{_operand1.variableName} {_operatorType} {_operand2.variableName}"
+                $"{_operand1.variableName} {TypeExtensions.GetFriendlyActionOperatorTypeName(_operatorType)} {_operand2.variableName}"
                 : "Значения не установлены!";
 
             _facade.Label.SetText(displayName);

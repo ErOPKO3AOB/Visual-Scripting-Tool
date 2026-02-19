@@ -25,5 +25,10 @@ namespace Session.Scheme
         {
             OnInputRequest?.Invoke(varName, inputBlock);
         }
+
+        public void ClearAllMessages()
+        {
+            Messages.Clear();
+        }
     }
 }

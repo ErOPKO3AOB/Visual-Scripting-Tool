@@ -1,5 +1,5 @@
 using GlobalServices.ProjectLifetime;
-using Session.Scheme;
+using Session.Scheme.Block;
 using Session.Scheme.Windows;
 using VContainer.Unity;
 

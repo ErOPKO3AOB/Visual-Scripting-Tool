@@ -1,3 +1,4 @@
+using Session.Scheme.Variables;
 using System;
 using System.Collections.Generic;
 
@@ -5,7 +6,7 @@ namespace Extensions
 {
     public static class TypeExtensions
     {
-        private static readonly Dictionary<Type, string> _aliases = new Dictionary<Type, string>
+        private static readonly Dictionary<Type, string> _variableTypeAliases = new Dictionary<Type, string>
         {
             { typeof(bool), "bool" },
             { typeof(byte), "byte" },
@@ -24,20 +25,47 @@ namespace Extensions
             { typeof(string), "string" }
         };
 
-        public static string GetFriendlyName(this Type type)
+        private static readonly Dictionary<VariableService.ActionOperatorType, string> _actionOperatorTypeAliases = new()
         {
-            if (_aliases.TryGetValue(type, out string alias))
+            { VariableService.ActionOperatorType.FirstEqualSecond, "=" },
+            { VariableService.ActionOperatorType.FirstPlusSecond, "+=" },
+            { VariableService.ActionOperatorType.FirstMinusSecond, "-=" },
+            { VariableService.ActionOperatorType.FirstDividedBySecond, "/=" },
+            { VariableService.ActionOperatorType.FirstMultypliedBySecond, "*=" },
+        };
+
+        private static readonly Dictionary<VariableService.ConditionOperatorType, string> _conditionOperatorTypeAliases = new()
+        {
+            { VariableService.ConditionOperatorType.IsEqual, "==" },
+            { VariableService.ConditionOperatorType.IsNotEqual, "!=" },
+            { VariableService.ConditionOperatorType.IsGreater, ">" },
+            { VariableService.ConditionOperatorType.IsGreaterOrEqual, ">=" },
+            { VariableService.ConditionOperatorType.IsLess, "<" },
+            { VariableService.ConditionOperatorType.IsLessOrEqual, "<=" },
+        };
+
+        public static string GetFriendlyTypeName(this Type type)
+        {
+            if (_variableTypeAliases.TryGetValue(type, out string alias))
                 return alias;
+            else
+                return type.Name;
+        }
 
-            // Для ненулевых значимых типов можно обработать Nullable<T>
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-            {
-                var underlyingType = type.GetGenericArguments()[0];
-                return underlyingType.GetFriendlyName() + "?";
-            }
+        public static string GetFriendlyActionOperatorTypeName(this VariableService.ActionOperatorType type)
+        {
+            if (_actionOperatorTypeAliases.TryGetValue(type, out string alias))
+                return alias;
+            else
+                throw new NullReferenceException($"There is no value with type: {type}");
+        }
 
-            // Для остальных типов возвращаем обычное имя (можно добавить обработку вложенных/обобщённых)
-            return type.Name;
+        public static string GetFriendlyConditionOperatorTypeName(this VariableService.ConditionOperatorType type)
+        {
+            if (_conditionOperatorTypeAliases.TryGetValue(type, out string alias))
+                return alias;
+            else
+                throw new NullReferenceException($"There is no value with type: {type}");
         }
     }
 }

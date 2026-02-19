@@ -34,7 +34,6 @@ namespace Session.Scheme.Windows
             try
             {
                 _conditionBlock = (ConditionBlock)sender;
-                RebuildUI();
             }
 
             catch (Exception e)
@@ -54,6 +53,12 @@ namespace Session.Scheme.Windows
             _varPicker1.OnVariableChoose += OnOperand1Choosed;
             _operationItem.OnOperationTypeChoosed += OnOperationTypeChoosed;
             _varPicker2.OnVariableChoose += OnOperand2Choosed;
+
+            RebuildUI();
+
+            Debug.Log($"OPERATION GET: {_operand1 != null} {_operatorType} {_operand2 != null}");
+            _operand1 = _conditionBlock.Operand1;
+            _operand2 = _conditionBlock.Operand2;
         }
 
         private void RebuildUI()
@@ -69,22 +74,16 @@ namespace Session.Scheme.Windows
         private void OnOperand1Choosed(SchemeVariableBase variable)
         {
             _operand1 = variable;
-
-            SendOperationToConditionBlock();
         }
 
         private void OnOperationTypeChoosed(object operatorType)
         {
             _operatorType = (VariableService.ConditionOperatorType)operatorType;
-
-            SendOperationToConditionBlock();
         }
 
         private void OnOperand2Choosed(SchemeVariableBase variable)
         {
             _operand2 = variable;
-
-            SendOperationToConditionBlock();
         }
 
         private void SendOperationToConditionBlock()

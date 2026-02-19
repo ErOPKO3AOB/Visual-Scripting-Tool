@@ -39,6 +39,8 @@ namespace Session.Scheme.Variables
 
         public void ChooseVariable(SchemeVariableBase variable)
         {
+            if (variable == null) return;
+
             _addNewButton.transform.SetParent(null);
             ChoosedVariableItem variableItem = Instantiate(_choosedVariablePrefab, _content.transform).GetComponent<ChoosedVariableItem>();
             variableItem.Initialize(this, variable);

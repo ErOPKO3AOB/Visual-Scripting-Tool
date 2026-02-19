@@ -22,7 +22,7 @@ namespace Session.Scheme.Windows
         [SerializeField] private VariablePickerItem _varPicker2;
 
         private SchemeVariableBase _operand1;
-        private VariableService.MethodOperatorType _operatorType;
+        private VariableService.ActionOperatorType _operatorType;
         private SchemeVariableBase _operand2;
 
         private WindowFactory _windowService;
@@ -72,7 +72,7 @@ namespace Session.Scheme.Windows
 
         private void OnOperationTypeChoosed(object operatorType)
         {
-            _operatorType = (VariableService.MethodOperatorType)operatorType;
+            _operatorType = (VariableService.ActionOperatorType)operatorType;
         }
 
         private void OnOperand2Choosed(SchemeVariableBase variable)

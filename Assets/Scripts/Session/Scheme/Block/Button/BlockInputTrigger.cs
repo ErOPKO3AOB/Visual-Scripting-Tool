@@ -17,6 +17,7 @@ namespace Session.Scheme.Block.Button
         private WorldUIControllerService _worldUIControllerService;
 
         public ActionConnecorFacade ConnectedActionConnectorFacade { get; private set; }
+        public BlockOutputButton ConnectedOutputButton { get; private set; }
 
         protected override void Start()
         {
@@ -56,10 +57,11 @@ namespace Session.Scheme.Block.Button
 
                         int outputBlockIndex = connectorPoint.Block.Facade.BlockOutputButtons.ToList().IndexOf(connectorPoint.BlockOutputButton);
 
-                        Debug.Log($"facade.BlockOutputButtons[{outputBlockIndex}].ActionConnecorFacade.OnConnected({_block.Facade.BlockName})");
+                        //Debug.Log($"facade.BlockOutputButtons[{outputBlockIndex}].ActionConnecorFacade.OnConnected({_block.Facade.BlockName})");
 
                         facadeOfConnectorPoint.BlockOutputButtons[outputBlockIndex].ActionConnecorFacade.OnConnected(_block, outputBlockIndex);
                         ConnectedActionConnectorFacade = facadeOfConnectorPoint.BlockOutputButtons[outputBlockIndex].ActionConnecorFacade;
+                        ConnectedOutputButton = facadeOfConnectorPoint.BlockOutputButtons[outputBlockIndex];
                     }
                 }
             }
@@ -76,6 +78,7 @@ namespace Session.Scheme.Block.Button
                 _worldUIControllerService.OnStopInteractCallback -= OnStopWorldUIInteraction;
 
             ConnectedActionConnectorFacade = null;
+            ConnectedOutputButton = null;
         }
     }
 }

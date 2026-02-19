@@ -14,6 +14,8 @@ namespace Session.Scheme.Variables
 
         public abstract Type ValueType { get; }
         public abstract void SetValue(object value);
+        public abstract void SetStartValue(object value);
         public abstract object GetValue();
+        public abstract object GetStartValue();
     }
 }

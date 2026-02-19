@@ -10,19 +10,17 @@ namespace Session.Scheme.Block
         [SerializeField] private Vector2 _padding = new(0.5f, 0.5f);
 
         public UnityAction<Vector2> OnChanged;
-        private Renderer _textRenderer;
 
         public void SetText(string text)
         {
             if (_text == null) return;
-            if (_textRenderer == null) _textRenderer = _text.GetComponent<Renderer>();
 
             _text.text = text;
             _text.ForceMeshUpdate(true, true);
-            Bounds textBounds = _textRenderer.bounds;
+            Canvas.ForceUpdateCanvases();
 
-            float newWidth = Mathf.Max(textBounds.size.x + _padding.x, 1);
-            float newHeight = Mathf.Max(textBounds.size.y + _padding.y, 1);
+            float newWidth = Mathf.Max(_text.preferredWidth + _padding.x, 1);
+            float newHeight = Mathf.Max(_text.preferredHeight + _padding.y, 1);
 
             _text.transform.localPosition = Vector3.zero;
 

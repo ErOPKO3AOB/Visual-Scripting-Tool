@@ -58,18 +58,18 @@ namespace Session.Scheme.Windows
                 _placeholderText.text = "¬ведите булевое значение true/false";
             }
 
-            _inputField.onSubmit.AddListener((string value) =>
+            _inputField.onSubmit.AddListener((UnityEngine.Events.UnityAction<string>)((string value) =>
             {
                 int varIndex = _variableService.CheckVariableExistance(variableName);
                 if (varIndex > -1)
                 {
-                    _variableService.Variables[varIndex].SetValue(value);
+                    _variableService.Variables[varIndex].SetValue((object)value);
                     inputBlock.SetInput(value);
                     _inputField.interactable = false;
                 }
 
                 _inputField.onSubmit.RemoveAllListeners();
-            });
+            }));
 
             _outputText.gameObject.SetActive(true);
             _outputText.text = $"¬ведите {variableName}:";

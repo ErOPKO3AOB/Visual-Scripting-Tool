@@ -1,11 +1,11 @@
 using GlobalServices.ProjectLifetime;
+using Session.Scheme.Block;
 using Session.Scheme.Block.Types;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
-using Session.Scheme;
 
 namespace Session.Scheme.Windows
 {
@@ -52,7 +52,7 @@ namespace Session.Scheme.Windows
                 _windowFactory.OpenWindow(_variableListWindowPrefab);
             });
 
-            _startProgrammButton.onClick.AddListener(() => 
+            _startProgrammButton.onClick.AddListener(() =>
             {
                 _windowFactory.OpenWindow(_consoleWindowPrefab);
                 _schemeExecutionService.StartProgramm();
@@ -124,7 +124,7 @@ namespace Session.Scheme.Windows
             _consoleButton.onClick.RemoveAllListeners();
 
             _deleteToggle.onValueChanged.RemoveAllListeners();
-        
+
             _codeGenerationButton.onClick.RemoveAllListeners();
         }
     }

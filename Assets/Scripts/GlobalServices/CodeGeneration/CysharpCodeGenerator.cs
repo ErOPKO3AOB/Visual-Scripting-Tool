@@ -2,7 +2,9 @@ using Extensions;
 using Session.Scheme.Block;
 using Session.Scheme.Block.Types;
 using Session.Scheme.Variables;
+using System;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace GlobalServices.CodeGeneration
 {
@@ -26,27 +28,26 @@ namespace GlobalServices.CodeGeneration
 
             await GenerateVariables();
 
-            IBlock nextBlock = _codeGenerationFactory.StartBlock;
-
-            for (int i = 0; i < _codeGenerationFactory.AllMultipleInstancesBlocksCount; i++)
+            IBlock current = _codeGenerationFactory.StartBlock;
+            while (current.Next != null && current.Next != _codeGenerationFactory.EndBlock)
             {
-                if (((IBlock)nextBlock.Next).ConcreteType == IBlock.BlockType.Action)
+                current = (IBlock)current.Next;
+                switch (current.ConcreteType)
                 {
-                    _programmCode = await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", MakeStringActionCodeParts((ActionBlock)nextBlock.Next));
+                    case IBlock.BlockType.Action:
+                        _programmCode = await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", MakeStringActionCodeParts((ActionBlock)current));
+                        break;
+                    case IBlock.BlockType.Output:
+                        _programmCode = await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", MakeStringOutputCodeParts((OutputBlock)current));
+                        break;
+                    case IBlock.BlockType.Input:
+                        _programmCode = await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", MakeStringInputCodeParts((InputBlock)current));
+                        break;
+                    case IBlock.BlockType.Condition:
+                        // обработать условие 
+                        break;
                 }
-                else if (((IBlock)nextBlock.Next).ConcreteType == IBlock.BlockType.Output)
-                {
-                    _programmCode = await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", MakeStringOutputCodeParts((OutputBlock)nextBlock.Next));
-                }
-                else if (((IBlock)nextBlock.Next).ConcreteType == IBlock.BlockType.Input)
-                {
-                    _programmCode = await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", MakeStringInputCodeParts((InputBlock)nextBlock.Next));
-                }
-                //// —ыра€ концепци€
-                //else if (((IBlock)nextBlock.Next).ConcreteType == IBlock.BlockType.Condition)
-                //{
-                //    _programmCode = await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", MakeStringConditionCodeParts((ConditionBlock)nextBlock.Next));
-                //}
+                await Task.Delay(10);
             }
 
             return _programmCode;
@@ -55,7 +56,26 @@ namespace GlobalServices.CodeGeneration
         #region String Generation
         public string MakeStringInitializedVariable(SchemeVariableBase schemeVariable)
         {
-            return $"{TypeExtensions.GetFriendlyName(schemeVariable.ValueType)} {schemeVariable.variableName} = {schemeVariable.GetValue() ?? ""};";
+            string variableValueString;
+            if (schemeVariable.ValueType == typeof(string))
+            {
+                string rawValue = schemeVariable.GetStartValue()?.ToString() ?? "";
+                string escapedValue = rawValue.Replace("\\", "\\\\").Replace("\"", "\\\"");
+                variableValueString = $"\"{escapedValue}\";";
+            }
+            else
+            {
+                string rawValue = schemeVariable.GetStartValue()?.ToString();
+                if (string.IsNullOrEmpty(rawValue))
+                {
+                    if (schemeVariable.ValueType == typeof(int)) rawValue = "0";
+                    else if (schemeVariable.ValueType == typeof(double)) rawValue = "0.0";
+                    else if (schemeVariable.ValueType == typeof(bool)) rawValue = "false";
+                    else rawValue = "default";
+                }
+                variableValueString = $"{rawValue};";
+            }
+            return $"{TypeExtensions.GetFriendlyTypeName(schemeVariable.ValueType)} {schemeVariable.variableName} = {variableValueString}";
         }
 
         public string MakeStringActionCodeParts(ActionBlock block)
@@ -83,7 +103,7 @@ namespace GlobalServices.CodeGeneration
             if (block.SchemeVariable.ValueType == typeof(string))
                 code = $"{block.SchemeVariable.variableName} = Console.ReadLine();";
             else
-                code = $"{TypeExtensions.GetFriendlyName(block.SchemeVariable.ValueType)}.TryParse(Console.ReadLine(), out {TypeExtensions.GetFriendlyName(block.SchemeVariable.ValueType)} {block.SchemeVariable.variableName});";
+                code = $"{TypeExtensions.GetFriendlyTypeName(block.SchemeVariable.ValueType)}.TryParse(Console.ReadLine(), out {block.SchemeVariable.variableName});";
 
             return code;
         }
@@ -100,7 +120,6 @@ namespace GlobalServices.CodeGeneration
             foreach (var variable in _codeGenerationFactory.SchemeVariables)
             {
                 _programmCode = await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", MakeStringInitializedVariable(variable));
-                await Task.Delay(10);
             }
         }
         #endregion

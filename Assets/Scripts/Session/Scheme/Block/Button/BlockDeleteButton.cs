@@ -22,7 +22,7 @@ namespace Session.Scheme.Block.Button
 
         private void InteractionStopped(BaseBlockButton blockButton)
         {
-            _blockFactory.DestroyBlock(_block.Facade);
+            _blockFactory.DestroyBlock(_block);
         }
 
         private void OnDestroy()

@@ -6,7 +6,7 @@ namespace Session.Scheme.Variables
 {
     public class VariableService
     {
-        public enum MethodOperatorType
+        public enum ActionOperatorType
         {
             [InspectorName("=")]
             FirstEqualSecond,
@@ -59,30 +59,17 @@ namespace Session.Scheme.Variables
                 SchemeVariableBase schemeVariable = new SchemeVariable<T>(varName);
                 Variables.Add(schemeVariable);
             }
-            //Debug.Log($"int {varName} vairalble with value:{startValue}");
 
-            SetValueToVariable(varName, startValue);
+            SetStartValueToVariable(varName, startValue);
         }
 
-        //public void SetTypeToVariable<T>(string varName)
-        //{
-        //    int index = CheckVariableExistance(varName);
-
-        //    if (index > -1)
-        //    {
-        //        SchemeVariableBase schemeVariable = Variables[index];
-        //        RemoveVariable(schemeVariable.variableName);
-        //        BuildVariable<T>(schemeVariable.variableName);
-        //    }
-        //}
-
-        public void SetValueToVariable(string varName, object value)
+        public void SetStartValueToVariable(string varName, object value)
         {
             int index = CheckVariableExistance(varName);
 
             if (index > -1)
             {
-                Variables[index].SetValue(value);
+                Variables[index].SetStartValue(value);
             }
         }
 
@@ -105,20 +92,6 @@ namespace Session.Scheme.Variables
 
             return -1;
         }
-
-        //public void ClearDirtyVariables()
-        //{
-        //    for (int i = 0; i < Variables.Count; i++)
-        //    {
-        //        for (int j = 0; j < Variables.Count; j++)
-        //        {
-        //            if (Variables[i].variableName == Variables[j].variableName)
-        //            {
-        //                Variables.RemoveAt(i);
-        //            }
-        //        }
-        //    }
-        //}
 
         public int GetTypeIntegerValue(Type type)
         {
@@ -145,7 +118,17 @@ namespace Session.Scheme.Variables
         #endregion
 
         #region Variable Operating
-        public void UseOperation(string operand1Name, MethodOperatorType opType, string operand2Name)
+        public void SetValueToVariable(string varName, object value)
+        {
+            int index = CheckVariableExistance(varName);
+
+            if (index > -1)
+            {
+                Variables[index].SetValue(value);
+            }
+        }
+
+        public void UseOperation(string operand1Name, ActionOperatorType opType, string operand2Name)
         {
             SchemeVariableBase operand1 = Variables[CheckVariableExistance(operand1Name)];
             SchemeVariableBase operand2 = Variables[CheckVariableExistance(operand2Name)];
@@ -163,19 +146,19 @@ namespace Session.Scheme.Variables
 
                 switch (opType)
                 {
-                    case MethodOperatorType.FirstEqualSecond:
+                    case ActionOperatorType.FirstEqualSecond:
                         operand1.SetValue((int)operand2.GetValue());
                         break;
-                    case MethodOperatorType.FirstPlusSecond:
+                    case ActionOperatorType.FirstPlusSecond:
                         operand1.SetValue((int)operand1.GetValue() + (int)operand2.GetValue());
                         break;
-                    case MethodOperatorType.FirstMinusSecond:
+                    case ActionOperatorType.FirstMinusSecond:
                         operand1.SetValue((int)operand1.GetValue() - (int)operand2.GetValue());
                         break;
-                    case MethodOperatorType.FirstDividedBySecond:
+                    case ActionOperatorType.FirstDividedBySecond:
                         operand1.SetValue((int)operand1.GetValue() / (int)operand2.GetValue());
                         break;
-                    case MethodOperatorType.FirstMultypliedBySecond:
+                    case ActionOperatorType.FirstMultypliedBySecond:
                         operand1.SetValue((int)operand1.GetValue() * (int)operand2.GetValue());
                         break;
                 }
@@ -188,19 +171,19 @@ namespace Session.Scheme.Variables
 
                 switch (opType)
                 {
-                    case MethodOperatorType.FirstEqualSecond:
+                    case ActionOperatorType.FirstEqualSecond:
                         operand1.SetValue((float)operand2.GetValue());
                         break;
-                    case MethodOperatorType.FirstPlusSecond:
+                    case ActionOperatorType.FirstPlusSecond:
                         operand1.SetValue((float)operand1.GetValue() + (float)operand2.GetValue());
                         break;
-                    case MethodOperatorType.FirstMinusSecond:
+                    case ActionOperatorType.FirstMinusSecond:
                         operand1.SetValue((float)operand1.GetValue() - (float)operand2.GetValue());
                         break;
-                    case MethodOperatorType.FirstDividedBySecond:
+                    case ActionOperatorType.FirstDividedBySecond:
                         operand1.SetValue((float)operand1.GetValue() / (float)operand2.GetValue());
                         break;
-                    case MethodOperatorType.FirstMultypliedBySecond:
+                    case ActionOperatorType.FirstMultypliedBySecond:
                         operand1.SetValue((float)operand1.GetValue() * (float)operand2.GetValue());
                         break;
                 }
@@ -213,10 +196,10 @@ namespace Session.Scheme.Variables
 
                 switch (opType)
                 {
-                    case MethodOperatorType.FirstEqualSecond:
+                    case ActionOperatorType.FirstEqualSecond:
                         operand1.SetValue((string)operand2.GetValue());
                         break;
-                    case MethodOperatorType.FirstPlusSecond:
+                    case ActionOperatorType.FirstPlusSecond:
                         operand1.SetValue((string)operand1.GetValue() + (string)operand2.GetValue());
                         break;
                         //case OperatorType.FirstMinusSecond:
@@ -238,7 +221,7 @@ namespace Session.Scheme.Variables
 
                 switch (opType)
                 {
-                    case MethodOperatorType.FirstEqualSecond:
+                    case ActionOperatorType.FirstEqualSecond:
                         operand1.SetValue((bool)operand2.GetValue());
                         break;
                         //case OperatorType.FirstPlusSecond:

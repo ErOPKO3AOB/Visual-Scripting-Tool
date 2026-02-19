@@ -1,6 +1,7 @@
 using GlobalServices.ProjectLifetime;
 using Session.Scheme.Connector;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -71,7 +72,8 @@ namespace Session.Scheme.Block.Button
 
                 if (_hasConnector && _actionConnecorFacade != null)
                 {
-                    _actionConnecorFacade.OnDisconnected();
+                    int index = _block.Facade.BlockOutputButtons.ToList().FindIndex(oB => oB == this);
+                    _actionConnecorFacade.OnDisconnected(index);
                     _hasConnector = false;
                 }
 
