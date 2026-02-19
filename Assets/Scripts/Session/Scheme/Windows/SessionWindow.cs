@@ -29,6 +29,7 @@ namespace Session.Scheme.Windows
         private SchemeConsoleService _consoleService;
 
         [Header("UI")]
+        [SerializeField] private CameraSettingsWindow _cameraSettingsWindowPrefab;
         [SerializeField] private VariableListWindow _variableListWindowPrefab;
         [SerializeField] private ConsoleWindow _consoleWindowPrefab;
         [SerializeField] private InventoryBlockItem _inventoryBlockItemPrefab;
@@ -39,6 +40,7 @@ namespace Session.Scheme.Windows
         [SerializeField] private Transform _inventoryContent;
 
         [Header("Buttons")]
+        [SerializeField] private Button _settingsButton;
         [SerializeField] private Button _variableListButton;
         [SerializeField] private Button _startProgrammButton;
         [SerializeField] private Button _consoleButton;
@@ -47,6 +49,11 @@ namespace Session.Scheme.Windows
 
         private void Start()
         {
+            _settingsButton.onClick.AddListener(() =>
+            {
+                _windowFactory.OpenWindow(_cameraSettingsWindowPrefab);
+            });
+
             _variableListButton.onClick.AddListener(() =>
             {
                 _windowFactory.OpenWindow(_variableListWindowPrefab);
@@ -118,6 +125,8 @@ namespace Session.Scheme.Windows
             {
                 item.OnPressed -= SpawnBlockFromInventory;
             }
+
+            _settingsButton.onClick.RemoveAllListeners();
 
             _startProgrammButton.onClick.RemoveAllListeners();
 

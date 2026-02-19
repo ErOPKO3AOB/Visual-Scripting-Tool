@@ -33,17 +33,6 @@ namespace GlobalServices
         public List<OutputBlock> OutputBlocks { get; private set; } = new();
         public List<InputBlock> InputBlocks { get; private set; } = new();
 
-        public int AllMultipleInstancesBlocksCount
-        {
-            get
-            {
-                return MethodBlocks.Count +
-                    ConditionBlocks.Count +
-                    OutputBlocks.Count +
-                    InputBlocks.Count;
-            }
-        }
-
         private async Task GatherBlocks()
         {
             SchemeVariables.Clear();
@@ -136,15 +125,15 @@ namespace GlobalServices
                 if (closeBraceIndex == -1)
                     return fullCode; // закрывающа€ скобка не найдена
 
-                // ќпредел€ем отступ дл€ вставл€емого кода (как в оригинале)
+                // ќпредел€ем базовый отступ (отступ строки с '{')
                 int lineStart = fullCode.LastIndexOf('\n', openBraceIndex) + 1;
                 if (lineStart < 0) lineStart = 0;
                 string beforeBraceOnLine = fullCode.Substring(lineStart, openBraceIndex - lineStart);
                 string baseIndent = ExtractIndent(beforeBraceOnLine);
-                string extraIndent = "\t"; // или 4 пробела
+                string extraIndent = "\t"; // можно заменить на 4 пробела
 
                 // –азбиваем вставл€емый код на строки и добавл€ем отступ
-                string newLine = DetectNewLine(codeToPaste);
+                string newLine = DetectNewLine(fullCode); // используем перевод строки из исходного кода
                 string[] lines = codeToPaste.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
                 var indentedLines = new List<string>();
                 foreach (string line in lines)
@@ -156,19 +145,15 @@ namespace GlobalServices
                 }
                 string codeWithIndent = string.Join(newLine, indentedLines);
 
-                // ѕровер€ем, нужен ли перевод строки перед закрывающей скобкой
-                int lastNonSpaceBeforeClose = closeBraceIndex - 1;
-                while (lastNonSpaceBeforeClose >= 0 && (fullCode[lastNonSpaceBeforeClose] == ' ' || fullCode[lastNonSpaceBeforeClose] == '\t'))
-                    lastNonSpaceBeforeClose--;
-                bool needNewLineBeforeClose = lastNonSpaceBeforeClose < 0 || fullCode[lastNonSpaceBeforeClose] != '\n';
-
                 // ¬ставл€ем код перед закрывающей скобкой
                 string beforeInsert = fullCode.Substring(0, closeBraceIndex);
                 string afterInsert = fullCode.Substring(closeBraceIndex);
 
-                if (needNewLineBeforeClose)
+                // ƒобавл€ем перевод строки перед вставл€емым кодом, если его нет
+                if (closeBraceIndex > 0 && fullCode[closeBraceIndex - 1] != '\n' && fullCode[closeBraceIndex - 1] != '\r')
                     beforeInsert += newLine;
 
+                // —обираем результат: часть до + вставл€емый код + перевод строки + закрывающа€ скобка и всЄ после
                 string result = beforeInsert + codeWithIndent + newLine + afterInsert;
                 return result;
             }).ConfigureAwait(false);

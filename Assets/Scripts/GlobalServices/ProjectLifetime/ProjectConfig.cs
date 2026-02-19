@@ -119,7 +119,6 @@ namespace GlobalServices.ProjectLifetime
         [SerializeField] private GameObject _camPrefab;
 
         [Header("Movement")]
-        [SerializeField] private float _moveSensitivity = 1f;
         [SerializeField] private float _moveSmoothTime = 0.1f;
 
         [Header("Zoom")]
@@ -127,7 +126,6 @@ namespace GlobalServices.ProjectLifetime
         [SerializeField] private float _zoomSmoothTime = 0.1f;
         
         public GameObject CamPrefab => _camPrefab;
-        public float MoveSensitivity => _moveSensitivity;
         public float MoveSmoothTime => _moveSmoothTime;
         public float ZoomSensitivity => _zoomSensitivity;
         public float ZoomSmoothTime => _zoomSmoothTime;

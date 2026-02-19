@@ -41,8 +41,11 @@ namespace User
         private Vector3 _positionBeforeInterrupt;
         private float _zoomBeforeInterrupt;
         private bool _wasDraggingBeforeInterrupt;
-        
+
         private Vector2 _lastPointerPosition;
+
+        public float MoveSensitivityMultiplier { get; set; } = 1.0f;
+        public float ZoomSensitivityMultiplier { get; set; } = 1.0f;
 
         public void Initialize()
         {
@@ -59,20 +62,18 @@ namespace User
         {
             if (_isInterrupted) return;
 
-            // Контролируемая плавность перемещения камеры
             _facade.transform.position = Vector3.SmoothDamp(
                 _facade.transform.position,
                 _targetPosition,
                 ref _velocity,
-                _settings.MoveSmoothTime
+                _settings.MoveSmoothTime / MoveSensitivityMultiplier
             );
 
-            // Плавный зум
             _facade.Camera.orthographicSize = Mathf.SmoothDamp(
                 _facade.Camera.orthographicSize,
                 _targetZoom,
                 ref _zoomVelocity,
-                _settings.ZoomSmoothTime
+                _settings.ZoomSmoothTime / ZoomSensitivityMultiplier
             );
         }
 
@@ -134,7 +135,7 @@ namespace User
 
             if (Application.isMobilePlatform)
             {
-                zoomDelta = zoomInput.x * _settings.ZoomSensitivity * 0.1f;
+                zoomDelta = zoomInput.x * 0.1f * _settings.ZoomSensitivity;
             }
             else
             {

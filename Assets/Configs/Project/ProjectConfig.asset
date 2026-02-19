@@ -52,9 +52,9 @@ MonoBehaviour:
     - {fileID: 5196163020083046144, guid: eeef526a83f5d664e9e9d539d4ca84f5, type: 3}
     - {fileID: 4933336775592735967, guid: c61d77aafcab0a448924e3303b765627, type: 3}
     - {fileID: 6888468730971742389, guid: 330475c9cd810504fa959badd474dce2, type: 3}
+    - {fileID: 2696409870872933101, guid: 6fb68e64e6ce56142bde70984b38d429, type: 3}
   _cameraSettings:
     _camPrefab: {fileID: 5530218843876562416, guid: 1d3c82136d7828346976c8f7c37f89fa, type: 3}
-    _moveSensitivity: 6
     _moveSmoothTime: 0.1
     _zoomSensitivity: 1
     _zoomSmoothTime: 0.1

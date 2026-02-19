@@ -28,6 +28,8 @@ namespace GlobalServices.CodeGeneration
 
             await GenerateVariables();
 
+            await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", " ");
+
             IBlock current = _codeGenerationFactory.StartBlock;
             while (current.Next != null && current.Next != _codeGenerationFactory.EndBlock)
             {
@@ -80,7 +82,7 @@ namespace GlobalServices.CodeGeneration
 
         public string MakeStringActionCodeParts(ActionBlock block)
         {
-            return $"{block.Operand1.variableName} {block.OperatorType} {block.Operand2.variableName};";
+            return $"{block.Operand1.variableName} {TypeExtensions.GetFriendlyActionOperatorTypeName(block.OperatorType)} {block.Operand2.variableName};";
         }
 
         public string MakeStringConditionCodeParts(ConditionBlock block)
@@ -110,7 +112,7 @@ namespace GlobalServices.CodeGeneration
 
         public string MakeStringOutputCodeParts(OutputBlock block)
         {
-            return $"Console.Write({block.SchemeVariable.variableName});";
+            return $"Console.WriteLine({block.SchemeVariable.variableName});";
         }
         #endregion
 

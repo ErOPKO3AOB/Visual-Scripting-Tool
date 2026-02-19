@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Gen
+  m_text: C#
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -957,9 +957,9 @@ RectTransform:
   - {fileID: 3291107567208559801}
   m_Father: {fileID: 6705600924698752049}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 2117.5652, y: -75}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 99.04352, y: 75}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2108988548297166892
@@ -1818,12 +1818,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _windowName: SESSION_WINDOW
   _singleInstance: 1
+  _cameraSettingsWindowPrefab: {fileID: 2696409870872933101, guid: 6fb68e64e6ce56142bde70984b38d429, type: 3}
   _variableListWindowPrefab: {fileID: 6888468730971742389, guid: 330475c9cd810504fa959badd474dce2, type: 3}
   _consoleWindowPrefab: {fileID: 2354169089373327394, guid: 6232d2d5c49f10347a994aceee791cef, type: 3}
   _inventoryBlockItemPrefab: {fileID: 7995604321963408251, guid: 0dbdb33c1530f684ebda73768cdfcc96, type: 3}
   _codeGenerationWindowPrefab: {fileID: 2415995883651005541, guid: c2e8ab08eb76f5e41a3c574e520dc4af, type: 3}
   _inventoryItems: []
   _inventoryContent: {fileID: 6912352717961175684}
+  _settingsButton: {fileID: 5009100404768214864}
   _variableListButton: {fileID: 2029141808137308640}
   _startProgrammButton: {fileID: 8931035793174211636}
   _consoleButton: {fileID: 4289208379907290890}

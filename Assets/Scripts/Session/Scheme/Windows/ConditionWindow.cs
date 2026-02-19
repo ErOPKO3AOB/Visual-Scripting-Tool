@@ -56,7 +56,6 @@ namespace Session.Scheme.Windows
 
             RebuildUI();
 
-            Debug.Log($"OPERATION GET: {_operand1 != null} {_operatorType} {_operand2 != null}");
             _operand1 = _conditionBlock.Operand1;
             _operand2 = _conditionBlock.Operand2;
         }
