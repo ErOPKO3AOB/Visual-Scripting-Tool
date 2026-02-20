@@ -22,8 +22,8 @@ namespace Session.Scheme.Block.Types
         private IBlock _nextBlock;
 
         private VariableService.ActionOperatorType _operatorType;
-        private SchemeVariableBase _operand1;
-        private SchemeVariableBase _operand2;
+        private SchemeVariableBase _operand1 = null;
+        private SchemeVariableBase _operand2 = null;
 
         public IBlock.BlockType ConcreteType { get => IBlock.BlockType.Action; }
         public VariableService.ActionOperatorType OperatorType => _operatorType;

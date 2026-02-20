@@ -85,14 +85,6 @@ namespace Session.Scheme.Windows
 
         private void RebuildUI()
         {
-            _typeDropdown.ClearOptions();
-            _typeDropdown.AddOptions(new List<TMP_Dropdown.OptionData>() {
-                new(text: "int"),
-                new(text: "float"),
-                new(text: "string"),
-                new(text: "bool"),
-            });
-
             InitializeValuePlaceHolder(0);
 
             if (_schemeVariable != null)
@@ -100,7 +92,7 @@ namespace Session.Scheme.Windows
                 if (_schemeVariable.ValueType != null)
                 {
                     int value = _variableService.GetTypeIntegerValue(_schemeVariable.ValueType);
-                    _typeDropdown.SetValueWithoutNotify(value);
+                    _typeDropdown.value = value;
                     InitializeValuePlaceHolder(value);
                 }
 

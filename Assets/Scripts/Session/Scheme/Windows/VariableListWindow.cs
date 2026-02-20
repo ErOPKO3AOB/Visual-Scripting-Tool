@@ -107,14 +107,19 @@ namespace Session.Scheme.Windows
 
         public void RemoveVariable(VariableItem variableItem)
         {
-            SchemeVariableBase variable = _variableService.Variables.Find(v => v.variableName == variableItem.SchemeVariable.variableName);
+            // Deletes variable from variable service if it exists here
+            if (variableItem.SchemeVariable != null)
+            {
+                int variableIndex = _variableService.CheckVariableExistance(variableItem.SchemeVariable.variableName);
+                if (variableIndex > -1)
+                {
+                    SchemeVariableBase schemeVariable = _variableService.Variables[variableIndex];
+                    _variableService.RemoveVariable(schemeVariable.variableName);
+                }
+            }
 
-            if (variableItem.SchemeVariable != null && _variableService.CheckVariableExistance(variableItem.SchemeVariable.variableName) > -1)
-                _variableService.RemoveVariable(variableItem.SchemeVariable.variableName);
-
-            if (_activeVariableItems.Contains(variableItem))
-                _activeVariableItems.Remove(variableItem);
-
+            // Deletes UI variable item anyway
+            if (_activeVariableItems.Contains(variableItem)) _activeVariableItems.Remove(variableItem);
             Destroy(variableItem.gameObject);
         }
 
@@ -123,7 +128,7 @@ namespace Session.Scheme.Windows
             if (_variablePicker == null) return;
 
             int variableIndex = _variableService.CheckVariableExistance(variableName);
-            Debug.Log($"Choosed var: index {variableIndex} and var name: {variableName}");
+
             if (variableIndex > -1)
                 _variablePicker.ChooseVariable(_variableService.Variables[variableIndex]);
 

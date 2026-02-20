@@ -39,7 +39,7 @@ namespace Session.Scheme.Windows
 
         private void Start()
         {
-            _variablePicker.OnVariableChoose += OnVariableChoose;
+            _variablePicker.OnVariableChanged += OnVariableChoose;
             _closeButton.onClick.AddListener(() => { _windowService.CloseWindow(this); });
         }
 
@@ -56,7 +56,7 @@ namespace Session.Scheme.Windows
 
         private void OnDestroy()
         {
-            _variablePicker.OnVariableChoose -= OnVariableChoose;
+            _variablePicker.OnVariableChanged -= OnVariableChoose;
             _closeButton.onClick.RemoveAllListeners();
         }
     }

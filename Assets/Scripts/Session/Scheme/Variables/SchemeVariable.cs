@@ -17,15 +17,12 @@ namespace Session.Scheme.Variables
         public override void SetValue(object value)
         {
             ValueSetProcess(value);
-            Debug.Log("VALUE SETTING");
         }
 
         public override void SetStartValue(object value)
         {
             ValueSetProcess(value, true);
             ValueSetProcess(value);
-
-            Debug.Log("START VALUE SETTING");
         }
 
         private void ValueSetProcess(object value, bool startValue = false)

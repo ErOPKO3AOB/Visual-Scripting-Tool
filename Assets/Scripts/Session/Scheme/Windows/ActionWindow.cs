@@ -21,9 +21,9 @@ namespace Session.Scheme.Windows
         [SerializeField] private OperationItem _operationItem;
         [SerializeField] private VariablePickerItem _varPicker2;
 
-        private SchemeVariableBase _operand1;
         private VariableService.ActionOperatorType _operatorType;
-        private SchemeVariableBase _operand2;
+        private SchemeVariableBase _operand1 = null;
+        private SchemeVariableBase _operand2 = null;
 
         private WindowFactory _windowService;
         private ActionBlock _methodBlock;
@@ -33,7 +33,6 @@ namespace Session.Scheme.Windows
             try
             {
                 _methodBlock = (ActionBlock)sender;
-                RebuildUI();
             }
 
             catch (Exception e)
@@ -50,19 +49,23 @@ namespace Session.Scheme.Windows
                 SendOperationToMethodBlock();
             });
 
-            _varPicker1.OnVariableChoose += OnOperand1Choosed;
+            _varPicker1.OnVariableChanged += OnOperand1Choosed;
             _operationItem.OnOperationTypeChoosed += OnOperationTypeChoosed;
-            _varPicker2.OnVariableChoose += OnOperand2Choosed;
+            _varPicker2.OnVariableChanged += OnOperand2Choosed;
+
+            RebuildUI();
+
+            _operand1 = _methodBlock.Operand1;
+            _operand2 = _methodBlock.Operand2;
         }
 
         private void RebuildUI()
         {
             _operationItem.OperatorType = OperationItem.OperationType.Method;
             _operationItem.OperationDropDown.value = (int)_methodBlock.OperatorType;
-            if (_methodBlock.Operand1 != null)
-                _varPicker1.ChooseVariable(_methodBlock.Operand1);
-            if (_methodBlock.Operand2 != null)
-                _varPicker2.ChooseVariable(_methodBlock.Operand2);
+
+            _varPicker1.ChooseVariable(_methodBlock.Operand1);
+            _varPicker2.ChooseVariable(_methodBlock.Operand2);
         }
 
         private void OnOperand1Choosed(SchemeVariableBase variable)
@@ -89,9 +92,9 @@ namespace Session.Scheme.Windows
         {
             _closeButton.onClick.RemoveAllListeners();
 
-            _varPicker1.OnVariableChoose -= OnOperand1Choosed;
+            _varPicker1.OnVariableChanged -= OnOperand1Choosed;
             _operationItem.OnOperationTypeChoosed -= OnOperationTypeChoosed;
-            _varPicker2.OnVariableChoose -= OnOperand2Choosed;
+            _varPicker2.OnVariableChanged -= OnOperand2Choosed;
         }
     }
 }

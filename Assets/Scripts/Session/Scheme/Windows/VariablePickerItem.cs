@@ -18,8 +18,7 @@ namespace Session.Scheme.Variables
 
         private WindowFactory _windowService;
 
-        public UnityAction<SchemeVariableBase> OnVariableChoose;
-        public UnityAction<SchemeVariableBase> OnVariableDelete;
+        public UnityAction<SchemeVariableBase> OnVariableChanged;
 
         public ChoosedVariableItem VariableItem { get; private set; }
 
@@ -49,16 +48,16 @@ namespace Session.Scheme.Variables
             VariableItem = variableItem;
             _addNewButton.gameObject.SetActive(false);
 
-            OnVariableChoose?.Invoke(variable);
+            OnVariableChanged?.Invoke(variable);
         }
 
         public void DeleteVariable()
         {
-            OnVariableDelete?.Invoke(VariableItem.SchemeVariable);
             Destroy(VariableItem.gameObject);
             VariableItem = null;
 
             _addNewButton.gameObject.SetActive(true);
+            OnVariableChanged?.Invoke(null);
         }
 
         private void OnDestroy()

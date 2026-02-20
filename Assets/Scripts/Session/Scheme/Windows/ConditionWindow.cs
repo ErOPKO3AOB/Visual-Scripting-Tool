@@ -24,10 +24,9 @@ namespace Session.Scheme.Windows
         [SerializeField] private OperationItem _operationItem;
         [SerializeField] private VariablePickerItem _varPicker2;
 
-        private SchemeVariableBase _operand1;
         private VariableService.ConditionOperatorType _operatorType;
-        private SchemeVariableBase _operand2;
-
+        private SchemeVariableBase _operand1 = null;
+        private SchemeVariableBase _operand2 = null;
 
         public override void SetSender(object sender)
         {
@@ -50,9 +49,9 @@ namespace Session.Scheme.Windows
                 SendOperationToConditionBlock();
             });
 
-            _varPicker1.OnVariableChoose += OnOperand1Choosed;
+            _varPicker1.OnVariableChanged += OnOperand1Choosed;
             _operationItem.OnOperationTypeChoosed += OnOperationTypeChoosed;
-            _varPicker2.OnVariableChoose += OnOperand2Choosed;
+            _varPicker2.OnVariableChanged += OnOperand2Choosed;
 
             RebuildUI();
 
@@ -64,10 +63,8 @@ namespace Session.Scheme.Windows
         {
             _operationItem.OperatorType = OperationItem.OperationType.Condition;
             _operationItem.OperationDropDown.value = (int)_conditionBlock.OperatorType;
-            if (_conditionBlock.Operand1 != null)
-                _varPicker1.ChooseVariable(_conditionBlock.Operand1);
-            if (_conditionBlock.Operand2 != null)
-                _varPicker2.ChooseVariable(_conditionBlock.Operand2);
+            _varPicker1.ChooseVariable(_conditionBlock.Operand1);
+            _varPicker2.ChooseVariable(_conditionBlock.Operand2);
         }
 
         private void OnOperand1Choosed(SchemeVariableBase variable)
@@ -94,9 +91,9 @@ namespace Session.Scheme.Windows
         {
             _closeButton.onClick.RemoveAllListeners();
 
-            _varPicker1.OnVariableChoose -= OnOperand1Choosed;
+            _varPicker1.OnVariableChanged -= OnOperand1Choosed;
             _operationItem.OnOperationTypeChoosed -= OnOperationTypeChoosed;
-            _varPicker2.OnVariableChoose -= OnOperand2Choosed;
+            _varPicker2.OnVariableChanged -= OnOperand2Choosed;
         }
     }
 }

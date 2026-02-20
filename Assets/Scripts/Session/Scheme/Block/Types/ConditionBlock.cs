@@ -17,9 +17,9 @@ namespace Session.Scheme.Block.Types
         public SchemeBlockFacade Facade => _facade;
         private readonly VariableService _variableService;
 
-        private SchemeVariableBase _operand1;
         private VariableService.ConditionOperatorType _conditionalOperatorType;
-        private SchemeVariableBase _operand2;
+        private SchemeVariableBase _operand1 = null;
+        private SchemeVariableBase _operand2 = null;
 
         private IBlock _trueOutput;
         private IBlock _falseOutput;

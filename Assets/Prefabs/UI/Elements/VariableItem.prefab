@@ -132,7 +132,7 @@ MonoBehaviour:
     m_Options:
     - m_Text: Int
       m_Image: {fileID: 0}
-      m_Color: {r: 1, g: 1, b: 1, a: 1}
+      m_Color: {r: 0.41760844, g: 0.7660377, b: 0.18934138, a: 1}
     - m_Text: Float
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2622,6 +2622,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _windowName: VARIABLE_ITEM
+  _singleInstance: 0
   _nameInputField: {fileID: 925869315941659047}
   _typeDropdown: {fileID: 7264220554945839452}
   _valueInputField: {fileID: 4268680724530421096}
