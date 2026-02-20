@@ -2,20 +2,18 @@ using Extensions;
 using Session.Scheme.Block;
 using Session.Scheme.Block.Types;
 using Session.Scheme.Variables;
-using System;
 using System.Threading.Tasks;
-using UnityEngine;
 
 namespace GlobalServices.CodeGeneration
 {
-    public sealed class CysharpCodeGenerator : ICodeGenerator
+    public sealed class CsharpCodeGenerator : ICodeGenerator
     {
-        public CysharpCodeGenerator(CodeGenerationFactory codeGenerationFactory)
+        public CsharpCodeGenerator(CodeGenerationFactory codeGenerationFactory)
         {
-            _codeGenerationFactory = codeGenerationFactory;
+            _factory = codeGenerationFactory;
         }
 
-        private readonly CodeGenerationFactory _codeGenerationFactory;
+        private readonly CodeGenerationFactory _factory;
 
         private const string START_PROGRAMM_TEXT =
             "class Program\r\n{\r\n    static void Main(string[] args)\r\n    {\r\n        \r\n    }\r\n}";
@@ -28,27 +26,14 @@ namespace GlobalServices.CodeGeneration
 
             await GenerateVariables();
 
-            await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", " ");
+            await _factory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", " ");
 
-            IBlock current = _codeGenerationFactory.StartBlock;
-            while (current.Next != null && current.Next != _codeGenerationFactory.EndBlock)
+            IBlock currentBlock = _factory.StartBlock;
+            while (currentBlock.Next != _factory.EndBlock)
             {
-                current = (IBlock)current.Next;
-                switch (current.ConcreteType)
-                {
-                    case IBlock.BlockType.Action:
-                        _programmCode = await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", MakeStringActionCodeParts((ActionBlock)current));
-                        break;
-                    case IBlock.BlockType.Output:
-                        _programmCode = await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", MakeStringOutputCodeParts((OutputBlock)current));
-                        break;
-                    case IBlock.BlockType.Input:
-                        _programmCode = await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", MakeStringInputCodeParts((InputBlock)current));
-                        break;
-                    case IBlock.BlockType.Condition:
-                        // обработать условие 
-                        break;
-                }
+                _programmCode = await FindBlockTypeAndPasteCode(currentBlock, _programmCode, "static void Main(string[] args)");
+                currentBlock = (IBlock)currentBlock.Next;
+
                 await Task.Delay(10);
             }
 
@@ -85,20 +70,34 @@ namespace GlobalServices.CodeGeneration
             return $"{block.Operand1.variableName} {TypeExtensions.GetFriendlyActionOperatorTypeName(block.OperatorType)} {block.Operand2.variableName};";
         }
 
-        public string MakeStringConditionCodeParts(ConditionBlock block)
+        public async Task<string> MakeStringConditionCodeParts(ConditionBlock block)
         {
-            return $"if ({block.Operand1.variableName} {block.OperatorType} {block.Operand2.variableName}))" +
+            string ifCodeBody = $"if ({block.Operand1.variableName} {TypeExtensions.GetFriendlyConditionOperatorTypeName(block.OperatorType)} {block.Operand2.variableName}))";
+            string elseCodeBody = "else";
+            string code = ifCodeBody +
                 "\n{" +
                 "\n" +
                 "\n}" +
                 "\n" +
-                "\nelse" +
+                "\n" + elseCodeBody +
                 "\n{" +
                 "\n" +
                 "\n}";
+
+            block.CurrentOutputIndex = 1;
+            code = await _factory.PasteCodeIntoBody(code,
+                ifCodeBody, 
+                await FindBlockTypeAndPasteCode((IBlock)block.Next, code, ifCodeBody));
+
+            block.CurrentOutputIndex = 0;
+            code = await _factory.PasteCodeIntoBody(code,
+                elseCodeBody,
+                await FindBlockTypeAndPasteCode((IBlock)block.Next, code, elseCodeBody));
+
+            return code;
         }
 
-        public string MakeStringInputCodeParts(InputBlock block)
+        public async Task<string> MakeStringInputCodeParts(InputBlock block)
         {
             string code;
 
@@ -107,6 +106,8 @@ namespace GlobalServices.CodeGeneration
             else
                 code = $"{TypeExtensions.GetFriendlyTypeName(block.SchemeVariable.ValueType)}.TryParse(Console.ReadLine(), out {block.SchemeVariable.variableName});";
 
+            await Task.Delay(5);
+            
             return code;
         }
 
@@ -119,10 +120,31 @@ namespace GlobalServices.CodeGeneration
         #region Algorythm Generation
         public async Task GenerateVariables()
         {
-            foreach (var variable in _codeGenerationFactory.SchemeVariables)
+            foreach (var variable in _factory.SchemeVariables)
             {
-                _programmCode = await _codeGenerationFactory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", MakeStringInitializedVariable(variable));
+                _programmCode = await _factory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", MakeStringInitializedVariable(variable));
             }
+        }
+
+        public async Task<string> FindBlockTypeAndPasteCode(IBlock nextBlock, string fullCode, string codeBody)
+        {
+            switch (nextBlock.ConcreteType)
+            {
+                case IBlock.BlockType.Action:
+                    fullCode = await _factory.PasteCodeIntoBody(fullCode, codeBody, MakeStringActionCodeParts((ActionBlock)nextBlock));
+                    break;
+                case IBlock.BlockType.Output:
+                    fullCode = await _factory.PasteCodeIntoBody(fullCode, codeBody, MakeStringOutputCodeParts((OutputBlock)nextBlock));
+                    break;
+                case IBlock.BlockType.Input:
+                    fullCode = await _factory.PasteCodeIntoBody(fullCode, codeBody, await MakeStringInputCodeParts((InputBlock)nextBlock));
+                    break;
+                case IBlock.BlockType.Condition:
+                    fullCode = await _factory.PasteCodeIntoBody(fullCode, codeBody, await MakeStringConditionCodeParts((ConditionBlock)nextBlock));
+                    break;
+            }
+
+            return fullCode;
         }
         #endregion
     }

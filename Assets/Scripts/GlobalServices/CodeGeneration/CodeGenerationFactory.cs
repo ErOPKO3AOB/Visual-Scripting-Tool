@@ -83,7 +83,7 @@ namespace GlobalServices
 
             string code = string.Empty;
 
-            ICodeGenerator codeGenerator = new CysharpCodeGenerator(this);
+            ICodeGenerator codeGenerator = new CsharpCodeGenerator(this);
             code = await codeGenerator.Generate();
 
             return code;
