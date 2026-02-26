@@ -78,9 +78,6 @@ namespace GlobalServices
         {
             await GatherBlocks();
 
-            if (StartBlock == null || EndBlock == null || MethodBlocks == null || ConditionBlocks == null || OutputBlocks == null || InputBlocks == null)
-                throw new NullReferenceException("Some of important blocks are missing!");
-
             string code = string.Empty;
 
             ICodeGenerator codeGenerator = new CsharpCodeGenerator(this);
@@ -101,7 +98,7 @@ namespace GlobalServices
         {
             return await Task.Run(() =>
             {
-                // Ищем открывающую скобку тела
+                // Поиск открывающей скобки тела
                 string pattern = $@"{Regex.Escape(bodyName)}\s*{{";
                 var match = Regex.Match(fullCode, pattern);
                 if (!match.Success)
@@ -109,7 +106,7 @@ namespace GlobalServices
 
                 int openBraceIndex = match.Index + match.Value.Length - 1; // позиция '{'
 
-                // Находим парную закрывающую скобку (с учётом вложенности)
+                // Поиск парной закрывающей скобки с учётом вложенности
                 int depth = 1;
                 int closeBraceIndex = -1;
                 for (int i = openBraceIndex + 1; i < fullCode.Length; i++)
@@ -123,17 +120,17 @@ namespace GlobalServices
                     }
                 }
                 if (closeBraceIndex == -1)
-                    return fullCode; // закрывающая скобка не найдена
+                    return fullCode; // не найдена закрывающая скобка
 
-                // Определяем базовый отступ (отступ строки с '{')
+                // Определение базового отступа (отступ строки с '{')
                 int lineStart = fullCode.LastIndexOf('\n', openBraceIndex) + 1;
                 if (lineStart < 0) lineStart = 0;
                 string beforeBraceOnLine = fullCode.Substring(lineStart, openBraceIndex - lineStart);
                 string baseIndent = ExtractIndent(beforeBraceOnLine);
-                string extraIndent = "\t"; // можно заменить на 4 пробела
+                string extraIndent = "\t"; // или 4 пробела
 
-                // Разбиваем вставляемый код на строки и добавляем отступ
-                string newLine = DetectNewLine(fullCode); // используем перевод строки из исходного кода
+                // Добавление отступа к каждой строке вставляемого кода
+                string newLine = DetectNewLine(fullCode);
                 string[] lines = codeToPaste.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
                 var indentedLines = new List<string>();
                 foreach (string line in lines)
@@ -145,17 +142,15 @@ namespace GlobalServices
                 }
                 string codeWithIndent = string.Join(newLine, indentedLines);
 
-                // Вставляем код перед закрывающей скобкой
+                // Вставка перед закрывающей скобкой
                 string beforeInsert = fullCode.Substring(0, closeBraceIndex);
                 string afterInsert = fullCode.Substring(closeBraceIndex);
 
-                // Добавляем перевод строки перед вставляемым кодом, если его нет
+                // Гарантируем перевод строки перед вставляемым кодом, если его нет
                 if (closeBraceIndex > 0 && fullCode[closeBraceIndex - 1] != '\n' && fullCode[closeBraceIndex - 1] != '\r')
                     beforeInsert += newLine;
 
-                // Собираем результат: часть до + вставляемый код + перевод строки + закрывающая скобка и всё после
-                string result = beforeInsert + codeWithIndent + newLine + afterInsert;
-                return result;
+                return beforeInsert + codeWithIndent + newLine + afterInsert;
             }).ConfigureAwait(false);
         }
 
@@ -179,15 +174,6 @@ namespace GlobalServices
             if (text.Contains("\n"))
                 return "\n";
             return Environment.NewLine;
-        }
-
-        private bool HasNewLineAt(string text, int index, string newLine)
-        {
-            if (index >= text.Length) return false;
-            if (newLine == "\r\n")
-                return index + 1 < text.Length && text[index] == '\r' && text[index + 1] == '\n';
-            else // "\n"
-                return text[index] == '\n';
         }
     }
 }

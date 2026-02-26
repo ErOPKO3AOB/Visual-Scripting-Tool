@@ -2,6 +2,7 @@ using Extensions;
 using Session.Scheme.Block;
 using Session.Scheme.Block.Types;
 using Session.Scheme.Variables;
+using System;
 using System.Threading.Tasks;
 
 namespace GlobalServices.CodeGeneration
@@ -16,7 +17,7 @@ namespace GlobalServices.CodeGeneration
         private readonly CodeGenerationFactory _factory;
 
         private const string START_PROGRAMM_TEXT =
-            "class Program\r\n{\r\n    static void Main(string[] args)\r\n    {\r\n        \r\n    }\r\n}";
+            "class Program\r\n{\r\n    static void Main(string[] args)\r\n    {\r\n    }\r\n}";
 
         private string _programmCode;
 
@@ -24,20 +25,74 @@ namespace GlobalServices.CodeGeneration
         {
             _programmCode = START_PROGRAMM_TEXT;
 
+            // Генерация переменных (вставляются в Main)
             await GenerateVariables();
 
-            await _factory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", " ");
+            // Запуск рекурсивной генерации с корневого блока (Start) и целевого тела Main
+            await ProcessBlock((IBlock)_factory.StartBlock.Next, "static void Main(string[] args)");
 
-            IBlock currentBlock = _factory.StartBlock;
-            while (currentBlock.Next != _factory.EndBlock)
+            return _programmCode;
+        }
+
+        /// <summary>
+        /// Рекурсивно обрабатывает блоки, начиная с current, вставляя код в тело с именем targetBodyName.
+        /// </summary>
+        private async Task ProcessBlock(IBlock current, string targetBodyName)
+        {
+            while (current != null && current != _factory.EndBlock)
             {
-                _programmCode = await FindBlockTypeAndPasteCode(currentBlock, _programmCode, "static void Main(string[] args)");
-                currentBlock = (IBlock)currentBlock.Next;
+                switch (current.ConcreteType)
+                {
+                    case IBlock.BlockType.Action:
+                        _programmCode = await _factory.PasteCodeIntoBody(_programmCode, targetBodyName,
+                            MakeStringActionCodeParts((ActionBlock)current));
+                        current = (IBlock)current.Next;
+                        break;
+
+                    case IBlock.BlockType.Output:
+                        _programmCode = await _factory.PasteCodeIntoBody(_programmCode, targetBodyName,
+                            MakeStringOutputCodeParts((OutputBlock)current));
+                        current = (IBlock)current.Next;
+                        break;
+
+                    case IBlock.BlockType.Input:
+                        _programmCode = await _factory.PasteCodeIntoBody(_programmCode, targetBodyName,
+                            await MakeStringInputCodeParts((InputBlock)current));
+                        current = (IBlock)current.Next;
+                        break;
+
+                    case IBlock.BlockType.Condition:
+                        var cond = (ConditionBlock)current;
+
+                        // Сохраняем блок, который идёт после условия (merge)
+                        IBlock afterCondition = (IBlock)cond.Next; // важно: до изменения CurrentOutputIndex!
+
+                        string ifHeader = $"if ({cond.Operand1.variableName} {TypeExtensions.GetFriendlyConditionOperatorTypeName(cond.OperatorType)} {cond.Operand2.variableName})";
+                        string elseHeader = "else";
+
+                        // Скелет без лишних пустых строк
+                        string ifElseSkeleton = ifHeader + "\n{\n}\n" + elseHeader + "\n{\n}";
+                        _programmCode = await _factory.PasteCodeIntoBody(_programmCode, targetBodyName, ifElseSkeleton);
+
+                        // Обрабатываем then-ветку (индекс 0)
+                        cond.CurrentOutputIndex = 0;
+                        IBlock thenBranch = (IBlock)cond.Next;
+                        if (thenBranch != null && thenBranch != _factory.EndBlock)
+                            await ProcessBlock(thenBranch, ifHeader);
+
+                        // Обрабатываем else-ветку (индекс 1)
+                        cond.CurrentOutputIndex = 1;
+                        IBlock elseBranch = (IBlock)cond.Next;
+                        if (elseBranch != null && elseBranch != _factory.EndBlock)
+                            await ProcessBlock(elseBranch, elseHeader);
+
+                        // Переходим к блоку после условия
+                        current = afterCondition;
+                        break;
+                }
 
                 await Task.Delay(10);
             }
-
-            return _programmCode;
         }
 
         #region String Generation
@@ -72,27 +127,23 @@ namespace GlobalServices.CodeGeneration
 
         public async Task<string> MakeStringConditionCodeParts(ConditionBlock block)
         {
-            string ifCodeBody = $"if ({block.Operand1.variableName} {TypeExtensions.GetFriendlyConditionOperatorTypeName(block.OperatorType)} {block.Operand2.variableName}))";
-            string elseCodeBody = "else";
-            string code = ifCodeBody +
-                "\n{" +
-                "\n" +
-                "\n}" +
-                "\n" +
-                "\n" + elseCodeBody +
-                "\n{" +
-                "\n" +
-                "\n}";
+            string ifHeader = $"if ({block.Operand1.variableName} {TypeExtensions.GetFriendlyConditionOperatorTypeName(block.OperatorType)} {block.Operand2.variableName})";
+            string elseHeader = "else";
 
+            // Скелет без лишних переводов строк внутри блоков
+            string skeleton = ifHeader + "\n{}\n" + elseHeader + "\n{}";
+
+            string code = skeleton;
+
+            // Генерация then-ветки (индекс 1)
             block.CurrentOutputIndex = 1;
-            code = await _factory.PasteCodeIntoBody(code,
-                ifCodeBody, 
-                await FindBlockTypeAndPasteCode((IBlock)block.Next, code, ifCodeBody));
+            code = await _factory.PasteCodeIntoBody(code, ifHeader,
+                await FindBlockTypeAndPasteCode((IBlock)block.Next, code, ifHeader));
 
+            // Генерация else-ветки (индекс 0)
             block.CurrentOutputIndex = 0;
-            code = await _factory.PasteCodeIntoBody(code,
-                elseCodeBody,
-                await FindBlockTypeAndPasteCode((IBlock)block.Next, code, elseCodeBody));
+            code = await _factory.PasteCodeIntoBody(code, elseHeader,
+                await FindBlockTypeAndPasteCode((IBlock)block.Next, code, elseHeader));
 
             return code;
         }
@@ -107,7 +158,7 @@ namespace GlobalServices.CodeGeneration
                 code = $"{TypeExtensions.GetFriendlyTypeName(block.SchemeVariable.ValueType)}.TryParse(Console.ReadLine(), out {block.SchemeVariable.variableName});";
 
             await Task.Delay(5);
-            
+
             return code;
         }
 

@@ -4,7 +4,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Session.Scheme.Windows
 {
@@ -36,25 +35,14 @@ namespace Session.Scheme.Windows
         {
             _closeButton.interactable = false;
             _outputText.text = "Генерация в процессе...";
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_content);
+
             string code = await _codeGenerationFactory.GenerateCode();
 
             _outputText.text = code;
-            _outputText.ForceMeshUpdate(true, true);
-            Canvas.ForceUpdateCanvases();
 
-            float newHeight = Mathf.Max(_outputText.preferredHeight, 1);
-
-            _outputText.rectTransform.rect.Set(
-                _outputText.rectTransform.rect.x,
-                _outputText.rectTransform.rect.y,
-                _outputText.rectTransform.rect.width,
-                newHeight);
-
-            _content.rect.Set(
-                _content.rect.x,
-                _content.rect.y,
-                _content.rect.width,
-                newHeight);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_content);
 
             _closeButton.interactable = true;
         }
