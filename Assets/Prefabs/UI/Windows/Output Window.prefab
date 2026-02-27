@@ -805,7 +805,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _windowName: OUTPUT_WINDOW
-  _singleInstance: 1
+  _multipleInstance: 0
   _closeButton: {fileID: 4920952843414628680}
   _variablePicker: {fileID: 7059308364656805393}
 --- !u!1001 &1125765904257948553
@@ -834,7 +834,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2424261569769455841, guid: 8330f748990d7054fa434e1c8b8cf73f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.00014712547
+      value: 30.000004
       objectReference: {fileID: 0}
     - target: {fileID: 2654769168721492920, guid: 8330f748990d7054fa434e1c8b8cf73f, type: 3}
       propertyPath: m_Pivot.x
@@ -862,7 +862,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2654769168721492920, guid: 8330f748990d7054fa434e1c8b8cf73f, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -1200
+      value: -400
       objectReference: {fileID: 0}
     - target: {fileID: 2654769168721492920, guid: 8330f748990d7054fa434e1c8b8cf73f, type: 3}
       propertyPath: m_SizeDelta.y
@@ -986,11 +986,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8463837741591595064, guid: 8330f748990d7054fa434e1c8b8cf73f, type: 3}
       propertyPath: m_Size
-      value: 0.999992
+      value: 0.9769763
       objectReference: {fileID: 0}
     - target: {fileID: 8463837741591595064, guid: 8330f748990d7054fa434e1c8b8cf73f, type: 3}
       propertyPath: m_Value
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9173713633993806773, guid: 8330f748990d7054fa434e1c8b8cf73f, type: 3}
       propertyPath: m_AnchorMax.x

@@ -23,12 +23,14 @@ namespace Session.Scheme.Windows
         [SerializeField] private RectTransform _content;
         [SerializeField] private Button _closeButton;
         [SerializeField] private Button _generateCodeButton;
+        [SerializeField] private Button _copyCodeButton;
         [SerializeField] private TMP_Text _outputText;
 
         private void Start()
         {
             _closeButton.onClick.AddListener(() => { _windowFactory.CloseWindow(this); });
             _generateCodeButton.onClick.AddListener(async () => { await GenerateCode(); });
+            //_copyCodeButton.onClick.AddListener();
         }
 
         private async Task GenerateCode()
@@ -53,6 +55,7 @@ namespace Session.Scheme.Windows
         {
             _closeButton.onClick.RemoveAllListeners();
             _generateCodeButton.onClick.RemoveAllListeners();
+            _copyCodeButton.onClick.RemoveAllListeners();
         }
     }
 }

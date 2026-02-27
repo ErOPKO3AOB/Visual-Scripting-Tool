@@ -1,3 +1,4 @@
+using Extensions;
 using Session.Scheme.Variables;
 using TMPro;
 using UnityEngine;
@@ -20,7 +21,7 @@ namespace Session.Scheme.Windows
 
             _deleteButton.onClick.AddListener(() => { variablePickerUI.DeleteVariable(); });
 
-            _typeText.text = SchemeVariable.ValueType.ToString();
+            _typeText.text = TypeExtensions.GetFriendlyTypeName(SchemeVariable.ValueType);
             _nameText.text = SchemeVariable.variableName.ToString();
         }
 
