@@ -135,6 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _windowName: INVENTORY_BLOCK_ITEM
+  _multipleInstance: 1
   _button: {fileID: 8598793425563567141}
   _label: {fileID: 1727338117278931684}
   _image: {fileID: 865020465990855187}

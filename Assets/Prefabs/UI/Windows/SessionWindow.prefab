@@ -1697,7 +1697,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _windowName: DOWN_MENU_ITEM
-  _singleInstance: 0
+  _multipleInstance: 0
 --- !u!1 &8785610740894825135
 GameObject:
   m_ObjectHideFlags: 0
@@ -1817,7 +1817,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _windowName: SESSION_WINDOW
-  _singleInstance: 1
+  _multipleInstance: 1
   _cameraSettingsWindowPrefab: {fileID: 2696409870872933101, guid: 6fb68e64e6ce56142bde70984b38d429, type: 3}
   _variableListWindowPrefab: {fileID: 6888468730971742389, guid: 330475c9cd810504fa959badd474dce2, type: 3}
   _consoleWindowPrefab: {fileID: 2354169089373327394, guid: 6232d2d5c49f10347a994aceee791cef, type: 3}

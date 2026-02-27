@@ -53,7 +53,7 @@ namespace Session.Scheme.Block.Types
 
         public bool CheckForCorrectValues()
         {
-            return (Next == null || _nextBlock.CheckForCorrectValues());
+            return _schemeVariable != null && (Next == null || _nextBlock.CheckForCorrectValues());
         }
 
 

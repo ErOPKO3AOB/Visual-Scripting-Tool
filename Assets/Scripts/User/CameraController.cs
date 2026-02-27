@@ -11,19 +11,19 @@ namespace User
     public class CameraController : IInitializable, ITickable, IDisposable, IPostInitializable
     {
         [Inject]
-        public CameraController(CameraControllerFacade facade, CameraSettings settings, InputService inputService, WorldUIControllerService draggableObjectController, WindowFactory windowService)
+        public CameraController(CameraControllerFacade facade, CameraSettings settings, InputService inputService, WorldUIControllerService worldUIControllerService, WindowFactory windowService)
         {
             _facade = facade;
             _settings = settings;
             _inputService = inputService;
-            _draggableObjectController = draggableObjectController;
+            _worldUIControllerService = worldUIControllerService;
             _windowService = windowService;
         }
 
         private readonly CameraControllerFacade _facade;
         private readonly CameraSettings _settings;
         private readonly InputService _inputService;
-        private readonly WorldUIControllerService _draggableObjectController;
+        private readonly WorldUIControllerService _worldUIControllerService;
         private readonly WindowFactory _windowService;
 
         private bool _canDragCamera;
@@ -47,6 +47,8 @@ namespace User
         public float MoveSensitivityMultiplier { get; set; } = 1.0f;
         public float ZoomSensitivityMultiplier { get; set; } = 1.0f;
 
+        public bool CanDragCamera { get { return _canDragCamera; } set { _canDragCamera = value; } }
+
         public void Initialize()
         {
             _targetPosition = _facade.transform.position;
@@ -56,6 +58,8 @@ namespace User
             _inputService.OnDragDelta += HandleDragDelta;
             _inputService.OnZoom += HandleMouseZoom;
             _inputService.OnPointerPosition += OnPointerPosition;
+
+            _worldUIControllerService.CameraController = this;
         }
 
         public void Tick()
@@ -176,14 +180,14 @@ namespace User
             _inputService.OnZoom -= HandleMouseZoom;
             _inputService.OnPointerPosition -= OnPointerPosition;
 
-            _draggableObjectController.OnInteractCallback -= Interrupt;
-            _draggableObjectController.OnStopInteractCallback -= StopInterruption;
+            _worldUIControllerService.OnInteractCallback -= Interrupt;
+            _worldUIControllerService.OnStopInteractCallback -= StopInterruption;
         }
 
         public void PostInitialize()
         {
-            _draggableObjectController.OnInteractCallback += Interrupt;
-            _draggableObjectController.OnStopInteractCallback += StopInterruption;
+            _worldUIControllerService.OnInteractCallback += Interrupt;
+            _worldUIControllerService.OnStopInteractCallback += StopInterruption;
         }
     }
 }

@@ -28,8 +28,6 @@ namespace Session.Scheme.Block.Types
 
         public bool CheckForCorrectRelationships()
         {
-            //Debug.Log($"{Facade.BlockName} => {Next}");
-
             return true;
         }
 

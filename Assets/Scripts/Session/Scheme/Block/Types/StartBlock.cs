@@ -30,14 +30,12 @@ namespace Session.Scheme.Block.Types
 
         public bool CheckForCorrectRelationships()
         {
-            //Debug.Log($"{Facade.BlockName} => {Next}");
-
             return Next != null && _nextBlock.CheckForCorrectRelationships();
         }
 
         public bool CheckForCorrectValues()
         {
-            return (Next == null || _nextBlock.CheckForCorrectValues());
+            return Next == null || _nextBlock.CheckForCorrectValues();
         }
 
         public void Dispose()

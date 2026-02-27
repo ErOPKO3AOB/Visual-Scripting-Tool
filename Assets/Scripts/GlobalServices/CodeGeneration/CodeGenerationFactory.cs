@@ -1,25 +1,30 @@
 using GlobalServices.CodeGeneration;
+using Session.Scheme;
 using Session.Scheme.Block;
 using Session.Scheme.Block.Types;
 using Session.Scheme.Variables;
+using Session.Scheme.Windows;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace GlobalServices
 {
     public class CodeGenerationFactory
     {
-        public CodeGenerationFactory(VariableService variableService, SchemeBlockFactory schemeBlockFactory)
+        public CodeGenerationFactory(VariableService variableService, SchemeBlockFactory schemeBlockFactory, SchemeConsoleService consoleService)
         {
             _variableService = variableService;
             _schemeBlockFactory = schemeBlockFactory;
+            _consoleService = consoleService;
         }
 
         private readonly VariableService _variableService;
         private readonly SchemeBlockFactory _schemeBlockFactory;
+        private readonly SchemeConsoleService _consoleService;
 
         public const int SMALL_OPERATION_DELAY_MS = 20;
         public const int MEDIUM_OPERATION_DELAY_MS = 100;
@@ -35,7 +40,6 @@ namespace GlobalServices
 
         private async Task GatherBlocks()
         {
-            SchemeVariables.Clear();
             SchemeVariables = _variableService.Variables;
             await Task.Delay(SMALL_OPERATION_DELAY_MS);
 
@@ -70,18 +74,14 @@ namespace GlobalServices
             for (int i = 0; i < inputBlocks.Count; i++)
                 InputBlocks.Add((InputBlock)inputBlocks[i]);
             await Task.Delay(MEDIUM_OPERATION_DELAY_MS);
-
-            await Task.CompletedTask;
         }
 
         public async Task<string> GenerateCode(/*ICodeGenerator codeGenerator*/)
         {
             await GatherBlocks();
 
-            string code = string.Empty;
-
             ICodeGenerator codeGenerator = new CsharpCodeGenerator(this);
-            code = await codeGenerator.Generate();
+            string code = await codeGenerator.Generate();
 
             return code;
         }
@@ -121,7 +121,7 @@ namespace GlobalServices
                 }
                 if (closeBraceIndex == -1)
                     return fullCode; // не найдена закрывающа€ скобка
-
+                
                 // ќпределение базового отступа (отступ строки с '{')
                 int lineStart = fullCode.LastIndexOf('\n', openBraceIndex) + 1;
                 if (lineStart < 0) lineStart = 0;
@@ -149,6 +149,11 @@ namespace GlobalServices
                 // √арантируем перевод строки перед вставл€емым кодом, если его нет
                 if (closeBraceIndex > 0 && fullCode[closeBraceIndex - 1] != '\n' && fullCode[closeBraceIndex - 1] != '\r')
                     beforeInsert += newLine;
+
+                //Debug.Log(beforeInsert);
+                //Debug.Log(codeWithIndent);
+                //Debug.Log(newLine);
+                //Debug.Log(afterInsert);
 
                 return beforeInsert + codeWithIndent + newLine + afterInsert;
             }).ConfigureAwait(false);

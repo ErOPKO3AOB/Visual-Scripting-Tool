@@ -124,22 +124,22 @@ MonoBehaviour:
   m_CaptionText: {fileID: 921273228324458276}
   m_CaptionImage: {fileID: 0}
   m_Placeholder: {fileID: 0}
-  m_ItemText: {fileID: 0}
+  m_ItemText: {fileID: 5067006351267595018}
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_MultiSelect: 0
   m_Options:
     m_Options:
-    - m_Text: Int
-      m_Image: {fileID: 0}
-      m_Color: {r: 0.41760844, g: 0.7660377, b: 0.18934138, a: 1}
-    - m_Text: Float
+    - m_Text: int
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: String
+    - m_Text: float
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: Bool
+    - m_Text: string
+      m_Image: {fileID: 0}
+      m_Color: {r: 1, g: 1, b: 1, a: 1}
+    - m_Text: bool
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_OnValueChanged:
@@ -656,7 +656,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Int
+  m_text: int
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2622,7 +2622,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _windowName: VARIABLE_ITEM
-  _singleInstance: 0
+  _multipleInstance: 1
   _nameInputField: {fileID: 925869315941659047}
   _typeDropdown: {fileID: 7264220554945839452}
   _valueInputField: {fileID: 4268680724530421096}

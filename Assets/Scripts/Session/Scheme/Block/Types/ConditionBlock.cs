@@ -108,7 +108,7 @@ namespace Session.Scheme.Block.Types
                     correctRelationships = false;
                     break;
                 }
-                //Debug.Log($"{Facade.BlockName} => {Next}");
+
                 CurrentOutputIndex++;
             }
 
@@ -120,7 +120,7 @@ namespace Session.Scheme.Block.Types
             bool value = _operand1 != null && _operand2 != null
                 && _trueOutput != null && _trueOutput.CheckForCorrectValues()
                 && _falseOutput != null && _falseOutput.CheckForCorrectValues();
-            if (!value) Debug.LogError($"Condition block has not got enough params: {(_operand1 != null ? _operand1.variableName : "no value")} {(_operand2 != null ? _operand2.variableName : "no value")}");
+            //if (!value) Debug.LogError($"Condition block has not got enough params: {(_operand1 != null ? _operand1.variableName : "no value")} {(_operand2 != null ? _operand2.variableName : "no value")}");
 
             return value;
         }

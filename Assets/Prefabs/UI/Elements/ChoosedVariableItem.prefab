@@ -486,9 +486,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _windowName: CHOOSED_VARIABLE_ITEM
+  _multipleInstance: 1
   _typeText: {fileID: 6195539019943621100}
   _nameText: {fileID: 8029934234899337246}
-  _valueText: {fileID: 0}
   _deleteButton: {fileID: 5827566046226976850}
 --- !u!1 &4493686422059781410
 GameObject:

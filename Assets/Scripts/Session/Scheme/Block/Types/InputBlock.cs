@@ -17,7 +17,6 @@ namespace Session.Scheme.Block.Types
 
         private readonly SchemeBlockFacade _facade;
 
-        private readonly ConsoleWindow _consoleWindow;
         private readonly VariableService _variableService;
         private readonly SchemeConsoleService _consoleService;
 
@@ -76,14 +75,12 @@ namespace Session.Scheme.Block.Types
 
         public bool CheckForCorrectRelationships()
         {
-            //Debug.Log($"{Facade.BlockName} => {Next}");
-
             return Next != null && _nextBlock.CheckForCorrectRelationships();
         }
 
         public bool CheckForCorrectValues()
         {
-            return (Next == null || _nextBlock.CheckForCorrectValues());
+            return _schemeVariable != null && (Next == null || _nextBlock.CheckForCorrectValues());
         }
 
         public void Dispose()

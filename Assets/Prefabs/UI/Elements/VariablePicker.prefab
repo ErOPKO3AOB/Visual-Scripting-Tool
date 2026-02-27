@@ -848,7 +848,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _windowName: VARIABLE_PICKER_ITEM
-  _singleInstance: 0
+  _multipleInstance: 1
   _variableListPrefab: {fileID: 6888468730971742389, guid: 330475c9cd810504fa959badd474dce2, type: 3}
   _choosedVariablePrefab: {fileID: 5616262377345924842, guid: 91c86913363a7484b8e5a43b68f45d03, type: 3}
   _content: {fileID: 2424261569769455841}

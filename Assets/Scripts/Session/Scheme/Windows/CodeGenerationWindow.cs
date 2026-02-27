@@ -36,13 +36,15 @@ namespace Session.Scheme.Windows
             _closeButton.interactable = false;
             _outputText.text = "Генерация в процессе...";
 
-            LayoutRebuilder.ForceRebuildLayoutImmediate(_content);
-
             string code = await _codeGenerationFactory.GenerateCode();
 
             _outputText.text = code;
+            _outputText.ForceMeshUpdate(true, true);
+            Canvas.ForceUpdateCanvases();
 
-            LayoutRebuilder.ForceRebuildLayoutImmediate(_content);
+            _content.sizeDelta = new Vector2(
+                _content.sizeDelta.x,
+                _outputText.preferredHeight);
 
             _closeButton.interactable = true;
         }

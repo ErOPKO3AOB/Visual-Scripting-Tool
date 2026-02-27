@@ -18,11 +18,16 @@ namespace User
         private readonly InputService _inputService;
         private readonly Camera _camera;
 
+
         public UnityAction<BaseBlockButton> OnInteractCallback;
         public UnityAction<BaseBlockButton> OnStopInteractCallback;
 
         private BaseBlockButton _currentObject;
         private Vector2 _lastPointerPosition;
+
+        private bool _interactionStopped;
+
+        public CameraController CameraController { get; set; }
 
         public void Initialize()
         {
@@ -32,13 +37,30 @@ namespace User
         #endregion
 
         #region Checks
+        public void StopAllInteractions(bool value)
+        {
+            _interactionStopped = value;
+
+            if (CameraController != null)
+            {
+                if (value)
+                    CameraController.Interrupt(null);
+                else
+                    CameraController.StopInterruption(null);
+            }
+        }
+
         public void LateTick()
         {
+            if (_interactionStopped) return;
+
             InteractionProcess();
         }
 
         private void OnClick(bool isClicked)
         {
+            if (_interactionStopped) return;
+
             if (isClicked)
             {
                 TryStartIntercation();

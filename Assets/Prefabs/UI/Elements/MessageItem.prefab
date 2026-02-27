@@ -856,7 +856,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _windowName: MESSAGE_ITEM
-  _singleInstance: 0
+  _multipleInstance: 1
   _outputText: {fileID: 5828448750152543822}
   _placeholderText: {fileID: 9200089420556347917}
   _boolValidator: {fileID: 11400000, guid: f51e3ac504765344c81ffafe6a46a68a, type: 2}

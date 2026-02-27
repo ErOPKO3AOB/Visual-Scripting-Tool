@@ -226,6 +226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _windowName: OPERATION_ITEM
+  _multipleInstance: 1
   _operationDropDown: {fileID: 7593469234912725912}
 --- !u!1 &1204718625712693821
 GameObject:
