@@ -30,7 +30,7 @@ namespace Session.Scheme.Windows
         {
             _closeButton.onClick.AddListener(() => { _windowFactory.CloseWindow(this); });
             _generateCodeButton.onClick.AddListener(async () => { await GenerateCode(); });
-            //_copyCodeButton.onClick.AddListener();
+            _copyCodeButton.onClick.AddListener(() => GUIUtility.systemCopyBuffer = _outputText.text);
         }
 
         private async Task GenerateCode()

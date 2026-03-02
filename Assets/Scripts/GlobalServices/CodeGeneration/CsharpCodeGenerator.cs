@@ -3,6 +3,7 @@ using Session.Scheme.Block;
 using Session.Scheme.Block.Types;
 using Session.Scheme.Variables;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GlobalServices.CodeGeneration
@@ -41,54 +42,45 @@ namespace GlobalServices.CodeGeneration
         {
             while (current != null && current != _factory.EndBlock)
             {
-                switch (current.ConcreteType)
+                if (current.ConcreteType == IBlock.BlockType.Action)
                 {
-                    case IBlock.BlockType.Action:
-                        _programmCode = await _factory.PasteCodeIntoBody(_programmCode, targetBodyName,
-                            MakeStringActionCodeParts((ActionBlock)current));
-                        current = (IBlock)current.Next;
-                        break;
+                    _programmCode = await _factory.PasteCodeIntoBody(_programmCode, targetBodyName,
+                        MakeStringActionCodeParts((ActionBlock)current));
+                    current = (IBlock)current.Next;
+                }
 
-                    case IBlock.BlockType.Output:
-                        _programmCode = await _factory.PasteCodeIntoBody(_programmCode, targetBodyName,
-                            MakeStringOutputCodeParts((OutputBlock)current));
-                        current = (IBlock)current.Next;
-                        break;
+                else if (current.ConcreteType == IBlock.BlockType.Output)
+                {
+                    _programmCode = await _factory.PasteCodeIntoBody(_programmCode, targetBodyName,
+                        MakeStringOutputCodeParts((OutputBlock)current));
+                    current = (IBlock)current.Next;
+                }
 
-                    case IBlock.BlockType.Input:
-                        _programmCode = await _factory.PasteCodeIntoBody(_programmCode, targetBodyName,
-                            await MakeStringInputCodeParts((InputBlock)current));
-                        current = (IBlock)current.Next;
-                        break;
+                else if (current.ConcreteType == IBlock.BlockType.Input)
+                {
+                    _programmCode = await _factory.PasteCodeIntoBody(_programmCode, targetBodyName,
+                        await MakeStringInputCodeParts((InputBlock)current));
+                    current = (IBlock)current.Next;
+                }
 
-                    case IBlock.BlockType.Condition:
-                        var cond = (ConditionBlock)current;
+                else if (current.ConcreteType == IBlock.BlockType.Condition)
+                {
+                    var cond = (ConditionBlock)current;
 
-                        // Сохраняем блок, который идёт после условия (merge)
-                        IBlock afterCondition = (IBlock)cond.Next; // важно: до изменения CurrentOutputIndex!
+                    string ifHeader = $"if ({cond.Operand1.variableName} {TypeExtensions.GetFriendlyConditionOperatorTypeName(cond.OperatorType)} {cond.Operand2.variableName})";
+                    string elseHeader = "else";
 
-                        string ifHeader = $"if ({cond.Operand1.variableName} {TypeExtensions.GetFriendlyConditionOperatorTypeName(cond.OperatorType)} {cond.Operand2.variableName})";
-                        string elseHeader = "else";
+                    string ifElseSkeleton = ifHeader + "\n{\n}\n" + elseHeader + "\n{\n}";
+                    _programmCode = await _factory.PasteCodeIntoBody(_programmCode, targetBodyName, ifElseSkeleton);
 
-                        // Скелет без лишних пустых строк
-                        string ifElseSkeleton = ifHeader + "\n{\n}\n" + elseHeader + "\n{\n}";
-                        _programmCode = await _factory.PasteCodeIntoBody(_programmCode, targetBodyName, ifElseSkeleton);
+                    cond.CurrentOutputIndex = 1;
+                    current = (IBlock)cond.Next;
+                    await ProcessBlock(current, ifHeader);
 
-                        // Обрабатываем then-ветку (индекс 0)
-                        cond.CurrentOutputIndex = 0;
-                        IBlock thenBranch = (IBlock)cond.Next;
-                        if (thenBranch != null && thenBranch != _factory.EndBlock)
-                            await ProcessBlock(thenBranch, ifHeader);
-
-                        // Обрабатываем else-ветку (индекс 1)
-                        cond.CurrentOutputIndex = 1;
-                        IBlock elseBranch = (IBlock)cond.Next;
-                        if (elseBranch != null && elseBranch != _factory.EndBlock)
-                            await ProcessBlock(elseBranch, elseHeader);
-
-                        // Переходим к блоку после условия
-                        current = afterCondition;
-                        break;
+                    cond.CurrentOutputIndex = 0;
+                    current = (IBlock)cond.Next;
+                    await ProcessBlock(current, elseHeader);
+                    break;
                 }
 
                 await Task.Delay(10);
@@ -111,10 +103,34 @@ namespace GlobalServices.CodeGeneration
                 if (string.IsNullOrEmpty(rawValue))
                 {
                     if (schemeVariable.ValueType == typeof(int)) rawValue = "0";
-                    else if (schemeVariable.ValueType == typeof(double)) rawValue = "0.0";
+                    else if (schemeVariable.ValueType == typeof(float)) rawValue = "0.0f";
                     else if (schemeVariable.ValueType == typeof(bool)) rawValue = "false";
                     else rawValue = "default";
                 }
+
+                if (schemeVariable.ValueType == typeof(bool))
+                {
+                    if (rawValue == "True") rawValue = "true";
+                    else if (rawValue == "False") rawValue = "false";
+                }
+
+                else if (schemeVariable.ValueType == typeof(float))
+                {
+                    var chars = rawValue.ToCharArray().ToList();
+                    for (int i = 0; i < chars.Count; i++)
+                    {
+                        if (chars[i] == ',')
+                            chars[i] = '.';
+                    }
+                    chars.Add('f');
+                    rawValue = "";
+
+                    for (int i = 0; i < chars.Count; i++)
+                    {
+                        rawValue += chars[i];
+                    }
+                }
+
                 variableValueString = $"{rawValue};";
             }
             return $"{TypeExtensions.GetFriendlyTypeName(schemeVariable.ValueType)} {schemeVariable.variableName} = {variableValueString}";
