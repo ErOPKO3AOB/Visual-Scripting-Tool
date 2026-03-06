@@ -18,7 +18,7 @@ namespace GlobalServices.CodeGeneration
         private readonly CodeGenerationFactory _factory;
 
         private const string START_PROGRAMM_TEXT =
-            "class Program\r\n{\r\n    static void Main(string[] args)\r\n    {\r\n    }\r\n}";
+            "class Program\r\n{\r\n    static void Main(string[] args)\r\n    {}\r\n}";
 
         private string _programmCode;
 
@@ -143,6 +143,8 @@ namespace GlobalServices.CodeGeneration
 
         public async Task<string> MakeStringConditionCodeParts(ConditionBlock block)
         {
+            _programmCode = await _factory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", "\r\n");
+
             string ifHeader = $"if ({block.Operand1.variableName} {TypeExtensions.GetFriendlyConditionOperatorTypeName(block.OperatorType)} {block.Operand2.variableName})";
             string elseHeader = "else";
 
@@ -191,6 +193,8 @@ namespace GlobalServices.CodeGeneration
             {
                 _programmCode = await _factory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", MakeStringInitializedVariable(variable));
             }
+
+            _programmCode = await _factory.PasteCodeIntoBody(_programmCode, "static void Main(string[] args)", "\r\n");
         }
 
         public async Task<string> FindBlockTypeAndPasteCode(IBlock nextBlock, string fullCode, string codeBody)
