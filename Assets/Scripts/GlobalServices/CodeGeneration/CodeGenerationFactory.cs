@@ -80,6 +80,24 @@ namespace GlobalServices
         {
             await GatherBlocks();
 
+            if (StartBlock == null)
+            {
+                _consoleService.SpawnMessage("У схемы не обнаружен стартовый блок!");
+                return "Ошибка! Детали в консоли";
+            }
+
+            if (!StartBlock.CheckForCorrectRelationships())
+            {
+                _consoleService.SpawnMessage("У схемы не обнаружен конец! Корректно подключите все провода!");
+                return "Ошибка! Детали в консоли";
+            }
+
+            else if (!StartBlock.CheckForCorrectValues())
+            {
+                _consoleService.SpawnMessage("У не указаны важные параметры!");
+                return "Ошибка! Детали в консоли";
+            }
+
             ICodeGenerator codeGenerator = new CsharpCodeGenerator(this);
             string code = await codeGenerator.Generate();
 
