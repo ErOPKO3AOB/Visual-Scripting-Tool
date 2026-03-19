@@ -18,7 +18,7 @@ namespace GlobalServices.CodeGeneration
         private readonly CodeGenerationFactory _factory;
 
         private const string START_PROGRAMM_TEXT =
-            "class Program\r\n{\r\n    static void Main(string[] args)\r\n    {}\r\n}";
+            "using System; \r\n\n class Program\r\n{\r\n    static void Main(string[] args)\r\n    {}\r\n}";
 
         private string _programmCode;
 
