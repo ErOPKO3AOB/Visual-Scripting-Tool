@@ -64,7 +64,12 @@ namespace Session.Scheme.Windows
         {
             RebuildUI();
 
-            _nameInputField.onEndEdit.AddListener((string text) => { _variableName = text; OnEndEdit(); });
+            _nameInputField.onEndEdit.AddListener((string text) => 
+            {
+                _variableName = text; OnEndEdit();
+                if (!string.IsNullOrEmpty(text)) 
+                    _nameInputField.interactable = false; 
+            });
             _typeDropdown.onValueChanged.AddListener((int value) => { InitializeValuePlaceHolder(value); OnEndEdit(); });
             _valueInputField.onEndEdit.AddListener((string value) => { _variableValue = value; OnEndEdit(); });
 
@@ -102,6 +107,11 @@ namespace Session.Scheme.Windows
             }
 
             _chooseButton.gameObject.SetActive(_variableList.HasSender);
+
+            if (!string.IsNullOrEmpty(_nameInputField.text))
+            {
+                _nameInputField.interactable = false;
+            }
         }
 
         private void InitializeValuePlaceHolder(int value)
@@ -138,7 +148,7 @@ namespace Session.Scheme.Windows
 
         public void OnEndEdit()
         {
-            if (_variableType == null || _variableName == null || _variableValue == null) return;
+            if (_variableType == null || !string.IsNullOrEmpty(_variableName) || _variableValue == null) return;
 
             if (_variableType == typeof(int))
                 _schemeVariable = new SchemeVariable<int>(_variableName);
