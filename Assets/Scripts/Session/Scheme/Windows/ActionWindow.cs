@@ -10,10 +10,12 @@ namespace Session.Scheme.Windows
     public class ActionWindow : BaseWindow
     {
         [Inject]
-        public void Construct(WindowFactory windowService)
+        public void Construct(WindowFactory windowFactory)
         {
-            _windowService = windowService;
+            _windowFactory = windowFactory;
         }
+
+        private WindowFactory _windowFactory;
 
         [Header("UI")]
         [SerializeField] private Button _closeButton;
@@ -25,7 +27,6 @@ namespace Session.Scheme.Windows
         private SchemeVariableBase _operand1 = null;
         private SchemeVariableBase _operand2 = null;
 
-        private WindowFactory _windowService;
         private ActionBlock _methodBlock;
 
         public override void SetSender(object sender)
@@ -45,8 +46,8 @@ namespace Session.Scheme.Windows
         {
             _closeButton.onClick.AddListener(() =>
             {
-                _windowService.CloseWindow(this);
-                SendOperationToMethodBlock();
+                _windowFactory.CloseWindow(this);
+                SendOperationToActionBlock();
             });
 
             _varPicker1.OnVariableChanged += OnOperand1Choosed;
@@ -83,7 +84,7 @@ namespace Session.Scheme.Windows
             _operand2 = variable;
         }
 
-        private void SendOperationToMethodBlock()
+        private void SendOperationToActionBlock()
         {
             _methodBlock.SetOperation(_operand1, _operatorType, _operand2);
         }

@@ -15,7 +15,6 @@ namespace Session.Scheme.Windows
             _windowFactory = windowFactory;
         }
 
-        private ConditionBlock _conditionBlock;
         private WindowFactory _windowFactory;
 
         [Header("UI")]
@@ -27,6 +26,8 @@ namespace Session.Scheme.Windows
         private VariableService.ConditionOperatorType _operatorType;
         private SchemeVariableBase _operand1 = null;
         private SchemeVariableBase _operand2 = null;
+
+        private ConditionBlock _conditionBlock;
 
         public override void SetSender(object sender)
         {

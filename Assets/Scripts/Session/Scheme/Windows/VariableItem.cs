@@ -64,15 +64,17 @@ namespace Session.Scheme.Windows
         {
             RebuildUI();
 
-            _nameInputField.onEndEdit.AddListener((string text) => 
+            _nameInputField.onEndEdit.AddListener((string text) =>
             {
-                _variableName = text; OnEndEdit();
+                _variableName = text;
+                OnEndEdit();
 
-                _nameInputField.onEndEdit.RemoveAllListeners();
-
-                if (!string.IsNullOrEmpty(text)) 
-                    _nameInputField.interactable = false; 
+                if (!string.IsNullOrEmpty(text))
+                {
+                    Invoke(nameof(DisableNameInput), 0f);
+                }
             });
+
             _typeDropdown.onValueChanged.AddListener((int value) => { InitializeValuePlaceHolder(value); OnEndEdit(); });
             _valueInputField.onEndEdit.AddListener((string value) => { _variableValue = value; OnEndEdit(); });
 
@@ -90,6 +92,11 @@ namespace Session.Scheme.Windows
             });
         }
 
+        private void DisableNameInput()
+        {
+            _nameInputField.interactable = false;
+        }
+
         private void RebuildUI()
         {
             InitializeValuePlaceHolder(0);
@@ -104,17 +111,15 @@ namespace Session.Scheme.Windows
                 }
 
                 if (_schemeVariable.variableName != null)
+                {
                     _nameInputField.SetTextWithoutNotify(_schemeVariable.variableName);
+                    _nameInputField.interactable = false;
+                }
                 if (_schemeVariable.GetStartValue() != null)
                     _valueInputField.SetTextWithoutNotify(_schemeVariable.GetStartValue().ToString());
             }
 
             _chooseButton.gameObject.SetActive(_variableList.HasSender);
-
-            if (!string.IsNullOrEmpty(_nameInputField.text))
-            {
-                _nameInputField.interactable = false;
-            }
         }
 
         private void InitializeValuePlaceHolder(int value)

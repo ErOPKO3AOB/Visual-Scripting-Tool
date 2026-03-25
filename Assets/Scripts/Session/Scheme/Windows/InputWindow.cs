@@ -10,10 +10,12 @@ namespace Session.Scheme.Windows
     public class InputWindow : BaseWindow
     {
         [Inject]
-        public void Construct(WindowFactory windowService)
+        public void Construct(WindowFactory windowFactory)
         {
-            _windowService = windowService;
+            _windowFactory = windowFactory;
         }
+
+        private WindowFactory _windowFactory;
 
         [Header("UI")]
         [SerializeField] private Button _closeButton;
@@ -21,14 +23,12 @@ namespace Session.Scheme.Windows
 
         private InputBlock _inputBlock;
 
-        private WindowFactory _windowService;
 
         public override void SetSender(object sender)
         {
             try
             {
                 _inputBlock = (InputBlock)sender;
-                RebuildUI();
             }
 
             catch (Exception e)
@@ -40,13 +40,14 @@ namespace Session.Scheme.Windows
         private void Start()
         {
             _variablePicker.OnVariableChanged += OnVariableChoose;
-            _closeButton.onClick.AddListener(() => { _windowService.CloseWindow(this); });
+            _closeButton.onClick.AddListener(() => { _windowFactory.CloseWindow(this); });
+
+            RebuildUI();
         }
 
         private void RebuildUI()
         {
-            if (_inputBlock.SchemeVariable != null)
-                _variablePicker.ChooseVariable(_inputBlock.SchemeVariable);
+            _variablePicker.ChooseVariable(_inputBlock.SchemeVariable);
         }
 
         private void OnVariableChoose(SchemeVariableBase variable)

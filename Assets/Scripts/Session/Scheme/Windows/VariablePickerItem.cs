@@ -8,6 +8,17 @@ namespace Session.Scheme.Variables
 {
     public class VariablePickerItem : BaseWindow
     {
+        [Inject]
+        public void Construct(WindowFactory windowService, VariableService variableService)
+        {
+            _windowService = windowService;
+            _variableService = variableService;
+        }
+
+        private WindowFactory _windowService;
+        private VariableService _variableService;
+
+
         [Header("Configs")]
         [SerializeField] private VariableListWindow _variableListPrefab;
         [SerializeField] private ChoosedVariableItem _choosedVariablePrefab;
@@ -16,17 +27,11 @@ namespace Session.Scheme.Variables
         [SerializeField] private Transform _content;
         [SerializeField] private Button _addNewButton;
 
-        private WindowFactory _windowService;
 
         public UnityAction<SchemeVariableBase> OnVariableChanged;
 
-        public ChoosedVariableItem VariableItem { get; private set; }
+        public ChoosedVariableItem ChoosedVariableItem { get; private set; }
 
-        [Inject]
-        public void Construct(WindowFactory windowService)
-        {
-            _windowService = windowService;
-        }
 
         private void Start()
         {
@@ -38,26 +43,35 @@ namespace Session.Scheme.Variables
 
         public void ChooseVariable(SchemeVariableBase variable)
         {
-            if (variable == null) return;
+            if (variable == null)
+            {
+                DeleteVariable();
+            }
 
-            _addNewButton.transform.SetParent(null);
-            ChoosedVariableItem variableItem = Instantiate(_choosedVariablePrefab, _content.transform).GetComponent<ChoosedVariableItem>();
-            variableItem.Initialize(this, variable);
-            _addNewButton.transform.SetParent(_content.transform);
+            else
+            {
+                _addNewButton.transform.SetParent(null);
+                ChoosedVariableItem variableItem = Instantiate(_choosedVariablePrefab, _content.transform).GetComponent<ChoosedVariableItem>();
+                variableItem.Initialize(this, variable);
+                _addNewButton.transform.SetParent(_content.transform);
 
-            VariableItem = variableItem;
-            _addNewButton.gameObject.SetActive(false);
+                ChoosedVariableItem = variableItem;
+                _addNewButton.gameObject.SetActive(false);
 
-            OnVariableChanged?.Invoke(variable);
+                OnVariableChanged?.Invoke(variable);
+            }
         }
 
         public void DeleteVariable()
         {
-            Destroy(VariableItem.gameObject);
-            VariableItem = null;
+            if (ChoosedVariableItem != null)
+            {
+                Destroy(ChoosedVariableItem.gameObject);
+                ChoosedVariableItem = null;
 
-            _addNewButton.gameObject.SetActive(true);
-            OnVariableChanged?.Invoke(null);
+                _addNewButton.gameObject.SetActive(true);
+                OnVariableChanged?.Invoke(null);
+            }
         }
 
         private void OnDestroy()
