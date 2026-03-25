@@ -67,6 +67,9 @@ namespace Session.Scheme.Windows
             _nameInputField.onEndEdit.AddListener((string text) => 
             {
                 _variableName = text; OnEndEdit();
+
+                _nameInputField.onEndEdit.RemoveAllListeners();
+
                 if (!string.IsNullOrEmpty(text)) 
                     _nameInputField.interactable = false; 
             });
@@ -148,7 +151,7 @@ namespace Session.Scheme.Windows
 
         public void OnEndEdit()
         {
-            if (_variableType == null || !string.IsNullOrEmpty(_variableName) || _variableValue == null) return;
+            if (_variableType == null || string.IsNullOrEmpty(_variableName) || _variableValue == null) return;
 
             if (_variableType == typeof(int))
                 _schemeVariable = new SchemeVariable<int>(_variableName);

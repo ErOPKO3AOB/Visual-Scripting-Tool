@@ -22,8 +22,8 @@ namespace Session
         {
             _windowService.OpenWindow(_blockConfigs.WindowPrefabsUI.Find(w => w.GetType() == typeof(SessionWindow)));
 
-            _schemeBlockFactory.SpawnBlock("START_BLOCK");
             _schemeBlockFactory.SpawnBlock("END_BLOCK");
+            _schemeBlockFactory.SpawnBlock("START_BLOCK");
         }
     }
 }

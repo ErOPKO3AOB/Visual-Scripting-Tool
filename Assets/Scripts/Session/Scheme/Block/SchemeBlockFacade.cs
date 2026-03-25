@@ -25,6 +25,7 @@ namespace Session.Scheme.Block
         private BlockConfigs _blockConfigs;
         private WorldUIControllerService _worldUIControllerService;
         private SchemeBlockFactory _schemeBlockFactory;
+        private BoxCollider2D _collider;
 
         [Header("Base")]
         [SerializeField] private string _blockName;
@@ -51,7 +52,23 @@ namespace Session.Scheme.Block
         public IBlock Model { get; set; }
 
         // Configs
-        public BoxCollider2D Collider { get; private set; }
+        public BoxCollider2D Collider 
+        { 
+            get 
+            { 
+                if (_collider == null)
+                {
+                    _collider = GetComponent<BoxCollider2D>();
+                }
+
+                return _collider; 
+            } 
+            private set 
+            { 
+                _collider = value;
+            } 
+        }
+
         public Rigidbody2D Rigidbody => _rigidbody;
         public SpriteRenderer SpriteRenderer => _spriteRenderer;
         public BlockLabel Label { get { return _label; } set { _label = value; } }
@@ -69,8 +86,6 @@ namespace Session.Scheme.Block
         {
             // Components
             _label.OnChanged += OnLabelChanged;
-
-            Collider = GetComponent<BoxCollider2D>();
 
             DraggableBlockButton = gameObject.AddComponent<DraggableBlockButton>();
             DraggableBlockButton.ConstructManually(_blockConfigs);

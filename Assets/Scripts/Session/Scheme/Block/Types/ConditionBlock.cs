@@ -1,4 +1,4 @@
-using Extensions;
+﻿using Extensions;
 using Session.Scheme.Variables;
 using System;
 using UnityEngine;
@@ -76,6 +76,10 @@ namespace Session.Scheme.Block.Types
         public SchemeVariableBase Operand1 => _operand1;
         public SchemeVariableBase Operand2 => _operand2;
 
+        // Новые свойства для доступа к веткам
+        public IBlock TrueBranch => _trueOutput;
+        public IBlock FalseBranch => _falseOutput;
+
         public void ProvideAction()
         {
             CurrentOutputIndex = _variableService.UseComparsion(_operand1.variableName, _conditionalOperatorType, _operand2.variableName) ? 1 : 0;
@@ -91,7 +95,7 @@ namespace Session.Scheme.Block.Types
 
             string displayName = operand1 != null && operand2 != null ?
                 $"{_operand1.variableName} {TypeExtensions.GetFriendlyConditionOperatorTypeName(_conditionalOperatorType)} {_operand2.variableName}"
-                : "�������� �� �����������!";
+                : "Значения не установлены!";
 
             _facade.Label.SetText(displayName);
         }
@@ -120,7 +124,6 @@ namespace Session.Scheme.Block.Types
             bool value = _operand1 != null && _operand2 != null
                 && _trueOutput != null && _trueOutput.CheckForCorrectValues()
                 && _falseOutput != null && _falseOutput.CheckForCorrectValues();
-            //if (!value) Debug.LogError($"Condition block has not got enough params: {(_operand1 != null ? _operand1.variableName : "no value")} {(_operand2 != null ? _operand2.variableName : "no value")}");
 
             return value;
         }

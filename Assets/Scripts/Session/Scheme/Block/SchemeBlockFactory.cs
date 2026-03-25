@@ -38,7 +38,10 @@ namespace Session.Scheme.Block
                 // Getting component
                 .GetComponent<SchemeBlockFacade>();
 
-            schemeBlockFacade.Rigidbody.position = _objectResolver.Resolve<CameraControllerFacade>().transform.position;
+            schemeBlockFacade.Collider.enabled = false;
+            schemeBlockFacade.Rigidbody.MovePosition(_objectResolver.Resolve<CameraControllerFacade>().transform.position);
+            schemeBlockFacade.Collider.enabled = true;
+            schemeBlockFacade.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
 
             // Searching for block type
             IBlock block = null;
