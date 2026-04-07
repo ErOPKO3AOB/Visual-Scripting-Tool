@@ -4,8 +4,6 @@ using Session.Scheme.Connector;
 using Session.Scheme.Windows;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -45,10 +43,10 @@ namespace GlobalServices.ProjectLifetime
 #endif
         [SerializeField] private string _workscapeSceneName;
 
-        public string WorkspaceScene 
-        { 
-            get 
-            { 
+        public string WorkspaceScene
+        {
+            get
+            {
 #if UNITY_EDITOR
                 return _workspaceScene.name;
 #else
@@ -107,7 +105,7 @@ namespace GlobalServices.ProjectLifetime
         public BlockSettingsButton SettingsButtonPrefab => _settingsButtonPrefab;
         public BlockInputTrigger InputTriggerPrefab => _inputTriggerPrefab;
         public BlockOutputButton OutputButtonPrefab => _outputButtonPrefab;
-        public DraggableConnectorPoint DraggableConnectorPointPrefab => _draggableConnectorPointPrefab; 
+        public DraggableConnectorPoint DraggableConnectorPointPrefab => _draggableConnectorPointPrefab;
         public BlockDeleteButton DeleteButtonPrefab => _deleteButtonPrefab;
         public List<BaseWindow> WindowPrefabsUI => _windowPrefabsUI;
     }
@@ -120,15 +118,21 @@ namespace GlobalServices.ProjectLifetime
 
         [Header("Movement")]
         [SerializeField] private float _moveSmoothTime = 0.1f;
+#if UNITY_ANDROID
+        [SerializeField] private float _mobileDragThresholdPixels = 20f;
+#endif
 
         [Header("Zoom")]
         [SerializeField] private float _zoomSensitivity = 1f;
         [SerializeField] private float _zoomSmoothTime = 0.1f;
-        
+
         public GameObject CamPrefab => _camPrefab;
         public float MoveSmoothTime => _moveSmoothTime;
         public float ZoomSensitivity => _zoomSensitivity;
         public float ZoomSmoothTime => _zoomSmoothTime;
+#if UNITY_ANDROID
+        public float MobileDragThresholdPixels => _mobileDragThresholdPixels;
+#endif
     }
 
     [Serializable]

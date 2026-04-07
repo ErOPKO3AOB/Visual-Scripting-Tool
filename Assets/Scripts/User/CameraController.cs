@@ -20,6 +20,11 @@ namespace User
             _windowService = windowService;
         }
 
+#if UNITY_ANDROID
+        private bool _dragPotential;
+        private Vector2 _dragPotentialStart;
+#endif
+
         private readonly CameraControllerFacade _facade;
         private readonly CameraSettings _settings;
         private readonly InputService _inputService;
@@ -85,15 +90,29 @@ namespace User
         {
             if (_isInterrupted) return;
 
-            _canDragCamera = click;
-
+#if UNITY_ANDROID
             if (click)
             {
-                // Запоминаем начальную позицию камеры и курсора при начале перетаскивания
-                _dragStartCameraPosition = _facade.transform.position;
+                _dragPotential = true;
+                _dragPotentialStart = _lastPointerPosition;
                 _dragStartPointerPosition = _lastPointerPosition;
-                _velocity = Vector3.zero; // Сбрасываем скорость при начале нового перетаскивания
+                _dragStartCameraPosition = _facade.transform.position;
+                _velocity = Vector3.zero;
             }
+            else
+            {
+                _dragPotential = false;
+                _canDragCamera = false;
+            }
+#else
+    _canDragCamera = click;
+    if (click)
+    {
+        _dragStartCameraPosition = _facade.transform.position;
+        _dragStartPointerPosition = _lastPointerPosition;
+        _velocity = Vector3.zero;
+    }
+#endif
         }
 
         private void OnPointerPosition(Vector2 pointerPosition)
@@ -104,28 +123,43 @@ namespace User
         private void HandleDragDelta(Vector2 delta)
         {
             if (_isInterrupted) return;
+            if (delta == Vector2.zero) return;
 
-            if (!_canDragCamera || delta == Vector2.zero) return;
+#if UNITY_ANDROID
+            if (_canDragCamera)
+            {
+                Vector3 startWorldPos = _facade.Camera.ScreenToWorldPoint(new Vector3(
+                    _dragStartPointerPosition.x, _dragStartPointerPosition.y, -_facade.Camera.transform.position.z));
+                Vector3 currentWorldPos = _facade.Camera.ScreenToWorldPoint(new Vector3(
+                    _lastPointerPosition.x, _lastPointerPosition.y, -_facade.Camera.transform.position.z));
+                Vector3 worldOffset = startWorldPos - currentWorldPos;
+                _targetPosition = _dragStartCameraPosition + worldOffset;
+                return;
+            }
 
-            // Преобразуем начальную и текущую позиции курсора в мировые координаты
-            Vector3 startWorldPos = _facade.Camera.ScreenToWorldPoint(new Vector3(
-                _dragStartPointerPosition.x,
-                _dragStartPointerPosition.y,
-                -_facade.Camera.transform.position.z
-            ));
+            if (_dragPotential)
+            {
+                float distSqr = (_lastPointerPosition - _dragPotentialStart).sqrMagnitude;
+                float threshold = _settings.MobileDragThresholdPixels;
+                if (distSqr >= threshold * threshold)
+                {
+                    _canDragCamera = true;
+                    _dragStartPointerPosition = _lastPointerPosition;
+                    _dragStartCameraPosition = _facade.transform.position;
+                    _velocity = Vector3.zero;
+                    _dragPotential = false;
+                }
+            }
+#else
+    if (!_canDragCamera) return;
 
-            Vector3 currentWorldPos = _facade.Camera.ScreenToWorldPoint(new Vector3(
-                _lastPointerPosition.x,
-                _lastPointerPosition.y,
-                -_facade.Camera.transform.position.z
-            ));
-
-            // Вычисляем смещение в мировых координатах
-            Vector3 worldOffset = startWorldPos - currentWorldPos;
-
-            // Новая целевая позиция = начальная позиция камеры + смещение
-            // Это гарантирует, что точка, за которую ухватились, останется под курсором
-            _targetPosition = _dragStartCameraPosition + worldOffset;
+    Vector3 startWorldPos = _facade.Camera.ScreenToWorldPoint(new Vector3(
+        _dragStartPointerPosition.x, _dragStartPointerPosition.y, -_facade.Camera.transform.position.z));
+    Vector3 currentWorldPos = _facade.Camera.ScreenToWorldPoint(new Vector3(
+        _lastPointerPosition.x, _lastPointerPosition.y, -_facade.Camera.transform.position.z));
+    Vector3 worldOffset = startWorldPos - currentWorldPos;
+    _targetPosition = _dragStartCameraPosition + worldOffset;
+#endif
         }
 
         private void HandleMouseZoom(Vector2 zoomInput)
@@ -153,14 +187,14 @@ namespace User
         public void Interrupt(BaseBlockButton baseBlockButton)
         {
             if (_isInterrupted) return;
-
             _isInterrupted = true;
             _wasDraggingBeforeInterrupt = _canDragCamera;
             _canDragCamera = false;
-
+#if UNITY_ANDROID
+            _dragPotential = false;
+#endif
             _positionBeforeInterrupt = _targetPosition;
             _zoomBeforeInterrupt = _targetZoom;
-
             _velocity = Vector3.zero;
             _zoomVelocity = 0f;
         }
