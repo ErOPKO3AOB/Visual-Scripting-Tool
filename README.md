@@ -24,6 +24,15 @@
 
 ---
 
+## 🎯 Why This Project?
+
+I built this tool to explore visual programming concepts and create a reusable framework for:
+- **Rapid prototyping** of logic without writing code
+- **Educational purposes** — learning how visual scripting engines work under the hood
+- **Code generation** — demonstrating how visual graphs can be compiled into executable C#
+
+This project showcases my ability to design complex systems with clean architecture and modern Unity practices.
+
 ## Programm demonstration
 
 #### Main canvas
@@ -49,3 +58,11 @@
 #### Code generation
 
 <img src="https://github.com/ErOPKO3AOB/Visual-Scripting-Tool/blob/main/ReadmeImages/CodeGen.gif" width="480" align="center">
+
+---
+
+Email: kozlov.egor.dev@gmail.com
+
+LinkedIn: [linkedin.com/in/egor-kozlov](https://www.linkedin.com/in/egor-kozlov-gamedev/)
+
+GitHub: [github.com/ErOP_k](https://github.com/ErOPKO3AOB/)
