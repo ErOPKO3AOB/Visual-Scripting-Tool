@@ -1,10 +1,6 @@
 <div align="center">
   <h1>🧩 Node Editor — Visual Scripting Tool</h1>
   <p><strong>Desktop application</strong> built with Unity for designing and executing custom logic graphs visually.</p>
-  
-  <img src="https://github.com/ErOPKO3AOB/Visual-Scripting-Tool/blob/main/ReadmeImages/BasicScreen.png" width="640" alt="Editor Overview">
-  
-  <p><em>Drag blocks, connect them, and generate code in seconds.</em></p>
 </div>
 
 ---
@@ -38,6 +34,8 @@
 
 ### High-Level Structure
 
-<div align="center">
+  <img src="https://github.com/ErOPKO3AOB/Visual-Scripting-Tool/blob/main/ReadmeImages/BasicScreen.png" width="640" alt="Editor Overview">
+  
+  <p><em>Drag blocks, connect them, and generate code in seconds.</em></p>
   <img src="https://github.com/ErOPKO3AOB/Visual-Scripting-Tool/blob/main/ReadmeImages/Architecture.png" width="600" alt="Architecture Diagram">
 </div>
