@@ -938,7 +938,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _windowName: VARIABLES_LIST
-  _singleInstance: 1
+  _multipleInstance: 0
   _variableItemPrefab: {fileID: 921730477965453695, guid: 59d9a92bab69eab4c9ec67941b3fd9a5, type: 3}
   _addNewVariableButton: {fileID: 102255643684584603}
   _content: {fileID: 7426348529580619162}
@@ -1596,7 +1596,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u041B\u0438\u0441\u0442 \u0441 \u043F\u0435\u0440\u0435\u043C\u0435\u043D\u043D\u044B\u043C\u0438"
+  m_text: List of variables
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

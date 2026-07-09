@@ -10,7 +10,7 @@ namespace Session.Scheme.Windows
 {
     public class WindowFactory
     {
-        public WindowFactory(IObjectResolver objectResolver, BlockConfigs blockConfigs, WorldUIControllerService worldUIControllerService)
+        public WindowFactory(IObjectResolver objectResolver, BlockConfigs blockConfigs, WorldMouseControllerService worldUIControllerService)
         {
             _objectResolver = objectResolver;
             _blockConfigs = blockConfigs;
@@ -19,7 +19,7 @@ namespace Session.Scheme.Windows
 
         private readonly IObjectResolver _objectResolver;
         private readonly BlockConfigs _blockConfigs;
-        private readonly WorldUIControllerService _worldUIControllerService;
+        private readonly WorldMouseControllerService _worldUIControllerService;
 
         private List<BaseWindow> _activeWindows = new();
         public List<BaseWindow> ActiveWindows { get { return _activeWindows; } }

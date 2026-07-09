@@ -34,29 +34,29 @@ namespace Session.Scheme
 
             if (_startBlock == null)
             {
-                _consoleService.SpawnMessage("У схемы не обнаружен стартовый блок!");
+                _consoleService.SpawnMessage("The scheme does not have a starting block!");
             }
 
             if (!_startBlock.CheckForCorrectRelationships())
             {
-                _consoleService.SpawnMessage("У схемы не обнаружен конец! Корректно подключите все провода!");
+                _consoleService.SpawnMessage("The scheme has no end! Connect all the wires correctly!");
             }
 
             else if (!_startBlock.CheckForCorrectValues())
             {
-                _consoleService.SpawnMessage("У не указаны важные параметры!");
+                _consoleService.SpawnMessage("Important parameters are not specified!");
             }
 
             else
             {
-                _consoleService.SpawnMessage("Программа запущена");
+                _consoleService.SpawnMessage("The program is running");
                 Next.ProvideAction();
             }
         }
 
         public void ProvideAction()
         {
-            _consoleService.SpawnMessage("Программа завершена");
+            _consoleService.SpawnMessage("The program is finished");
         }
     }
 }

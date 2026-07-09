@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u0411\u043B\u043E\u043A \u0432\u0432\u043E\u0434\u0430"
+  m_text: Input block
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -615,8 +615,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u041F\u0435\u0440\u0435\u043C\u0435\u043D\u043D\u0430\u044F \u0434\u043B\u044F
-    \u0432\u0432\u043E\u0434\u0430:"
+  m_text: 'Input variable:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -643,7 +642,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 53
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -834,7 +833,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2424261569769455841, guid: 8330f748990d7054fa434e1c8b8cf73f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 30.000025
+      value: 0.000024795532
       objectReference: {fileID: 0}
     - target: {fileID: 2654769168721492920, guid: 8330f748990d7054fa434e1c8b8cf73f, type: 3}
       propertyPath: m_Pivot.x
@@ -990,11 +989,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8463837741591595064, guid: 8330f748990d7054fa434e1c8b8cf73f, type: 3}
       propertyPath: m_Size
-      value: 0.9769762
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8463837741591595064, guid: 8330f748990d7054fa434e1c8b8cf73f, type: 3}
       propertyPath: m_Value
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9173713633993806773, guid: 8330f748990d7054fa434e1c8b8cf73f, type: 3}
       propertyPath: m_AnchorMax.x

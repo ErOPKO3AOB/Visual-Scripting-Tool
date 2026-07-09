@@ -26,13 +26,13 @@ namespace Session.Scheme.Windows
 
         [Header("Value input validation")]
         [Header("Int")]
-        [SerializeField] private string _intPlaceHolder = "¬ведите целое число";
+        [SerializeField] private string _intPlaceHolder = "Enter whole number";
         [Header("Float")]
-        [SerializeField] private string _floatPlaceHolder = "¬ведите дробное число";
+        [SerializeField] private string _floatPlaceHolder = "Enter floating number";
         [Header("String")]
-        [SerializeField] private string _stringPlaceHolder = "¬ведите строку";
+        [SerializeField] private string _stringPlaceHolder = "Enter string";
         [Header("Bool")]
-        [SerializeField] private string _boolPlaceHolder = "¬ведите булевое значение true/false";
+        [SerializeField] private string _boolPlaceHolder = "Enter bool value true/false";
         [SerializeField] private BoolValidator _boolValidator;
 
         private VariableService _variableService;

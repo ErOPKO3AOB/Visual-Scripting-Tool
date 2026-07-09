@@ -6,10 +6,10 @@ using VContainer.Unity;
 
 namespace User
 {
-    public class WorldUIControllerService : IInitializable, ILateTickable, IDisposable
+    public class WorldMouseControllerService : IInitializable, ILateTickable, IDisposable
     {
         #region Initialization
-        public WorldUIControllerService(InputService inputService, CameraControllerFacade cameraControllerFacade)
+        public WorldMouseControllerService(InputService inputService, CameraControllerFacade cameraControllerFacade)
         {
             _inputService = inputService;
             _camera = cameraControllerFacade.Camera;

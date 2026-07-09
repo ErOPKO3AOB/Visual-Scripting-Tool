@@ -41,8 +41,8 @@ namespace Session.Scheme.Block.Types
             _schemeVariable = variableToInputRequest;
 
             string displayName = variableToInputRequest != null ?
-                $"¬вод: {_schemeVariable.variableName}"
-                : "«начени€ не установлены!";
+                $"Input: {_schemeVariable.variableName}"
+                : "Values not set!";
 
             _facade.Label.SetText(displayName);
         }

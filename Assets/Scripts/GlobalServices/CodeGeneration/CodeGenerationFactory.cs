@@ -88,20 +88,20 @@ namespace GlobalServices
 
             if (StartBlock == null)
             {
-                LogError("У схемы не обнаружен стартовый блок!");
-                return "Ошибка! Детали в консоли";
+                LogError("The starting block was not detected in the scheme!");
+                return "Error! Details in console";
             }
 
             if (!StartBlock.CheckForCorrectRelationships())
             {
-                LogError("У схемы не обнаружен конец! Корректно подключите все провода!");
-                return "Ошибка! Детали в консоли";
+                LogError("The scheme has no end! Connect all the wires correctly!");
+                return "Error! Details in console";
             }
 
             else if (!StartBlock.CheckForCorrectValues())
             {
-                LogError("У не указаны важные параметры!");
-                return "Ошибка! Детали в консоли";
+                LogError("Important parameters are not specified in the scheme!");
+                return "Error! Details in console";
             }
 
             ICodeGenerator codeGenerator = new CsharpCodeGenerator(this);
@@ -109,8 +109,5 @@ namespace GlobalServices
 
             return code;
         }
-
-        // Удаляем PasteCodeIntoBody и вспомогательные методы, они больше не нужны
-        // Но если они используются где-то ещё, оставьте, они не мешают
     }
 }

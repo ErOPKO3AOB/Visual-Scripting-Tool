@@ -7,14 +7,14 @@ namespace Session.Scheme.Block.Button
 {
     public class BlockInputTrigger : BaseBlockButton
     {
-        public void ConstructManualy(IBlock block, WorldUIControllerService worldUIControllerService)
+        public void ConstructManualy(IBlock block, WorldMouseControllerService worldUIControllerService)
         {
             _block = block;
             _worldUIControllerService = worldUIControllerService;
         }
 
         private IBlock _block;
-        private WorldUIControllerService _worldUIControllerService;
+        private WorldMouseControllerService _worldUIControllerService;
 
         public ActionConnecorFacade ConnectedActionConnectorFacade { get; private set; }
         public BlockOutputButton ConnectedOutputButton { get; private set; }

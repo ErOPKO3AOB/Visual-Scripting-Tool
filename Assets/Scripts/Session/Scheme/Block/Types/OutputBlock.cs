@@ -33,8 +33,8 @@ namespace Session.Scheme.Block.Types
             _schemeVariable = variableToOutputRequest;
 
             string displayName = variableToOutputRequest != null ?
-                $"Вывод: {_schemeVariable.variableName}"
-                : "Значения не установлены!";
+                $"Output: {_schemeVariable.variableName}"
+                : "Values not set!";
 
             _facade.Label.SetText(displayName);
         }

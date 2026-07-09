@@ -4,7 +4,7 @@ namespace Session.Scheme.Block.Button
 {
     public class BlockDeleteButton : BaseBlockButton
     {
-        public void ConstructManualy(SchemeBlockFactory blockFactory, IBlock block, WorldUIControllerService worldUIControllerService)
+        public void ConstructManualy(SchemeBlockFactory blockFactory, IBlock block, WorldMouseControllerService worldUIControllerService)
         {
             _blockFactory = blockFactory;
             _block = block;
@@ -13,7 +13,7 @@ namespace Session.Scheme.Block.Button
 
         private SchemeBlockFactory _blockFactory;
         private IBlock _block;
-        private WorldUIControllerService _worldUIControllerService;
+        private WorldMouseControllerService _worldUIControllerService;
 
         public override void Use()
         {

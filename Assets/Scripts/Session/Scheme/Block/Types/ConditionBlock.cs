@@ -95,7 +95,7 @@ namespace Session.Scheme.Block.Types
 
             string displayName = operand1 != null && operand2 != null ?
                 $"{_operand1.variableName} {TypeExtensions.GetFriendlyConditionOperatorTypeName(_conditionalOperatorType)} {_operand2.variableName}"
-                : "Значения не установлены!";
+                : "Values not set!";
 
             _facade.Label.SetText(displayName);
         }

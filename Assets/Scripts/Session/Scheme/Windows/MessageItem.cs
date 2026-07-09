@@ -36,26 +36,26 @@ namespace Session.Scheme.Windows
             if (variableType == typeof(int))
             {
                 _inputField.characterValidation = TMP_InputField.CharacterValidation.Digit;
-                _placeholderText.text = "¬ведите целое число";
+                _placeholderText.text = "Enter whole number";
             }
 
             else if (variableType == typeof(float))
             {
                 _inputField.characterValidation = TMP_InputField.CharacterValidation.Decimal;
-                _placeholderText.text = "¬ведите дробное число";
+                _placeholderText.text = "Enter floating number";
             }
 
             else if (variableType == typeof(string))
             {
                 _inputField.characterValidation = TMP_InputField.CharacterValidation.None;
-                _placeholderText.text = "¬ведите строку";
+                _placeholderText.text = "Enter string";
             }
 
             else if (variableType == typeof(bool))
             {
                 _inputField.characterValidation = TMP_InputField.CharacterValidation.CustomValidator;
                 _inputField.inputValidator = _boolValidator;
-                _placeholderText.text = "¬ведите булевое значение true/false";
+                _placeholderText.text = "Enter bool value true/false";
             }
 
             _inputField.onSubmit.AddListener((UnityEngine.Events.UnityAction<string>)((string value) =>
@@ -72,7 +72,7 @@ namespace Session.Scheme.Windows
             }));
 
             _outputText.gameObject.SetActive(true);
-            _outputText.text = $"¬ведите {variableName}:";
+            _outputText.text = $"Enter {variableName}:";
         }
 
         public void BuildOutputMessage(string message)

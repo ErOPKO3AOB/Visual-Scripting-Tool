@@ -36,7 +36,7 @@ namespace Session.Scheme.Windows
         private async Task GenerateCode()
         {
             _closeButton.interactable = false;
-            _outputText.text = "Генерация в процессе...";
+            _outputText.text = "Code generation in process...";
 
             string code = await _codeGenerationFactory.GenerateCode();
 

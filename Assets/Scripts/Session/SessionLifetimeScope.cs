@@ -41,7 +41,7 @@ namespace Session
                 .AsSelf();
 
             // Service for object dragging
-            builder.RegisterEntryPoint<WorldUIControllerService>(Lifetime.Scoped)
+            builder.RegisterEntryPoint<WorldMouseControllerService>(Lifetime.Scoped)
                 .AsSelf();
         }
 

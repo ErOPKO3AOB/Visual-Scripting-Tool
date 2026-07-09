@@ -13,7 +13,7 @@ namespace Session.Scheme.Block
     public class SchemeBlockFacade : MonoBehaviour
     {
         [Inject]
-        public void Construct(WindowFactory windowService, BlockConfigs blockConfigs, WorldUIControllerService worldUIControllerService, SchemeBlockFactory schemeBlockFactory)
+        public void Construct(WindowFactory windowService, BlockConfigs blockConfigs, WorldMouseControllerService worldUIControllerService, SchemeBlockFactory schemeBlockFactory)
         {
             _windowService = windowService;
             _blockConfigs = blockConfigs;
@@ -23,7 +23,7 @@ namespace Session.Scheme.Block
 
         private WindowFactory _windowService;
         private BlockConfigs _blockConfigs;
-        private WorldUIControllerService _worldUIControllerService;
+        private WorldMouseControllerService _worldUIControllerService;
         private SchemeBlockFactory _schemeBlockFactory;
         private BoxCollider2D _collider;
 

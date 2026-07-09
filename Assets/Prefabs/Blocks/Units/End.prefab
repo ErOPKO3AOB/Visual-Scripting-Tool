@@ -66,6 +66,7 @@ Rigidbody2D:
   m_Constraints: 4
 --- !u!212 &8174285627108726632
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -84,6 +85,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -105,9 +108,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -2
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -9013346659134127101, guid: ce60f96181e41674bba43dc7b22e8f49, type: 3}
   m_Color: {r: 0.6, g: 0.18039215, b: 0.1838036, a: 1}
   m_FlipX: 0
@@ -117,7 +122,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.606
   m_SpriteTileMode: 1
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &6773180056389733881
 MonoBehaviour:
@@ -283,7 +287,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1524306873550349692, guid: 8bcdd52bb78390d41b827aa6fbc4586f, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1524306873550349692, guid: 8bcdd52bb78390d41b827aa6fbc4586f, type: 3}
       propertyPath: m_SizeDelta.y
@@ -343,7 +347,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2939470445889766635, guid: 8bcdd52bb78390d41b827aa6fbc4586f, type: 3}
       propertyPath: m_text
-      value: "\u041A\u043E\u043D\u0435\u0446 \u0430\u043B\u0433\u043E\u0440\u0438\u0442\u043C\u0430"
+      value: End
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

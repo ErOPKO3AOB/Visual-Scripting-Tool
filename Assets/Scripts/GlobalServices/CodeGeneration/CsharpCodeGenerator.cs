@@ -23,20 +23,20 @@ namespace GlobalServices.CodeGeneration
 
             if (_factory.StartBlock == null)
             {
-                _factory.LogError("У схемы не обнаружен стартовый блок!");
-                return "Ошибка! Детали в консоли";
+                _factory.LogError("The starting block was not detected in the scheme!");
+                return "Error! Details in console";
             }
 
             if (!_factory.StartBlock.CheckForCorrectRelationships())
             {
-                _factory.LogError("У схемы не обнаружен конец! Корректно подключите все провода!");
-                return "Ошибка! Детали в консоли";
+                _factory.LogError("The scheme has no end! Connect all the wires correctly!");
+                return "Error! Details in console";
             }
 
             if (!_factory.StartBlock.CheckForCorrectValues())
             {
-                _factory.LogError("У не указаны важные параметры!");
-                return "Ошибка! Детали в консоли";
+                _factory.LogError("Important parameters are not specified in the scheme!");
+                return "Error! Details in console";
             }
 
             var codeBuilder = new StringBuilder();

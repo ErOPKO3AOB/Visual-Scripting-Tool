@@ -11,7 +11,7 @@ namespace User
     public class CameraController : IInitializable, ITickable, IDisposable, IPostInitializable
     {
         [Inject]
-        public CameraController(CameraControllerFacade facade, CameraSettings settings, InputService inputService, WorldUIControllerService worldUIControllerService, WindowFactory windowService)
+        public CameraController(CameraControllerFacade facade, CameraSettings settings, InputService inputService, WorldMouseControllerService worldUIControllerService, WindowFactory windowService)
         {
             _facade = facade;
             _settings = settings;
@@ -28,7 +28,7 @@ namespace User
         private readonly CameraControllerFacade _facade;
         private readonly CameraSettings _settings;
         private readonly InputService _inputService;
-        private readonly WorldUIControllerService _worldUIControllerService;
+        private readonly WorldMouseControllerService _worldUIControllerService;
         private readonly WindowFactory _windowService;
 
         private bool _canDragCamera;
