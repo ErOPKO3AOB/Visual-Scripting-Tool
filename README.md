@@ -23,6 +23,7 @@
 | UniTask | Async operations |
 
 ---
+![Моя логотипка](ReadmeImagesBasicScreen.png)
 
 ## 🧠 Architecture
 
