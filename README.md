@@ -24,8 +24,8 @@
 
 ---
 
-## 🧠 Architecture
-
-### High-Level Structure
-
+## Programm demonstration
 <img src="https://github.com/ErOPKO3AOB/Visual-Scripting-Tool/blob/main/ReadmeImages/BasicScreen.png" width="480" align="center" alt="Альтернативный текст">
+
+<img src="https://github.com/ErOPKO3AOB/Visual-Scripting-Tool/blob/main/ReadmeImages/BlockConnection.gif" width="480" align="center" alt="Альтернативный текст">
+
