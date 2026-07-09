@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using Extensions;
 using Session.Scheme.Block;
 using Session.Scheme.Block.Types;
@@ -17,7 +18,7 @@ namespace GlobalServices.CodeGeneration
             _factory = codeGenerationFactory;
         }
 
-        public async Task<string> Generate()
+        public async UniTask<string> Generate()
         {
             await _factory.GatherBlocks();
 

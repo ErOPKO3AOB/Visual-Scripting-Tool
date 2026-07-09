@@ -31,7 +31,7 @@ namespace Session.Scheme.Windows
             // Making input field send value, then deactivate
             _inputField.gameObject.SetActive(true);
 
-            Type variableType = _variableService.Variables.Find(v => v.variableName == variableName).GetType();
+            Type variableType = _variableService.Variables.Find(v => v.variableName == variableName).ValueType;
 
             if (variableType == typeof(int))
             {

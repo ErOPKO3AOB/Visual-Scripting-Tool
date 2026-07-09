@@ -1,5 +1,6 @@
 using Session.Scheme.Block;
 using Session.Scheme.Variables;
+using UnityEngine;
 
 namespace Session.Scheme
 {
@@ -50,6 +51,7 @@ namespace Session.Scheme
             else
             {
                 _consoleService.SpawnMessage("The program is running");
+                Debug.Log("STARTED");
                 Next.ProvideAction();
             }
         }
@@ -57,6 +59,7 @@ namespace Session.Scheme
         public void ProvideAction()
         {
             _consoleService.SpawnMessage("The program is finished");
+            Debug.Log("FINISHED");
         }
     }
 }

@@ -48,7 +48,7 @@ namespace Session.Scheme.Variables
                     StartValue = buildedValue;
                 else
                     Value = buildedValue;
-            }
+        }
 
             catch (Exception e)
             {

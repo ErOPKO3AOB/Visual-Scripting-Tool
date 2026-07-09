@@ -1,7 +1,7 @@
+using Cysharp.Threading.Tasks;
 using Session.Scheme.Variables;
-using Session.Scheme.Windows;
 using System;
-using System.Collections;
+using System.Threading;
 using UnityEngine;
 
 namespace Session.Scheme.Block.Types
@@ -35,6 +35,7 @@ namespace Session.Scheme.Block.Types
         public SchemeVariableBase SchemeVariable => _schemeVariable;
 
         private bool _used = false;
+        private CancellationTokenSource _cts;
 
         public void SetOperation(SchemeVariableBase variableToInputRequest)
         {
@@ -51,16 +52,18 @@ namespace Session.Scheme.Block.Types
         {
             _used = false;
 
-            _facade.StartCoroutine(WaitInput());
+            _cts = new CancellationTokenSource();
+
+            WaitInput().Forget();
         }
 
-        private IEnumerator WaitInput()
+        private async UniTask WaitInput()
         {
             _consoleService.SpawnInputRequest(SchemeVariable.variableName, this);
 
             while (!_used)
             {
-                yield return null;
+                await UniTask.Yield(cancellationToken: _cts.Token);
             }
 
             Next?.ProvideAction();
@@ -85,6 +88,9 @@ namespace Session.Scheme.Block.Types
 
         public void Dispose()
         {
+            _cts.Cancel();
+            _cts.Dispose();
+
             GameObject.Destroy(_facade.gameObject);
         }
     }

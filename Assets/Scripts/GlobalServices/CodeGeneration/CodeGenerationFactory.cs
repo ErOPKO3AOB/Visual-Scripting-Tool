@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using GlobalServices.CodeGeneration;
 using Session.Scheme;
 using Session.Scheme.Block;
@@ -7,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using System.Threading;
 using UnityEngine;
 
 namespace GlobalServices
@@ -37,52 +38,57 @@ namespace GlobalServices
         public List<OutputBlock> OutputBlocks { get; private set; } = new();
         public List<InputBlock> InputBlocks { get; private set; } = new();
 
-        // Делаем метод публичным, чтобы генератор мог его вызвать
-        public async Task GatherBlocks()
+        private CancellationTokenSource _cts;
+
+        public async UniTask GatherBlocks()
         {
+            _cts = new CancellationTokenSource();
+
             SchemeVariables = _variableService.Variables;
-            await Task.Delay(SMALL_OPERATION_DELAY_MS);
+            await UniTask.Delay(SMALL_OPERATION_DELAY_MS, cancellationToken: _cts.Token);
 
             StartBlock = null;
             StartBlock = (StartBlock)_schemeBlockFactory.Blocks.Find(b => b.GetType() == typeof(StartBlock));
-            await Task.Delay(SMALL_OPERATION_DELAY_MS);
+            await UniTask.Delay(SMALL_OPERATION_DELAY_MS, cancellationToken: _cts.Token);
 
             EndBlock = null;
             EndBlock = (EndBlock)_schemeBlockFactory.Blocks.Find(b => b.GetType() == typeof(EndBlock));
-            await Task.Delay(SMALL_OPERATION_DELAY_MS);
+            await UniTask.Delay(SMALL_OPERATION_DELAY_MS, cancellationToken: _cts.Token);
 
             MethodBlocks.Clear();
             var methodBlocks = _schemeBlockFactory.Blocks.FindAll(b => b.GetType() == typeof(ActionBlock));
             for (int i = 0; i < methodBlocks.Count; i++)
                 MethodBlocks.Add((ActionBlock)methodBlocks[i]);
-            await Task.Delay(MEDIUM_OPERATION_DELAY_MS);
+            await UniTask.Delay(MEDIUM_OPERATION_DELAY_MS, cancellationToken: _cts.Token);
 
             ConditionBlocks.Clear();
             var conditionBlocks = _schemeBlockFactory.Blocks.FindAll(b => b.GetType() == typeof(ConditionBlock));
             for (int i = 0; i < conditionBlocks.Count; i++)
                 ConditionBlocks.Add((ConditionBlock)conditionBlocks[i]);
-            await Task.Delay(MEDIUM_OPERATION_DELAY_MS);
+            await UniTask.Delay(MEDIUM_OPERATION_DELAY_MS, cancellationToken: _cts.Token);
 
             OutputBlocks.Clear();
             var outputBlocks = _schemeBlockFactory.Blocks.FindAll(b => b.GetType() == typeof(OutputBlock));
             for (int i = 0; i < outputBlocks.Count; i++)
                 OutputBlocks.Add((OutputBlock)outputBlocks[i]);
-            await Task.Delay(MEDIUM_OPERATION_DELAY_MS);
+            await UniTask.Delay(MEDIUM_OPERATION_DELAY_MS, cancellationToken: _cts.Token);
 
             InputBlocks.Clear();
             var inputBlocks = _schemeBlockFactory.Blocks.FindAll(b => b.GetType() == typeof(InputBlock));
             for (int i = 0; i < inputBlocks.Count; i++)
                 InputBlocks.Add((InputBlock)inputBlocks[i]);
-            await Task.Delay(MEDIUM_OPERATION_DELAY_MS);
+            await UniTask.Delay(MEDIUM_OPERATION_DELAY_MS, cancellationToken: _cts.Token);
         }
 
         // Новый метод для логирования ошибок
         public void LogError(string message)
         {
             _consoleService.SpawnMessage(message);
+            _cts.Cancel();
+            _cts.Dispose();
         }
 
-        public async Task<string> GenerateCode(/*ICodeGenerator codeGenerator*/)
+        public async UniTask<string> GenerateCode(/*ICodeGenerator codeGenerator*/)
         {
             await GatherBlocks();
 

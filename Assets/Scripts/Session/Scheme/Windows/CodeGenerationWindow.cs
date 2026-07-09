@@ -1,4 +1,6 @@
+using Cysharp.Threading.Tasks;
 using GlobalServices;
+using System.Threading;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -33,7 +35,7 @@ namespace Session.Scheme.Windows
             _copyCodeButton.onClick.AddListener(() => GUIUtility.systemCopyBuffer = _outputText.text);
         }
 
-        private async Task GenerateCode()
+        private async UniTask GenerateCode()
         {
             _closeButton.interactable = false;
             _outputText.text = "Code generation in process...";
