@@ -26,19 +26,19 @@
 
 ## Programm demonstration
 
-Main canvas
+#### Main canvas
 <img src="https://github.com/ErOPKO3AOB/Visual-Scripting-Tool/blob/main/ReadmeImages/BasicScreen.png" width="480" align="center">
 
-Block connection
+#### Block connection
 <img src="https://github.com/ErOPKO3AOB/Visual-Scripting-Tool/blob/main/ReadmeImages/BlockConnection.gif" width="480" align="center">
 
-Setting block parameters
+#### Setting block parameters
 <img src="https://github.com/ErOPKO3AOB/Visual-Scripting-Tool/blob/main/ReadmeImages/BlockSettings.gif" width="480" align="center">
 
-Algorytm building
+#### Algorytm building
 <img src="https://github.com/ErOPKO3AOB/Visual-Scripting-Tool/blob/main/ReadmeImages/AlgorythmBuilding.gif" width="480" align="center">
 
-Algorytm execution
+#### Algorytm execution
 <img src="https://github.com/ErOPKO3AOB/Visual-Scripting-Tool/blob/main/ReadmeImages/AlgorytmExecution.gif" width="480" align="center">
 
 Code generation
