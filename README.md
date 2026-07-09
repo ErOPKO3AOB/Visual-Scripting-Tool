@@ -27,3 +27,5 @@
 ## 🧠 Architecture
 
 ### High-Level Structure
+
+<img src="https://github.com/ErOPKO3AOB/Visual-Scripting-Tool/blob/main/ReadmeImages/BasicScreen.png" width="480" align="center" alt="Альтернативный текст">
